@@ -1,0 +1,236 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"we",
+				"webp"
+			],
+			[
+				"font-",
+				"font-weight"
+			],
+			[
+				"services-",
+				"service-details-page"
+			],
+			[
+				"sty",
+				"style"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/ronan/OneDrive/Desktop/onifra/index.html",
+		"/C/Users/ronan/OneDrive/Desktop/onifra/style.scss",
+		"/F/template/r77/index.html",
+		"/C/Users/ronan/OneDrive/Desktop/77_templates/hotel/index.html",
+		"/F/template/r77/assets/css/style.css",
+		"/C/Users/ronan/OneDrive/Desktop/MSI/assets/css/style.css",
+		"/C/Users/ronan/OneDrive/Desktop/MSI/assets/css/services.css",
+		"/C/Users/ronan/OneDrive/Desktop/MSI/robots.txt",
+		"/C/Users/ronan/OneDrive/Desktop/MSI/sitemap.xml",
+		"/C/Users/ronan/OneDrive/Desktop/MSI/index.html",
+		"/C/Users/ronan/OneDrive/Desktop/MSI/services.html",
+		"/C/Users/ronan/Downloads/google65959527abd3f1cd.html",
+		"/F/template/r77/sitemap.xml",
+		"/C/Users/ronan/OneDrive/Documents/ronan_portfolio/index.html",
+		"/F/template/r77/assets/js/script.js",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/assets/css/resultat.css",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/resultat.html",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/assets/css/quiz.css",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/quiz.html",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/login_admin.html",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/assets/css/index.css",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/index.html",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/assets/css/accueil.css",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/assets/js/accueil.js",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/accueil.html",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/assets/css/admin.css",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/admin.html",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/back-end/index.js",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/assets/js/index.js",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/back-end/seedAdmins.js",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/back-end/.env",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/back-end/db.js",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/back-end/authAdmin.js",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/admin/style.css",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/admin/dashboard.html",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/admin/script.js",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/admin/classes.html",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/admin/index.html",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/admin/modules/dashboard.html",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/style.css",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/Dashboard.js",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/dashboard.html",
+		"/C/Users/ronan/OneDrive/Desktop/Gasipro_quiz/front-end/Checklist projet Quiz Gasi’Pro.txt",
+		"/F/ronan/SnapFolio/assets/js/main.js",
+		"/F/ronan/SnapFolio/index.html",
+		"/F/ronan/SnapFolio/service-details.html",
+		"/F/ronan/SnapFolio/assets/css/main.css",
+		"/C/Users/ronan/Desktop/Gasi'pro quiz projet/index.html",
+		"/C/Users/ronan/Desktop/Gasi'pro quiz projet/style.css",
+		"/C/Users/ronan/Desktop/Gasi'pro quiz projet/admin.html",
+		"/C/Users/gasi'pro/Desktop/Gasi'Pro Web/index/a_propos.html"
+	],
+	"find":
+	{
+		"height": 38.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 41.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"pinned_build_system": "",
+	"project": "index.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 199.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
