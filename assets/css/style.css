@@ -470,3 +470,126 @@
   .hero-title { font-size: 1.9rem; }
   .hero-sub { font-size: 1rem; }
 }
+
+/* ===== MISSIONS SECTION ===== */
+.missions-section {
+  background: linear-gradient(135deg, #f8f9ff 0%, #eef3fb 100%);
+  border-top: 3px solid var(--primary, #1a3a6e);
+  overflow: hidden;
+}
+.missions-label {
+  display: inline-block;
+  background: var(--primary, #1a3a6e);
+  color: #fff;
+  font-size: 0.72rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 20px;
+  /* pas d'animation ici, géré par JS */
+}
+.missions-title {
+  font-family: 'Playfair Display', serif;
+  color: var(--primary, #1a3a6e);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+.missions-divider {
+  width: 60px;
+  height: 3px;
+  background: #c9a84c;
+  border-radius: 2px;
+}
+.missions-lead {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.05rem;
+  color: #555;
+}
+.missions-verb {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #c9a84c;
+  letter-spacing: 0.05em;
+}
+
+/* État initial : invisible, décalé vers le bas */
+.missions-animate {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+/* État visible (ajouté par JS au scroll) */
+.missions-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Délais en cascade */
+.missions-animate:nth-child(1), .mission-card-wrap:nth-child(1) { transition-delay: 0.05s; }
+.missions-animate:nth-child(2), .mission-card-wrap:nth-child(2) { transition-delay: 0.15s; }
+.missions-animate:nth-child(3), .mission-card-wrap:nth-child(3) { transition-delay: 0.25s; }
+.missions-animate:nth-child(4), .mission-card-wrap:nth-child(4) { transition-delay: 0.35s; }
+
+/* Cards */
+.mission-card-wrap {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.mission-card-wrap.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.mission-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(26, 58, 110, 0.07);
+  border-top: 3px solid transparent;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.mission-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 32px rgba(26, 58, 110, 0.13);
+  border-top-color: #c9a84c;
+}
+.mission-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  background: linear-gradient(135deg, #eef3fb, #d8e5f7);
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: var(--primary, #1a3a6e);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.mission-card:hover .mission-icon-wrap {
+  background: var(--primary, #1a3a6e);
+  color: #c9a84c;
+}
+.mission-card-title {
+  font-family: 'Playfair Display', serif;
+  color: var(--primary, #1a3a6e);
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.mission-card-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@keyframes missionFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

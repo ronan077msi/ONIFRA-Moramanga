@@ -144,7 +144,6 @@
         </a>
       </div>
 
-      <!-- Tags -->
       <div class="hero-tags d-flex justify-content-center align-items-center gap-3 flex-wrap">
         <span class="hero-tag"><i class="bi bi-tree me-1"></i>Agronomie</span>
         <span class="hero-tag-sep">-</span>
@@ -156,12 +155,71 @@
     </div>
   </div>
 
-  <!-- Scroll hint -->
   <div class="scroll-hint">
     <div class="scroll-mouse"></div>
     <span>Défiler</span>
   </div>
 </header>
+
+<!-- MISSIONS -->
+<section class="missions-section py-5">
+  <div class="container">
+
+    <div class="text-center mb-5">
+      <span class="missions-label">Notre vocation</span>
+      <h2 class="missions-title mt-2">Nos Missions</h2>
+      <div class="missions-divider mx-auto mt-3"></div>
+    </div>
+
+    <div class="missions-lead text-center mb-5">
+      <span class="missions-verb">FORMER</span> les étudiants à…
+    </div>
+
+    <div class="row g-4 justify-content-center">
+
+      <div class="col-md-6 col-lg-3 mission-card-wrap">
+        <div class="mission-card h-100">
+          <div class="mission-icon-wrap mb-3">
+            <i class="bi bi-person-check-fill"></i>
+          </div>
+          <h6 class="mission-card-title">Leadership chrétien</h6>
+          <p class="mission-card-text">Devenir des leaders chrétiens, dignes, intègres, responsables, au service de l'Église et de la Société.</p>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mission-card-wrap">
+        <div class="mission-card h-100">
+          <div class="mission-icon-wrap mb-3">
+            <i class="bi bi-lightbulb-fill"></i>
+          </div>
+          <h6 class="mission-card-title">Recherche & Science</h6>
+          <p class="mission-card-text">Participer activement à la recherche scientifique, technologique et éthique.</p>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mission-card-wrap">
+        <div class="mission-card h-100">
+          <div class="mission-icon-wrap mb-3">
+            <i class="bi bi-broadcast-pin"></i>
+          </div>
+          <h6 class="mission-card-title">Diffusion des savoirs</h6>
+          <p class="mission-card-text">Diffuser et valoriser les résultats de la recherche au service de l'Église et de la société.</p>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mission-card-wrap">
+        <div class="mission-card h-100">
+          <div class="mission-icon-wrap mb-3">
+            <i class="bi bi-globe-americas"></i>
+          </div>
+          <h6 class="mission-card-title">Innovation durable</h6>
+          <p class="mission-card-text">Développer des innovations pour répondre aux défis sociétaux et au développement durable de Madagascar.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
     <section class="py-5">
     <div class="container">
@@ -200,9 +258,20 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Effet scroll navbar
   window.addEventListener('scroll', () => {
     document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 20);
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.missions-animate, .mission-card-wrap').forEach(el => {
+    observer.observe(el);
   });
 </script>
 </body>
