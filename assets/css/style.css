@@ -593,3 +593,120 @@
     transform: translateY(0);
   }
 }
+
+  /* ══════════════════════════════════════
+     axes stratégique
+  ══════════════════════════════════════ */
+
+.axes-section {
+  background: #0d1f3c;
+  position: relative;
+  overflow: hidden;
+  padding: 5rem 0;
+}
+.axes-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 50%, rgba(196,160,80,.08) 0%, transparent 55%),
+    radial-gradient(circle at 85% 20%, rgba(255,255,255,.04) 0%, transparent 45%);
+  pointer-events: none;
+}
+.axes-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #c4a050;
+  display: block;
+}
+.axes-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  margin: .5rem 0 0;
+}
+.axes-divider {
+  width: 52px;
+  height: 3px;
+  background: #c4a050;
+  border-radius: 2px;
+  margin: .75rem auto 0;
+}
+
+/* ── Grille centrée ── */
+.axes-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 3rem;
+}
+
+/* Desktop : 3 colonnes fixes */
+.axe-card {
+  width: calc(33.333% - 1.25rem);
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 1.6rem 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.1rem;
+  transition: background .25s, transform .25s, border-color .25s;
+  box-sizing: border-box;
+}
+
+/* Tablette : 2 colonnes */
+@media (max-width: 991px) {
+  .axe-card {
+    width: calc(50% - 1.25rem);
+  }
+}
+
+/* Mobile : 1 colonne pleine largeur */
+@media (max-width: 575px) {
+  .axe-card {
+    width: 100%;
+  }
+}
+
+.axe-card:hover {
+  background: rgba(196,160,80,.12);
+  border-color: rgba(196,160,80,.4);
+  transform: translateY(-4px);
+}
+.axe-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #c4a050;
+  opacity: .4;
+  min-width: 2.2rem;
+  text-align: center;
+  user-select: none;
+  flex-shrink: 0;
+  transition: opacity .25s;
+}
+.axe-card:hover .axe-num {
+  opacity: .85;
+}
+.axe-icon {
+  font-size: 1.25rem;
+  color: #c4a050;
+  margin-bottom: .35rem;
+  display: block;
+}
+.axe-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  line-height: 1.4;
+}

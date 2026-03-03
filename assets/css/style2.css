@@ -1,0 +1,225 @@
+  /* ══════════════════════════════════════
+     Licence
+  ══════════════════════════════════════ */
+/* ── Section générale ── */
+.licence-section {
+  background: #f0f4f8;
+  padding: 5rem 0;
+}
+.licence-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #c4a050;
+  display: block;
+  text-align: center;
+}
+.licence-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 700;
+  color: #0d1f3c;
+  text-align: center;
+  margin: .5rem 0 0;
+}
+.licence-divider {
+  width: 52px;
+  height: 3px;
+  background: #c4a050;
+  border-radius: 2px;
+  margin: .75rem auto 2.5rem;
+}
+
+/* ── Domaine header ── */
+.domaine-header {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin: 2.5rem 0 1.25rem;
+}
+.domaine-badge {
+  background: #0d1f3c;
+  color: #c4a050;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: .3rem .85rem;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.domaine-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(13,31,60,.15);
+}
+
+/* ── Grille des mentions ── */
+.mentions-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+/* ── Carte mention ── */
+.mention-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(13,31,60,.08);
+  overflow: hidden;
+  width: calc(33.333% - 1.5rem);
+  display: flex;
+  flex-direction: column;
+  transition: transform .25s, box-shadow .25s;
+}
+.mention-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 36px rgba(13,31,60,.14);
+}
+
+@media (max-width: 991px) {
+  .mention-card { width: calc(50% - 1.5rem); }
+}
+@media (max-width: 575px) {
+  .mention-card { width: 100%; }
+}
+
+/* ── Carrousel ── */
+.mention-carousel {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: #e4e9f0;
+}
+.mention-carousel .carousel-inner,
+.mention-carousel .carousel-item {
+  height: 100%;
+}
+.mention-carousel .carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Placeholder quand pas d'image */
+.mention-carousel .carousel-item .img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e4e9f0 0%, #c8d3e0 100%);
+  color: #8a9ab5;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .85rem;
+  flex-direction: column;
+  gap: .5rem;
+}
+.mention-carousel .carousel-item .img-placeholder i {
+  font-size: 2rem;
+  opacity: .4;
+}
+
+/* Contrôles carrousel */
+.mention-carousel .carousel-control-prev,
+.mention-carousel .carousel-control-next {
+  width: 36px;
+  height: 36px;
+  background: rgba(13,31,60,.55);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.mention-carousel:hover .carousel-control-prev,
+.mention-carousel:hover .carousel-control-next {
+  opacity: 1;
+}
+.mention-carousel .carousel-control-prev { left: 8px; }
+.mention-carousel .carousel-control-next { right: 8px; }
+.mention-carousel .carousel-control-prev-icon,
+.mention-carousel .carousel-control-next-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Indicateurs */
+.mention-carousel .carousel-indicators {
+  margin-bottom: .4rem;
+}
+.mention-carousel .carousel-indicators [data-bs-target] {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.6);
+  border: none;
+}
+.mention-carousel .carousel-indicators .active {
+  background: #c4a050;
+}
+
+/* Promo badge sur la photo */
+.promo-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(13,31,60,.75);
+  color: #c4a050;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .2rem .6rem;
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+  z-index: 5;
+}
+
+/* ── Corps de la carte ── */
+.mention-body {
+  padding: 1.25rem 1.25rem 1.4rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.mention-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0d1f3c;
+  margin: 0 0 .75rem;
+  line-height: 1.3;
+}
+.parcours-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+  margin-top: auto;
+}
+.parcours-list li {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .82rem;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.parcours-list li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c4a050;
+  flex-shrink: 0;
+}
