@@ -1,7 +1,6 @@
   /* ══════════════════════════════════════
      Licence
   ══════════════════════════════════════ */
-/* ── Section générale ── */
 .licence-section {
   background: #f0f4f8;
   padding: 5rem 0;
@@ -107,7 +106,7 @@
   display: block;
 }
 
-/* Placeholder quand pas d'image */
+/* Placeholder */
 .mention-carousel .carousel-item .img-placeholder {
   width: 100%;
   height: 100%;
@@ -165,7 +164,6 @@
   background: #c4a050;
 }
 
-/* Promo badge sur la photo */
 .promo-badge {
   position: absolute;
   top: 10px;
@@ -183,7 +181,7 @@
   z-index: 5;
 }
 
-/* ── Corps de la carte ── */
+/* ── Corps carte ── */
 .mention-body {
   padding: 1.25rem 1.25rem 1.4rem;
   flex: 1;
@@ -270,7 +268,6 @@
   margin: .75rem auto 2.5rem;
 }
 
-/* Stats en chiffres clés */
 .effectif-stats {
   display: flex;
   justify-content: center;
@@ -302,7 +299,6 @@
   align-self: stretch;
 }
 
-/* Conteneur du graphique */
 .chart-wrap {
   background: rgba(255,255,255,.04);
   border: 1px solid rgba(255,255,255,.08);
@@ -347,7 +343,6 @@
   margin: .75rem auto 3rem;
 }
 
-/* Grille des cards */
 .enseignants-grid {
   display: flex;
   flex-wrap: wrap;
@@ -410,7 +405,7 @@
   margin-top: .2rem;
 }
 
-/* Card total */
+/* Card */
 .ens-total-card {
   background: #0d1f3c;
   border-radius: 14px;
@@ -483,7 +478,7 @@
   margin: .75rem auto 3rem;
 }
 
-/* ── Wrapper fondu bords ── */
+/* ── Wrapper ── */
 .partners-fade-wrap {
   position: relative;
   overflow: hidden;
@@ -506,7 +501,6 @@
   background: linear-gradient(to left, #0d1f3c, transparent);
 }
 
-/* ── Scroll wrap (drag + touch) ── */
 .partners-scroll-wrap {
   width: 100%;
   overflow-x: auto;
@@ -518,7 +512,7 @@
 .partners-scroll-wrap::-webkit-scrollbar { display: none; }
 .partners-scroll-wrap.dragging { cursor: grabbing; }
 
-/* ── Piste animée ── */
+/* ── Piste ── */
 .partners-track {
   display: flex;
   align-items: center;
@@ -527,12 +521,12 @@
   padding: .5rem 80px;
   animation: scroll-partners 50s linear infinite;
 }
+
 @keyframes scroll-partners {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
-/* ── Logo — sans box ── */
 .partner-logo {
   display: flex;
   align-items: center;
@@ -554,21 +548,6 @@
 }
 .partner-logo img:hover {
   filter: grayscale(0) brightness(1) opacity(1);
-}
-
-/* Placeholder (temporaire) */
-.logo-ph {
-  font-family: 'DM Sans', sans-serif;
-  font-size: .7rem;
-  font-weight: 600;
-  color: rgba(255,255,255,.3);
-  text-align: center;
-  line-height: 1.4;
-  border: 1px dashed rgba(255,255,255,.12);
-  border-radius: 8px;
-  padding: .5rem .9rem;
-  white-space: nowrap;
-  user-select: none;
 }
 
 /* Compteur */
@@ -614,7 +593,7 @@
   margin: .75rem auto 3rem;
 }
 
-/* ── Grille ── */
+/* ── Grile ── */
 .activites-grid {
   display: flex;
   flex-wrap: wrap;
@@ -622,7 +601,6 @@
   gap: 1.5rem;
 }
 
-/* 3 colonnes desktop */
 .acti-card {
   background: #fff;
   border-radius: 14px;
@@ -737,7 +715,7 @@
   padding-top: .5rem;
 }
 
-/* ── Card spéciale "Culte" — pleine largeur ── */
+/* ── Card culte ── */
 .acti-card.featured {
   width: 100%;
   flex-direction: row;

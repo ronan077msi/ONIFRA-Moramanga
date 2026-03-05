@@ -74,7 +74,6 @@
     left: 0.85rem; right: 0.85rem;
   }
 
-  /* Dropdown toggle caret custom */
   .nav-link.dropdown-toggle::before {
     display: none;
   }
@@ -178,8 +177,6 @@
     }
     .navbar-nav .nav-link::after { display: none; }
 
-    /* Cache le dropdown-menu par défaut et
-       l'affiche seulement quand .show est présent */
     .dropdown-menu {
       display: none;
       border-radius: 10px;
@@ -206,14 +203,12 @@
     }
   }
 
-  /* Desktop hover open */
   @media (min-width: 992px) {
     .nav-item.dropdown:hover > .dropdown-menu {
       display: block;
     }
   }
 
-  /* ── Séparateur vertical entre boutons ── */
   .nav-divider {
     width: 1px;
     height: 24px;
@@ -233,7 +228,6 @@
   overflow: hidden;
 }
 
-/* Overlay dégradé riche */
 .hero::after {
   content: '';
   position: absolute;
@@ -244,7 +238,6 @@
   z-index: 1;
 }
 
-/* Image fond avec zoom lent */
 .hero-bg {
   position: absolute;
   inset: 0;
@@ -319,7 +312,6 @@
 }
 @keyframes lineGrow { to { transform: scaleX(1); } }
 
-/* Divider doré */
 .hero-divider {
   width: 56px; height: 2px;
   background: linear-gradient(to right, var(--accent), transparent);
@@ -329,7 +321,6 @@
   animation: fadeUp 0.5s ease 0.65s forwards;
 }
 
-/* Sous-titre */
 .hero-sub {
   font-family: 'DM Sans', sans-serif;
   font-size: clamp(1rem, 2.2vw, 1.2rem);
@@ -384,7 +375,6 @@
   transform: translateY(-2px);
 }
 
-/* Tags disciplines */
 .hero-tags {
   opacity: 0;
   animation: fadeUp 0.6s ease 1.2s forwards;
@@ -488,7 +478,6 @@
   text-transform: uppercase;
   padding: 4px 14px;
   border-radius: 20px;
-  /* pas d'animation ici, géré par JS */
 }
 .missions-title {
   font-family: 'Playfair Display', serif;
@@ -514,19 +503,18 @@
   letter-spacing: 0.05em;
 }
 
-/* État initial : invisible, décalé vers le bas */
 .missions-animate {
   opacity: 0;
   transform: translateY(22px);
   transition: opacity 0.65s ease, transform 0.65s ease;
 }
-/* État visible (ajouté par JS au scroll) */
+
 .missions-animate.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Délais en cascade */
+/* Délais */
 .missions-animate:nth-child(1), .mission-card-wrap:nth-child(1) { transition-delay: 0.05s; }
 .missions-animate:nth-child(2), .mission-card-wrap:nth-child(2) { transition-delay: 0.15s; }
 .missions-animate:nth-child(3), .mission-card-wrap:nth-child(3) { transition-delay: 0.25s; }
@@ -638,7 +626,7 @@
   margin: .75rem auto 0;
 }
 
-/* ── Grille centrée ── */
+/* ── Grille centre ── */
 .axes-grid {
   display: flex;
   flex-wrap: wrap;
@@ -647,7 +635,6 @@
   margin-top: 3rem;
 }
 
-/* Desktop : 3 colonnes fixes */
 .axe-card {
   width: calc(33.333% - 1.25rem);
   background: rgba(255,255,255,.05);
@@ -661,14 +648,12 @@
   box-sizing: border-box;
 }
 
-/* Tablette : 2 colonnes */
 @media (max-width: 991px) {
   .axe-card {
     width: calc(50% - 1.25rem);
   }
 }
 
-/* Mobile : 1 colonne pleine largeur */
 @media (max-width: 575px) {
   .axe-card {
     width: 100%;
