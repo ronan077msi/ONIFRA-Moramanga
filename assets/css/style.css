@@ -582,6 +582,37 @@
   }
 }
 
+.missions-header-anim {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.missions-header-anim.missions-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.missions-lead-anim {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .45s ease .2s, transform .45s ease .2s;
+}
+.missions-lead-anim.missions-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Cards */
+.mission-card-wrap {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.mission-card-wrap.missions-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
   /* ══════════════════════════════════════
      axes stratégique
   ══════════════════════════════════════ */
@@ -694,4 +725,26 @@
   color: #fff;
   margin: 0;
   line-height: 1.4;
+}
+
+/* Header axes */
+.axes-header-anim {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.axes-header-anim.axes-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Cards axes */
+.axe-card {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.axe-card.axes-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
