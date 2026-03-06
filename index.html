@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head lang="fr">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>ONIFRA - Moramanga</title>
@@ -12,10 +12,53 @@
   <link rel="stylesheet" href="assets/css/style3.css">  
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="assets/img/campus.jpg" fetchpriority="high">
+  <style>
+    /* PRELOAD */
+    #preloader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 1.2s ease, visibility 1.2s ease; 
+      pointer-events: none;
+    }
+
+    #preloader.loaded {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .logo-only {
+      width: 250px;          
+      height: auto;
+      animation: float 2.5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-18px); }
+    }
+  </style>
+  <link rel="preload" as="image" href="assets/img/promotion/gestion-bz.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/img/promotion/droit-bz.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/img/promotion/agro-bz.jpg" fetchpriority="high">
 </head>
 <body style="background:#f0f4f8; min-height:100vh;  margin:0;">
 
-	<!-- TOPBAR -->
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <img src="assets/img/logo/logo.webp" alt="Logo-oniFRa" class="logo-only">
+  </div>
+
+  <!-- TOPBAR -->
   <div class="topbar d-none d-lg-block">
     <div class="container d-flex justify-content-between align-items-center">
       <span><i class="bi bi-geo-alt-fill me-1"></i>Moramanga, Madagascar</span>
@@ -110,25 +153,34 @@
 <!-- HERO -->
 <header class="hero">
   <img
-  class="hero-bg"
-  src="assets/img/campus.jpg"
-  alt="Campus ONIFRA Moramanga"
-  width="1920" height="1080"
-  fetchpriority="high"
-  loading="eager"
-  decoding="async"
+    class="hero-bg"
+    src="assets/img/campus.jpg"
+    alt="Campus ONIFRA Moramanga"
+    width="1920" height="1080"
+    fetchpriority="high"
+    loading="eager"
+    decoding="async"
   >
 
   <div class="hero-inner">
     <div class="container text-center">
 
+      <!-- Badge -->
+      <div class="mb-4">
+        <span class="hero-badge">
+          <span class="dot"></span>
+          Admissions 2026 ouvertes
+        </span>
+      </div>
+
       <!-- Titre -->
       <h1 class="hero-title mb-4">
-        Bienvenue à l'<span class="gold">ONIFRA</span> Moramanga
+        Bienvenue à l'<span class="gold">ONIFRA</span><br>Moramanga
       </h1>
 
       <div class="hero-divider mb-4"></div>
 
+      <!-- Sous-titre -->
       <p class="hero-sub mb-5">
         Oniversity FJKM Ravelojaona<br>
         Formation d'excellence &nbsp;•&nbsp; Valeurs chrétiennes &nbsp;•&nbsp; <em>EN CHRIST</em>
@@ -146,17 +198,29 @@
         </a>
       </div>
 
-      <div class="hero-tags d-flex justify-content-center align-items-center gap-3 flex-wrap">
+      <!-- Tags -->
+      <div class="hero-tags d-flex justify-content-center align-items-center gap-3 flex-wrap mb-5">
         <span class="hero-tag"><i class="bi bi-tree me-1"></i>Agronomie</span>
-        <span class="hero-tag-sep">-</span>
+        <span class="hero-tag-sep">—</span>
         <span class="hero-tag"><i class="bi bi-graph-up me-1"></i>Gestion</span>
-        <span class="hero-tag-sep">-</span>
+        <span class="hero-tag-sep">—</span>
         <span class="hero-tag"><i class="bi bi-bank me-1"></i>Droit</span>
+      </div>
+
+      <!-- Verset -->
+      <div class="hero-verset">
+        <div class="hero-verset-line">
+          <span class="hero-verset-text">
+            « Dieu fera de vous la tête et non la queue »
+          </span>
+        </div>
+        <span class="hero-verset-ref">Deutéronome 28 : 13a</span>
       </div>
 
     </div>
   </div>
 
+  <!-- Scroll hint -->
   <div class="scroll-hint">
     <div class="scroll-mouse"></div>
     <span>Défiler</span>
@@ -166,63 +230,81 @@
 <!-- MISSIONS -->
 <section class="missions-section py-5">
   <div class="container">
-
     <div class="text-center mb-5 missions-header-anim">
       <span class="missions-label">Notre vocation</span>
       <h2 class="missions-title mt-2">Nos Missions</h2>
       <div class="missions-divider mx-auto mt-3"></div>
     </div>
 
-     <div class="missions-lead missions-lead-anim text-center mb-5">
+    <div class="missions-lead missions-lead-anim text-center mb-5">
       <span class="missions-verb">FORMER</span> les étudiants à…
     </div>
 
     <div class="row g-4 justify-content-center">
 
+      <!-- Card 1 -->
       <div class="col-md-6 col-lg-3 mission-card-wrap">
         <div class="mission-card h-100">
-          <div class="mission-icon-wrap mb-3">
-            <i class="bi bi-person-check-fill"></i>
+          <div class="mission-card-bg bg-leadership"></div>
+          <div class="mission-card-veil"></div>
+          <div class="mission-card-content">
+            <div class="mission-icon-wrap">
+              <i class="bi bi-person-check-fill"></i>
+            </div>
+            <h6 class="mission-card-title">Leadership chrétien</h6>
+            <p class="mission-card-text">Devenir des leaders chrétiens, dignes, intègres, responsables, au service de l'Église et de la Société.</p>
           </div>
-          <h6 class="mission-card-title">Leadership chrétien</h6>
-          <p class="mission-card-text">Devenir des leaders chrétiens, dignes, intègres, responsables, au service de l'Église et de la Société.</p>
         </div>
       </div>
 
+      <!-- Card 2 -->
       <div class="col-md-6 col-lg-3 mission-card-wrap">
         <div class="mission-card h-100">
-          <div class="mission-icon-wrap mb-3">
-            <i class="bi bi-lightbulb-fill"></i>
+          <div class="mission-card-bg bg-research"></div>
+          <div class="mission-card-veil"></div>
+          <div class="mission-card-content">
+            <div class="mission-icon-wrap">
+              <i class="bi bi-lightbulb-fill"></i>
+            </div>
+            <h6 class="mission-card-title">Recherche & Science</h6>
+            <p class="mission-card-text">Participer activement à la recherche scientifique, technologique et éthique.</p>
           </div>
-          <h6 class="mission-card-title">Recherche & Science</h6>
-          <p class="mission-card-text">Participer activement à la recherche scientifique, technologique et éthique.</p>
         </div>
       </div>
 
+      <!-- Card 3 -->
       <div class="col-md-6 col-lg-3 mission-card-wrap">
         <div class="mission-card h-100">
-          <div class="mission-icon-wrap mb-3">
-            <i class="bi bi-broadcast-pin"></i>
+          <div class="mission-card-bg bg-diffusion"></div>
+          <div class="mission-card-veil"></div>
+          <div class="mission-card-content">
+            <div class="mission-icon-wrap">
+              <i class="bi bi-broadcast-pin"></i>
+            </div>
+            <h6 class="mission-card-title">Diffusion des savoirs</h6>
+            <p class="mission-card-text">Diffuser et valoriser les résultats de la recherche au service de l'Église et de la société.</p>
           </div>
-          <h6 class="mission-card-title">Diffusion des savoirs</h6>
-          <p class="mission-card-text">Diffuser et valoriser les résultats de la recherche au service de l'Église et de la société.</p>
         </div>
       </div>
 
+      <!-- Card 4 -->
       <div class="col-md-6 col-lg-3 mission-card-wrap">
         <div class="mission-card h-100">
-          <div class="mission-icon-wrap mb-3">
-            <i class="bi bi-globe-americas"></i>
+          <div class="mission-card-bg bg-innovation"></div>
+          <div class="mission-card-veil"></div>
+          <div class="mission-card-content">
+            <div class="mission-icon-wrap">
+              <i class="bi bi-globe-americas"></i>
+            </div>
+            <h6 class="mission-card-title">Innovation durable</h6>
+            <p class="mission-card-text">Développer des innovations pour répondre aux défis sociétaux et au développement durable de Madagascar.</p>
           </div>
-          <h6 class="mission-card-title">Innovation durable</h6>
-          <p class="mission-card-text">Développer des innovations pour répondre aux défis sociétaux et au développement durable de Madagascar.</p>
         </div>
       </div>
 
     </div>
   </div>
 </section>
-
 
 
 <section class="axes-section">
@@ -298,1130 +380,1223 @@
 </section>
 
 <section class="licence-section">
-  <div class="container">
+  <div class="container-fluid px-4 px-lg-5">
 
-    <span class="licence-label">Offre académique</span>
-    <h2 class="licence-title">Nos Domaines et Mentions</h2>
-    <p class="text-center" style="font-family:'DM Sans',sans-serif; color:#6b7a99; font-size:.9rem; margin-top:.4rem;">Niveau Licence</p>
-    <div class="licence-divider"></div>
-
-    <!-- DOMAINE 1 -->
-    <div class="domaine-header">
-      <span class="domaine-badge"><i class="bi bi-bank me-1"></i>Sciences de la Société</span>
-      <span class="domaine-line"></span>
+    <!-- ── HEADER ── -->
+    <div class="lic-section-header licence-header-anim">
+      <div class="lic-header-left">
+        <div class="lic-eyebrow">
+          <span class="lic-eyebrow-line"></span>
+          Offre académique
+          <span class="lic-eyebrow-line"></span>
+        </div>
+        <h2 class="lic-section-title">
+          Nos <span>Formations</span><br>de Licence
+        </h2>
+        <p class="lic-section-desc">
+          Des parcours d'excellence pensés pour former les leaders de demain —
+          entre rigueur académique, valeurs chrétiennes et ancrage territorial.
+        </p>
+      </div>
     </div>
 
-    <div class="mentions-grid">
+    <!-- ── GRILLE 3 MENTIONS ── -->
+    <div class="mentions-row">
 
-      <!-- Mention gestion -->
-      <div class="mention-card">
-        <div class="mention-carousel carousel slide" id="carousel-gestion" data-bs-ride="carousel">
-          <span class="promo-badge"><i class="bi bi-camera-fill me-1"></i>Promotions</span>
+      <!-- GESTION -->
+      <div class="mention-hero">
+        <div class="lic-hero-carousel carousel slide" id="c-gestion" data-bs-ride="carousel" data-bs-interval="4000">
           <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carousel-gestion" data-bs-slide-to="0" class="active"></button>
-            <button type="button" data-bs-target="#carousel-gestion" data-bs-slide-to="1"></button>
-            <button type="button" data-bs-target="#carousel-gestion" data-bs-slide-to="2"></button>
+            <button type="button" data-bs-target="#c-gestion" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#c-gestion" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#c-gestion" data-bs-slide-to="2"></button>
           </div>
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <img src="assets/img/promotion/gestion-bz.jpg" alt="Promotion Gestion 2023">
-            </div>
-            <div class="carousel-item">
-              <img src="assets/img/promotion/gestion-bz2.jpg" alt="Promotion Gestion 2024">
-              <div class="img-placeholder"><i class="bi bi-image"></i>Photo promotion Gestion 2</div>
-            </div>
-            <div class="carousel-item">
-              <img src="assets/img/promotion/gestion-bz2.jpg" alt="Promotion Gestion 2025">
-              <div class="img-placeholder"><i class="bi bi-image"></i>Photo promotion Gestion 3</div>
-            </div>
-          </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carousel-gestion" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carousel-gestion" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-          </button>
-        </div>
-        <div class="mention-body">
-          <h5 class="mention-name">Sciences de Gestion</h5>
-          <ul class="parcours-list">
-            <li>Finance et Comptabilité</li>
-            <li>Management de Commerce et Marketing</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Mention : Droit -->
-      <div class="mention-card">
-        <div class="mention-carousel carousel slide" id="carousel-droit" data-bs-ride="carousel">
-          <span class="promo-badge"><i class="bi bi-camera-fill me-1"></i>Promotions</span>
-          <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carousel-droit" data-bs-slide-to="0" class="active"></button>
-            <button type="button" data-bs-target="#carousel-droit" data-bs-slide-to="1"></button>
-            <button type="button" data-bs-target="#carousel-droit" data-bs-slide-to="2"></button>
-          </div>
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-             <img src="assets/img/promotion/droit-bz.jpg" alt="Promotion Droit 2023">
-             <div class="img-placeholder"><i class="bi bi-image"></i>Photo promotion Droit 1</div>
-             
-           </div>
-           <div class="carousel-item">
-            <img src="assets/img/promotion/droit-bz2.jpg" alt="Promotion Droit 2023">
-            <div class="img-placeholder"><i class="bi bi-image"></i>Photo promotion Droit 2</div>
-          </div>
-          <div class="carousel-item">
-            <img src="assets/img/promotion/droit-bz.jpg" alt="Promotion Droit 2023">
-            <div class="img-placeholder"><i class="bi bi-image"></i>Photo promotion Droit 3</div>
-          </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-droit" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carousel-droit" data-bs-slide="next">
-          <span class="carousel-control-next-icon"></span>
-        </button>
-      </div>
-      <div class="mention-body">
-        <h5 class="mention-name">Droit</h5>
-        <ul class="parcours-list">
-          <li>Droit Privé</li>
-          <li>Droit Public</li>
-        </ul>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Domaine Agro -->
-  <div class="domaine-header">
-    <span class="domaine-badge"><i class="bi bi-tree me-1"></i>Sciences de l'Ingénieur</span>
-    <span class="domaine-line"></span>
-  </div>
-
-  <div class="mentions-grid">
-
-    <!-- Mention Agro -->
-    <div class="mention-card">
-      <div class="mention-carousel carousel slide" id="carousel-agro" data-bs-ride="carousel">
-        <span class="promo-badge"><i class="bi bi-camera-fill me-1"></i>Promotions</span>
-        <div class="carousel-indicators">
-          <button type="button" data-bs-target="#carousel-agro" data-bs-slide-to="0" class="active"></button>
-          <button type="button" data-bs-target="#carousel-agro" data-bs-slide-to="1"></button>
-          <button type="button" data-bs-target="#carousel-agro" data-bs-slide-to="2"></button>
-        </div>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="assets/img/promotion/agro-bz.jpg" alt="Promotion Agronomie 2023">
-            <div class="img-placeholder"><i class="bi bi-image"></i>Photo promotion Agro 1</div>
-          </div>
-          <div class="carousel-item">
-            <img src="assets/img/promotion/agro-bz.jpg" alt="Promotion Agronomie 2023">
-            <div class="img-placeholder"><i class="bi bi-image"></i>Photo promotion Agro 2</div>
-          </div>
-          <div class="carousel-item">
-            <img src="assets/img/promotion/agro-bz.jpg" alt="Promotion Agronomie 2023">
-            <div class="img-placeholder"><i class="bi bi-image"></i>Photo promotion Agro 3</div>
-          </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-agro" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carousel-agro" data-bs-slide="next">
-          <span class="carousel-control-next-icon"></span>
-        </button>
-      </div>
-      <div class="mention-body">
-        <h5 class="mention-name">Sciences Agronomiques</h5>
-        <ul class="parcours-list">
-          <li>Agriculture</li>
-          <li>Elevage</li>
-          <li>Transformation Agro-Alimentaire</li>
-        </ul>
-      </div>
-    </div>
-
-  </div>
-
-</div>
-</section>
-
-<section class="effectif-section">
-  <div class="container position-relative">
-
-    <!-- En-tête -->
-    <span class="effectif-label">Données institutionnelles</span>
-    <h2 class="effectif-title">Effectif des Étudiants</h2>
-    <div class="effectif-divider"></div>
-
-    <!-- Chiffres clés -->
-    <div class="effectif-stats">
-      <div class="stat-item">
-        <div class="stat-num">144</div>
-        <div class="stat-label">Record historique</div>
-      </div>
-      <div class="stat-sep d-none d-sm-block"></div>
-      <div class="stat-item">
-        <div class="stat-num">126</div>
-        <div class="stat-label">2025 — 2ème Sem.</div>
-      </div>
-      <div class="stat-sep d-none d-sm-block"></div>
-      <div class="stat-item">
-        <div class="stat-num">+100%</div>
-        <div class="stat-label">Croissance depuis 2020</div>
-      </div>
-      <div class="stat-sep d-none d-sm-block"></div>
-      <div class="stat-item">
-        <div class="stat-num">5 ans</div>
-        <div class="stat-label">De données</div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<section class="enseignants-section">
-  <div class="container">
-
-    <span class="enseignants-label">Corps enseignant</span>
-    <h2 class="enseignants-title">Effectif des Enseignants</h2>
-    <div class="enseignants-divider"></div>
-
-    <!-- 3 mentions -->
-    <div class="enseignants-grid">
-
-      <div class="ens-card gestion">
-        <i class="bi bi-graph-up-arrow ens-icon"></i>
-        <div class="ens-num">22</div>
-        <div class="ens-mention">Gestion</div>
-        <div class="ens-sub">enseignants</div>
-      </div>
-
-      <div class="ens-card droit">
-        <i class="bi bi-bank ens-icon"></i>
-        <div class="ens-num">19</div>
-        <div class="ens-mention">Droit</div>
-        <div class="ens-sub">enseignants</div>
-      </div>
-
-      <div class="ens-card agro">
-        <i class="bi bi-tree ens-icon"></i>
-        <div class="ens-num">29</div>
-        <div class="ens-mention">Agronomie</div>
-        <div class="ens-sub">enseignants</div>
-      </div>
-
-    </div>
-
-    <!-- Total -->
-    <div class="ens-total-card">
-      <div class="ens-total-num">70</div>
-      <div class="ens-total-label">
-        <span>Enseignants au total</span>
-        <span>Corps enseignant ONIFRA</span>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<section class="partners-section">
-  <div class="container">
-    <span class="partners-label">Ils nous font confiance</span>
-    <h2 class="partners-title">Nos Partenaires</h2>
-    <div class="partners-divider"></div>
-  </div>
-
-  <div class="partners-fade-wrap">
-    <div class="partners-scroll-wrap" id="partnersScroll">
-      <div class="partners-track" id="partnersTrack">
-
-        <div class="partner-logo" title="OTIV"><img src="assets/img/partenaires/otiv.png" alt="Otiv"></div>
-        <div class="partner-logo" title="Ecole Supérieur de la Gendarmerie National"><img src="assets/img/partenaires/esgn.png" alt="Esgn"></div>
-        <div class="partner-logo" title="MFEE"><img src="assets/img/partenaires/mfee.png" alt="Mfee"></div>
-        <div class="partner-logo" title="Association Tantsoroka"><img src="assets/img/partenaires/#" alt="Association Tantsoroka"></div>
-        <div class="partner-logo" title="TPI"><img src="assets/img/partenaires/#" alt="TPI"></div>
-        <div class="partner-logo" title="SMMEC"><img src="assets/img/partenaires/smmec.png" alt="Smmec"></div>
-        <div class="partner-logo" title="Ambatovy"><img src="assets/img/partenaires/ambatovy.png" alt="Ambatovy"></div>
-        <div class="partner-logo" title="SIPEM"><img src="assets/img/partenaires/sipem.png" alt="Sipem"></div>
-        <div class="partner-logo" title="Alliance Française"><img src="assets/img/partenaires/alliance.png" alt="Alliance Française"></div>
-        <div class="partner-logo" title="BNI Madagascar"><img src="assets/img/partenaires/bni.png" alt="BNI Madagascar"></div>
-        <div class="partner-logo" title="Madagascar National Parc"><img src="assets/img/partenaires/mnp.png" alt="Madagascar National Parc"></div>
-        <div class="partner-logo" title="Assurance Ny Havana"><img src="assets/img/partenaires/nyhavana.png" alt="Ny Havana"></div>
-        <div class="partner-logo" title="Madagascar Chimie Industrie"><img src="assets/img/partenaires/mci.png" alt="Madagascar Chimie Industrie"></div>
-        <div class="partner-logo" title="Assurance Aro"><img src="assets/img/partenaires/aro.png" alt="Assurance Aro"></div>
-        <div class="partner-logo" title="Fanalamanga S.A"><img src="assets/img/partenaires/fanalamanga.png" alt="Fanalamanga S.A"></div>
-        <div class="partner-logo" title="SAF FJKM"><img src="assets/img/partenaires/saffjkm.png" alt="SAF Fjkm"></div>
-        <div class="partner-logo" title="Campus pour Christ"><img src="assets/img/partenaires/#" alt="Campus pour Christ"></div>
-        <div class="partner-logo" title="LLB"><img src="assets/img/partenaires/llb.png" alt="LLB"></div>
-
-
-        <div class="partner-logo" title="OTIV"><img src="assets/img/partenaires/otiv.png" alt="Otiv"></div>
-        <div class="partner-logo" title="Ecole Supérieur de la Gendarmerie National"><img src="assets/img/partenaires/esgn.png" alt="Esgn"></div>
-        <div class="partner-logo" title="MFEE"><img src="assets/img/partenaires/mfee.png" alt="Mfee"></div>
-        <div class="partner-logo" title="Association Tantsoroka"><img src="assets/img/partenaires/#" alt="Association Tantsoroka"></div>
-        <div class="partner-logo" title="TPI"><img src="assets/img/partenaires/#" alt="TPI"></div>
-        <div class="partner-logo" title="SMMEC"><img src="assets/img/partenaires/smmec.png" alt="Smmec"></div>
-        <div class="partner-logo" title="Ambatovy"><img src="assets/img/partenaires/ambatovy.png" alt="Ambatovy"></div>
-        <div class="partner-logo" title="SIPEM"><img src="assets/img/partenaires/sipem.png" alt="Sipem"></div>
-        <div class="partner-logo" title="Alliance Française"><img src="assets/img/partenaires/alliance.png" alt="Alliance Française"></div>
-        <div class="partner-logo" title="BNI Madagascar"><img src="assets/img/partenaires/bni.png" alt="BNI Madagascar"></div>
-        <div class="partner-logo" title="Madagascar National Parc"><img src="assets/img/partenaires/mnp.png" alt="Madagascar National Parc"></div>
-        <div class="partner-logo" title="Assurance Ny Havana"><img src="assets/img/partenaires/nyhavana.png" alt="Ny Havana"></div>
-        <div class="partner-logo" title="Madagascar Chimie Industrie"><img src="assets/img/partenaires/mci.png" alt="Madagascar Chimie Industrie"></div>        
-        <div class="partner-logo" title="Assurance Aro"><img src="assets/img/partenaires/aro.png" alt="Assurance Aro"></div> 
-        <div class="partner-logo" title="Fanalamanga S.A"><img src="assets/img/partenaires/fanalamanga.png" alt="Fanalamanga S.A"></div>
-        <div class="partner-logo" title="SAF FJKM"><img src="assets/img/partenaires/saffjkm.png" alt="SAF Fjkm"></div>
-        <div class="partner-logo" title="Campus pour Christ"><img src="assets/img/partenaires/#" alt="Campus pour Christ"></div>
-        <div class="partner-logo" title="LLB"><img src="assets/img/partenaires/llb.png" alt="LLB"></div>
-        
-
-      </div>
-    </div>
-  </div>
-
-  <div class="container">
-    <p class="partners-count"><strong>18 partenaires</strong> institutionnels, académiques et professionnels</p>
-  </div>
-</section>
-
-
-<section class="activites-section">
-  <div class="container">
-    <span class="activites-label">Vie du campus</span>
-    <h2 class="activites-title">Activités Para-Universitaires</h2>
-    <div class="activites-divider"></div>
-
-    <div class="activites-grid">
-
-      <div class="acti-card featured">
-        <div class="acti-img-wrap">
-          <span class="acti-badge"><i class="bi bi-star-fill me-1"></i>Spiritualité</span>
-          <img src="assets/img/para-univesitaires/culte.jpg" alt="Culte hebdomadaire">
-        </div>
-        <div class="acti-body">
-          <div class="acti-icon-row">
-            <div class="acti-icon"><i class="bi bi-heart-fill"></i></div>
-            <h5 class="acti-name">Culte Hebdomadaire</h5>
-          </div>
-          <p class="acti-desc">Un moment de rassemblement spirituel chaque semaine, et une séance d'encouragement <em>« Asa sy fampaherezana »</em> organisée une fois par mois pour toute la communauté universitaire.</p>
-        </div>
-      </div>
-
-      <!-- ── Club Biblique ── -->
-      <div class="acti-card">
-        <div class="acti-img-wrap">
-          <span class="acti-badge"><i class="bi bi-book me-1"></i>Spiritualité</span>
-          <img src="assets/img/para-univesitaires/club-biblique.jpg" alt="Club Biblique">
-        </div>
-        <div class="acti-body">
-          <div class="acti-icon-row">
-            <div class="acti-icon"><i class="bi bi-book-fill"></i></div>
-            <h5 class="acti-name">Club Biblique</h5>
-          </div>
-          <p class="acti-desc">Étude et approfondissement de la parole, ouvert à tous les étudiants.</p>
-        </div>
-      </div>
-
-      <!-- ── Club de Langue ── -->
-      <div class="acti-card">
-        <div class="acti-img-wrap">
-          <span class="acti-badge"><i class="bi bi-translate me-1"></i>Culture</span>
-          <img src="assets/img/para-univesitaires/club-langue.jpg" alt="Club de Langue">
-        </div>
-        <div class="acti-body">
-          <div class="acti-icon-row">
-            <div class="acti-icon"><i class="bi bi-translate"></i></div>
-            <h5 class="acti-name">Club de Langue</h5>
-          </div>
-          <p class="acti-desc">Pratique et perfectionnement des langues étrangères pour mieux s'ouvrir au monde.</p>
-        </div>
-      </div>
-
-      <!-- ── Club de Sport ── -->
-      <div class="acti-card">
-        <div class="acti-img-wrap">
-          <span class="acti-badge"><i class="bi bi-trophy me-1"></i>Sport</span>
-          <img src="assets/img/para-univesitaires/club-sport.jpg" alt="Club de Sport">
-        </div>
-        <div class="acti-body">
-          <div class="acti-icon-row">
-            <div class="acti-icon"><i class="bi bi-trophy-fill"></i></div>
-            <h5 class="acti-name">Club de Sport</h5>
-          </div>
-          <p class="acti-desc">Activités sportives et compétitions inter-universitaires pour favoriser l'esprit d'équipe.</p>
-        </div>
-      </div>
-
-      <!-- ── Chorale ── -->
-      <div class="acti-card">
-        <div class="acti-img-wrap">
-          <span class="acti-badge"><i class="bi bi-music-note me-1"></i>Art</span>
-          <img src="assets/img/para-univesitaires/chorale.jpg" alt="Chorale">
-        </div>
-        <div class="acti-body">
-          <div class="acti-icon-row">
-            <div class="acti-icon"><i class="bi bi-music-note-beamed"></i></div>
-            <h5 class="acti-name">Chorale</h5>
-          </div>
-          <p class="acti-desc">Ensemble vocal pour louer et partager la joie à travers le chant au sein du campus.</p>
-        </div>
-      </div>
-
-      <!-- ── Club d'Échecs ── -->
-      <div class="acti-card">
-        <div class="acti-img-wrap">
-          <span class="acti-badge"><i class="bi bi-grid me-1"></i>Stratégie</span>
-          <img src="assets/img/para-univesitaires/club-echec.jpg" alt="Club d'Échecs">
-        </div>
-        <div class="acti-body">
-          <div class="acti-icon-row">
-            <div class="acti-icon"><i class="bi bi-grid-3x3-gap-fill"></i></div>
-            <h5 class="acti-name">Club d'Échecs</h5>
-          </div>
-          <p class="acti-desc">Développement de la rigueur, de la logique et de la stratégie autour du jeu d'échecs.</p>
-        </div>
-      </div>
-
-      <!-- ── Conférences ── -->
-      <div class="acti-card">
-        <div class="acti-img-wrap">
-          <span class="acti-badge"><i class="bi bi-mic me-1"></i>Académique</span>
-          <img src="assets/img/para-univesitaires/conference.jpg" alt="Conférences">
-        </div>
-        <div class="acti-body">
-          <div class="acti-icon-row">
-            <div class="acti-icon"><i class="bi bi-mic-fill"></i></div>
-            <h5 class="acti-name">Conférences</h5>
-          </div>
-          <p class="acti-desc">Rencontres avec des experts, professionnels et personnalités pour enrichir la formation académique.</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<section class="recherche-section">
-  <div class="container">
-    <div class="recherche-inner">
-
-      <!-- ── Texte ── -->
-      <div class="recherche-text">
-        <span class="recherche-label">Axe stratégique n°3</span>
-        <h2 class="recherche-title">Valorisation de<br><span>la Recherche</span></h2>
-        <div class="recherche-divider"></div>
-
-        <p class="recherche-desc">
-          Chaque année, durant la <em>Semaine de l'Oniversity</em>, les étudiants de chaque mention investissent le campus avec leurs stands d'exposition pour présenter leurs travaux de recherche au grand public, aux partenaires et aux professionnels.
-        </p>
-
-        <div class="recherche-points">
-
-          <div class="recherche-point">
-            <div class="recherche-point-icon"><i class="bi bi-grid-3x3-gap-fill"></i></div>
-            <div class="recherche-point-text">
-              <strong>Stands par mention</strong>
-              Gestion, Droit et Agronomie exposent leurs recherches dans leurs domaines respectifs.
-            </div>
-          </div>
-
-          <div class="recherche-point">
-            <div class="recherche-point-icon"><i class="bi bi-calendar-week-fill"></i></div>
-            <div class="recherche-point-text">
-              <strong>Toute l'année</strong>
-              Les travaux sont menés et préparés tout au long de l'année académique.
-            </div>
-          </div>
-
-          <div class="recherche-point">
-            <div class="recherche-point-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="recherche-point-text">
-              <strong>Semaine de l'Oniversity</strong>
-              Un événement ouvert à toute la communauté universitaire, aux partenaires et au public.
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ── Visuel ── -->
-      <div class="recherche-visual">
-
-        <div class="recherche-photo-secondary">
-          <img src="assets/img/para-univesitaires/semaine-univ.jpg" alt="Stand exposition 2">
-        </div>
-
-        <div class="recherche-photo-main">
-          <img src="assets/img/para-univesitaires/stand-principal.jpg" alt="Stands d'exposition ONIFRA">
-        </div>
-
-        <div class="recherche-float-badge">
-          <i class="bi bi-award-fill"></i>
-          Semaine de l'Oniversity
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<section class="infra-section">
-  <div class="container">
-
-    <div class="text-center mb-2 infra-header-anim">
-      <span class="infra-label">Cadre de vie</span>
-      <h2 class="infra-title">Infrastructure &amp; Équipements</h2>
-      <div class="infra-divider"></div>
-    </div>
-
-    <div class="infra-grid">
-
-      <div class="infra-card">
-        <div class="infra-card-icon">
-          <i class="bi bi-tree-fill"></i>
-        </div>
-        <div class="infra-card-text">
-          <strong>Jardin</strong>
-          <span>Espace vert aménagé au sein du campus pour la détente et la vie étudiante.</span>
-        </div>
-      </div>
-
-      <div class="infra-card">
-        <div class="infra-card-icon">
-          <i class="bi bi-building"></i>
-        </div>
-        <div class="infra-card-text">
-          <strong>Bâtiment à 3 salles</strong>
-          <span>Salles de cours équipées pour accueillir les étudiants dans de bonnes conditions.</span>
-        </div>
-      </div>
-
-      <div class="infra-card">
-        <div class="infra-card-icon">
-          <i class="bi bi-wifi"></i>
-        </div>
-        <div class="infra-card-text">
-          <strong>Accès Internet</strong>
-          <span>Connexion internet disponible pour les étudiants sur l'ensemble du campus.</span>
-        </div>
-      </div>
-
-      <div class="infra-card">
-        <div class="infra-card-icon">
-          <i class="bi bi-hammer"></i>
-        </div>
-        <div class="infra-card-text">
-          <strong>Réhabilitation salle de classe</strong>
-          <span>Travaux d'amélioration et de mise aux normes des espaces pédagogiques.</span>
-        </div>
-      </div>
-
-      <div class="infra-card">
-        <div class="infra-card-icon">
-          <i class="bi bi-book-fill"></i>
-        </div>
-        <div class="infra-card-text">
-          <strong>Bibliothèque</strong>
-          <span>Espace de documentation et de lecture pour approfondir les connaissances académiques.</span>
-        </div>
-      </div>
-
-      <div class="infra-card">
-        <div class="infra-card-icon">
-          <i class="bi bi-shield-fill"></i>
-        </div>
-        <div class="infra-card-text">
-          <strong>Clôture</strong>
-          <span>Enceinte sécurisée garantissant un environnement serein et protégé pour tous.</span>
-        </div>
-      </div>
-
-      <div class="infra-card">
-        <div class="infra-card-icon">
-          <i class="bi bi-archive-fill"></i>
-        </div>
-        <div class="infra-card-text">
-          <strong>Mobiliers de bureau</strong>
-          <span>Armoires, étagères et équipements de bureau pour l'administration et les enseignants.</span>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="infra-banner">
-      <div class="infra-banner-text">
-        <strong>Un campus en constante amélioration</strong>
-        Des infrastructures pensées pour offrir les meilleures conditions d'apprentissage à Moramanga.
-      </div>
-      <div class="infra-banner-badge">
-        <i class="bi bi-patch-check-fill"></i>
-        7 équipements clés
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<section class="insertion-section">
-  <div class="container position-relative">
-
-    <span class="insertion-label">Axe stratégique n°5</span>
-    <h2 class="insertion-title">Insertion Professionnelle</h2>
-    <p class="insertion-subtitle">Activités des diplômés après leurs études à l'ONIFRA Moramanga</p>
-    <div class="insertion-divider"></div>
-
-    <div class="insertion-grid">
-
-      <!-- Étude -->
-      <div class="insertion-card" style="--card-color:#5b9bd5;" data-ins-delay="0">
-        <div class="ins-icon"><i class="bi bi-mortarboard-fill"></i></div>
-        <div class="ins-counter">
-          <span class="ins-count" data-target="32">0</span><span class="ins-pct">%</span>
-        </div>
-        <div class="ins-label">Étude</div>
-        <div class="ins-desc">Poursuite en Master ou formations supérieures</div>
-      </div>
-
-      <!-- Travail -->
-      <div class="insertion-card" style="--card-color:#e8713c;" data-ins-delay="100">
-        <div class="ins-icon"><i class="bi bi-briefcase-fill"></i></div>
-        <div class="ins-counter">
-          <span class="ins-count" data-target="31">0</span><span class="ins-pct">%</span>
-        </div>
-        <div class="ins-label">Travail</div>
-        <div class="ins-desc">Intégration directe dans le monde professionnel</div>
-      </div>
-
-      <!-- En quête de travail -->
-      <div class="insertion-card" style="--card-color:#f0b429;" data-ins-delay="200">
-        <div class="ins-icon"><i class="bi bi-search"></i></div>
-        <div class="ins-counter">
-          <span class="ins-count" data-target="24">0</span><span class="ins-pct">%</span>
-        </div>
-        <div class="ins-label">En quête de travail</div>
-        <div class="ins-desc">Recherche active d'un premier emploi</div>
-      </div>
-
-      <!-- Stage -->
-      <div class="insertion-card" style="--card-color:#8e9fc5;" data-ins-delay="300">
-        <div class="ins-icon"><i class="bi bi-building-check"></i></div>
-        <div class="ins-counter">
-          <span class="ins-count" data-target="13">0</span><span class="ins-pct">%</span>
-        </div>
-        <div class="ins-label">Stage</div>
-        <div class="ins-desc">En stage professionnel ou d'application</div>
-      </div>
-
-    </div>
-
-    <p class="insertion-note">Données issues du suivi des diplômés de l'ONIFRA Moramanga</p>
-
-  </div>
-</section>
-
-<section class="projets-section">
-  <div class="container">
-
-    <div class="projets-header-anim">
-      <span class="projets-label">Vision d'avenir</span>
-      <h2 class="projets-title">Nos Projets</h2>
-      <div class="projets-divider"></div>
-      <p class="projets-accroche">
-        L'ONIFRA Moramanga se projette vers l'avenir avec ambition.<br>
-        <strong>Des projets concrets pour offrir un cadre d'excellence</strong> à ses étudiants et renforcer sa place dans l'enseignement supérieur malgache.
-      </p>
-    </div>
-
-    <!-- Cards -->
-    <div class="projets-grid">
-
-      <div class="projets-card" style="--card-color:#5b9bd5;" data-proj-delay="0">
-        <span class="proj-badge"><i class="bi bi-circle-fill" style="font-size:.45rem;"></i>En projet</span>
-        <div class="proj-icon-wrap"><i class="bi bi-display"></i></div>
-        <h6 class="proj-title">Renouvellement des matériels de formation</h6>
-        <p class="proj-desc">Acquisition de nouveaux vidéoprojecteurs et écrans smart pour moderniser les salles de cours.</p>
-      </div>
-
-      <div class="projets-card" style="--card-color:#e8713c;" data-proj-delay="100">
-        <span class="proj-badge"><i class="bi bi-circle-fill" style="font-size:.45rem;"></i>En projet</span>
-        <div class="proj-icon-wrap"><i class="bi bi-building-add"></i></div>
-        <h6 class="proj-title">Extension du bâtiment principal</h6>
-        <p class="proj-desc">Construction de 2 étages supplémentaires avec 5 salles de classe, 1 salle informatique et 1 salle de conférence.</p>
-      </div>
-
-      <div class="projets-card" style="--card-color:#c8a951;" data-proj-delay="200">
-        <span class="proj-badge"><i class="bi bi-circle-fill" style="font-size:.45rem;"></i>En projet</span>
-        <div class="proj-icon-wrap"><i class="bi bi-shield-check"></i></div>
-        <h6 class="proj-title">Mise en place de 2 clôtures</h6>
-        <p class="proj-desc">À la façade principale devant le nouveau bâtiment et à la séparation du lycée et de l'Oniversity.</p>
-      </div>
-
-      <div class="projets-card" style="--card-color:#52b788;" data-proj-delay="300">
-        <span class="proj-badge"><i class="bi bi-circle-fill" style="font-size:.45rem;"></i>En projet</span>
-        <div class="proj-icon-wrap"><i class="bi bi-flower1"></i></div>
-        <h6 class="proj-title">Aménagement de la cour</h6>
-        <p class="proj-desc">Réaménagement et embellissement de la cour de l'enceinte de l'Oniversity pour améliorer la vie du campus.</p>
-      </div>
-
-      <div class="projets-card" style="--card-color:#9b72cf;" data-proj-delay="400">
-        <span class="proj-badge"><i class="bi bi-circle-fill" style="font-size:.45rem;"></i>En projet</span>
-        <div class="proj-icon-wrap"><i class="bi bi-award-fill"></i></div>
-        <h6 class="proj-title">Ouverture du Master</h6>
-        <p class="proj-desc">Préparation et lancement des filières Master en Gestion et en Agronomie pour les diplômés de Licence.</p>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-<section class="vision-section">
-  <div class="container">
-    <div class="vision-inner">
-
-      <!-- ── Gauche : Notre Vision ── -->
-      <div class="vision-left-anim">
-        <span class="vision-left-label">Notre vision</span>
-        <h2 class="vision-left-title">Une université<br>d'excellence<br><em style="color:var(--accent,#c8a951);">EN CHRIST</em></h2>
-        <div class="vision-divider"></div>
-        <p class="vision-text">
-          Être une <strong>Université Chrétienne, pluridisciplinaire, pôle de l'excellence</strong>, reconnue au meilleur niveau national et international, avec une éducation de haute qualité, transformatrice, et axée sur les valeurs.
-        </p>
-      </div>
-
-      <!-- ── Droite : Nos Valeurs ── -->
-      <div>
-        <div class="valeurs-title-wrap">
-          <span class="valeurs-label">Nos valeurs</span>
-          <div class="valeurs-acronyme">
-            <span class="lettre">E</span><span class="lettre">N</span><span style="display:inline-block;width:.5em;"></span><span class="lettre">C</span><span class="lettre">H</span><span class="lettre">R</span><span class="lettre">I</span><span class="lettre">S</span><span class="lettre">T</span>
-          </div>
-        </div>
-
-        <div class="valeurs-list">
-
-          <div class="valeur-item" data-val-delay="0">
-            <div class="valeur-lettre">E</div>
-            <div class="valeur-mot">Excellence
-              <span>Viser le meilleur dans chaque domaine</span>
-            </div>
-          </div>
-
-          <div class="valeur-item" data-val-delay="80">
-            <div class="valeur-lettre">N</div>
-            <div class="valeur-mot">Nation Malagasy
-              <span>Servir et valoriser la nation malgache</span>
-            </div>
-          </div>
-
-          <div class="valeur-item" data-val-delay="160">
-            <div class="valeur-lettre">C</div>
-            <div class="valeur-mot">Créativité
-              <span>Innover et penser autrement</span>
-            </div>
-          </div>
-
-          <div class="valeur-item" data-val-delay="240">
-            <div class="valeur-lettre">H</div>
-            <div class="valeur-mot">Humilité
-              <span>Apprendre avec modestie et ouverture</span>
-            </div>
-          </div>
-
-          <div class="valeur-item" data-val-delay="320">
-            <div class="valeur-lettre">R</div>
-            <div class="valeur-mot">Respect
-              <span>Considérer l'autre dans sa dignité</span>
-            </div>
-          </div>
-
-          <div class="valeur-item" data-val-delay="400">
-            <div class="valeur-lettre">I</div>
-            <div class="valeur-mot">Intégrité
-              <span>Agir avec honnêteté et droiture</span>
-            </div>
-          </div>
-
-          <div class="valeur-item" data-val-delay="480">
-            <div class="valeur-lettre">S</div>
-            <div class="valeur-mot">Spiritualité
-              <span>Enraciner la foi au cœur de la formation</span>
-            </div>
-          </div>
-
-          <div class="valeur-item" data-val-delay="560">
-            <div class="valeur-lettre">T</div>
-            <div class="valeur-mot">Technicité
-              <span>Maîtriser les compétences du métier</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<section class="contact-section">
-  <div class="container">
-
-    <div class="contact-header-anim">
-      <span class="contact-label">Localisation</span>
-      <h2 class="contact-title">Nous Trouver</h2>
-      <div class="contact-divider"></div>
-    </div>
-
-  </div>
-
-  <!-- Bloc carte + infos pleine largeur -->
-  <div class="container">
-    <div class="contact-inner">
-
-      <!-- ── Infos ── -->
-      <div class="contact-infos">
-        <h3 class="contact-infos-title">
-          <i class="bi bi-geo-alt-fill me-2" style="color:var(--accent,#c8a951);"></i>
-          ONIFRA Moramanga
-        </h3>
-
-        <!-- Adresse -->
-        <div class="contact-info-item" data-ci-delay="0">
-          <div class="ci-icon"><i class="bi bi-pin-map-fill"></i></div>
-          <div class="ci-text">
-            <strong>Adresse</strong>
-            <span>Camps de Marie, dans l'enceinte du<br>Lycée FJKM, en face de Tsarafandray<br>Moramanga, Madagascar</span>
-          </div>
-        </div>
-
-        <!-- Téléphone -->
-        <div class="contact-info-item" data-ci-delay="100">
-          <div class="ci-icon"><i class="bi bi-telephone-fill"></i></div>
-          <div class="ci-text">
-            <strong>Téléphone</strong>
-            <a href="tel:+261349834402">+261 34 98 344 02</a>
-          </div>
-        </div>
-
-        <!-- Email -->
-        <div class="contact-info-item" data-ci-delay="200">
-          <div class="ci-icon"><i class="bi bi-envelope-fill"></i></div>
-          <div class="ci-text">
-            <strong>Email</strong>
-            <a href="mailto:oniversity.ravelojaona.mga">oniversity.ravelojaona.mga</a>
-          </div>
-        </div>
-
-        <!-- Horaires -->
-        <div class="contact-info-item" data-ci-delay="300">
-          <div class="ci-icon"><i class="bi bi-clock-fill"></i></div>
-          <div class="ci-text">
-            <strong>Horaires d'ouverture</strong>
-            <div class="horaires-grid">
-              <div class="horaire-row">
-                <span class="jour">Lun – Ven</span>
-                <span class="heure">08h00 – 12h00</span>
-                <span class="heure">14h00 – 18h00</span>
+              <div class="lic-hero-placeholder">
+                <picture>
+                  <source srcset="assets/img/promotion/gestion-bz.jpg" type="image/webp">
+                    <img loading="eager" fetchpriority="high" src="assets/img/promotion/gestion-bz.jpg" alt="Gestion 2023">
+                  </picture>
+                  <i class="bi bi-image"></i><span>Promotion Gestion 2023</span>
+                </div>
               </div>
-              <div class="horaire-row">
-                <span class="jour">Samedi</span>
-                <span class="heure">08h00 – 12h00</span>
+              <div class="carousel-item">
+                <div class="lic-hero-placeholder">
+                  <picture>
+                    <source srcset="assets/img/promotion/gestion-bz2.jpg" type="image/webp">
+                      <img loading="lazy" decoding="async" src="assets/img/promotion/gestion-bz2.jpg" alt="Gestion 2024">
+                    </picture>
+                    <i class="bi bi-image"></i><span>Promotion Gestion 2024</span>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="lic-hero-placeholder">
+                    <picture>
+                      <source srcset="assets/img/promotion/gestion-bz.jpg" type="image/webp">
+                        <img loading="lazy" decoding="async" src="assets/img/promotion/gestion-bz.jpg" alt="Gestion 2025">
+                      </picture>
+                      <i class="bi bi-image"></i><span>Promotion Gestion 2025</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="lic-hero-veil"></div>
+              <div class="lic-hero-domaine-badge"><i class="bi bi-bank"></i> Société</div>
+              <div class="lic-hero-promo-count"><i class="bi bi-camera-fill"></i> 3 promotions</div>
+              <div class="lic-hero-content">
+                <h3 class="lic-hero-mention-name">Sciences de Gestion</h3>
+                <div class="parcours-pills">
+                  <span class="parcours-pill">Finance et Comptabilité</span>
+                  <span class="parcours-pill">Management de Commerce et Marketing</span>
+                </div>
+                <div class="lic-hero-divider"></div>
+                <button class="lic-hero-cta">Découvrir <i class="bi bi-arrow-right"></i></button>
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- itinéraire -->
-        <a href="https://www.google.com/maps/place/UNIVERSITE+FJKM/@-18.9467629,48.2242153,326m/data=!3m1!1e3!4m15!1m8!3m7!1s0x21f1054a2d138fdb:0x2d8defe7b2947dd8!2sDistrict+de+Moramanga!3b1!8m2!3d-18.9489026!4d48.2244268!16s%2Fm%2F02qfx9d!3m5!1s0x21f105ba50177a39:0xc9469975651a3f0c!8m2!3d-18.946489!4d48.2249213!16s%2Fg%2F11ng6j9q_v"
-           target="_blank" rel="noopener" class="btn-itineraire">
-          <i class="bi bi-compass-fill"></i>
-          Obtenir l'itinéraire
-        </a>
+            <!-- DROIT -->
+            <div class="mention-hero">
+              <div class="lic-hero-carousel carousel slide" id="c-droit" data-bs-ride="carousel" data-bs-interval="4500">
+                <div class="carousel-indicators">
+                  <button type="button" data-bs-target="#c-droit" data-bs-slide-to="0" class="active"></button>
+                  <button type="button" data-bs-target="#c-droit" data-bs-slide-to="1"></button>
+                  <button type="button" data-bs-target="#c-droit" data-bs-slide-to="2"></button>
+                </div>
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <div class="lic-hero-placeholder">
+                      <picture>
+                        <source srcset="assets/img/promotion/droit-bz.jpg" type="image/webp">
+                          <img loading="eager" fetchpriority="high" src="assets/img/promotion/droit-bz.jpg" alt="Droit 2023">
+                        </picture>
+                        <i class="bi bi-image"></i><span>Promotion Droit 2023</span>
+                      </div>
+                    </div>
+                    <div class="carousel-item">
+                      <div class="lic-hero-placeholder">
+                        <picture>
+                          <source srcset="assets/img/promotion/droit-bz2.jpg" type="image/webp">
+                            <img loading="lazy" decoding="async" src="assets/img/promotion/droit-bz2.jpg" alt="Droit 2024">
+                          </picture>
+                          <i class="bi bi-image"></i><span>Promotion Droit 2024</span>
+                        </div>
+                      </div>
+                      <div class="carousel-item">
+                        <div class="lic-hero-placeholder">
+                          <picture>
+                            <source srcset="assets/img/promotion/droit-bz.jpg" type="image/webp">
+                              <img loading="lazy" decoding="async" src="assets/img/promotion/droit-bz.jpg" alt="Droit 2025">
+                            </picture>
+                            <i class="bi bi-image"></i><span>Promotion Droit 2025</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="lic-hero-veil"></div>
+                    <div class="lic-hero-domaine-badge"><i class="bi bi-bank"></i> Société</div>
+                    <div class="lic-hero-promo-count"><i class="bi bi-camera-fill"></i> 3 promotions</div>
+                    <div class="lic-hero-content">
+                      <h3 class="lic-hero-mention-name">Droit</h3>
+                      <div class="parcours-pills">
+                        <span class="parcours-pill">Droit Privé</span>
+                        <span class="parcours-pill">Droit Public</span>
+                      </div>
+                      <div class="lic-hero-divider"></div>
+                      <button class="lic-hero-cta">Découvrir <i class="bi bi-arrow-right"></i></button>
+                    </div>
+                  </div>
 
-      </div>
+                  <!-- AGRONOMIE -->
+                  <div class="mention-hero">
+                    <div class="lic-hero-carousel carousel slide" id="c-agro" data-bs-ride="carousel" data-bs-interval="4200">
+                      <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#c-agro" data-bs-slide-to="0" class="active"></button>
+                        <button type="button" data-bs-target="#c-agro" data-bs-slide-to="1"></button>
+                        <button type="button" data-bs-target="#c-agro" data-bs-slide-to="2"></button>
+                      </div>
+                      <div class="carousel-inner">
+                        <div class="carousel-item active">
+                          <div class="lic-hero-placeholder">
+                            <picture>
+                              <source srcset="assets/img/promotion/agro-bz.jpg" type="image/webp">
+                                <img loading="eager" fetchpriority="high" src="assets/img/promotion/agro-bz.jpg" alt="Agro 2023">
+                              </picture>
+                              <i class="bi bi-image"></i><span>Promotion Agro 2023</span>
+                            </div>
+                          </div>
+                          <div class="carousel-item">
+                            <div class="lic-hero-placeholder">
+                              <picture>
+                                <source srcset="assets/img/promotion/agro-bz.jpg" type="image/webp">
+                                  <img loading="lazy" decoding="async" src="assets/img/promotion/agro-bz.jpg" alt="Agro 2024">
+                                </picture>
+                                <i class="bi bi-image"></i><span>Promotion Agro 2024</span>
+                              </div>
+                            </div>
+                            <div class="carousel-item">
+                              <div class="lic-hero-placeholder">
+                                <picture>
+                                  <source srcset="assets/img/promotion/agro-bz.jpg" type="image/webp">
+                                    <img loading="lazy" decoding="async" src="assets/img/promotion/agro-bz.jpg" alt="Agro 2025">
+                                  </picture>
+                                  <i class="bi bi-image"></i><span>Promotion Agro 2025</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="lic-hero-veil"></div>
+                          <div class="lic-hero-domaine-badge"><i class="bi bi-tree"></i> Ingénieur</div>
+                          <div class="lic-hero-promo-count"><i class="bi bi-camera-fill"></i> 3 promotions</div>
+                          <div class="lic-hero-content">
+                            <h3 class="lic-hero-mention-name">Sciences Agronomiques</h3>
+                            <div class="parcours-pills">
+                              <span class="parcours-pill">Agriculture</span>
+                              <span class="parcours-pill">Elevage</span>
+                              <span class="parcours-pill">Transformation Agro-Alimentaire</span>
+                            </div>
+                            <div class="lic-hero-divider"></div>
+                            <button class="lic-hero-cta">Découvrir <i class="bi bi-arrow-right"></i></button>
+                          </div>
+                        </div>
 
-      <!-- ── Google Maps iframe ── -->
-      <div class="contact-map">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d326.0!2d48.2249213!3d-18.946489!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x21f105ba50177a39%3A0xc9469975651a3f0c!2sUNIVERSITE%20FJKM!5e1!3m2!1sfr!2smg!4v1700000000000"
-          allowfullscreen=""
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          title="Localisation ONIFRA Moramanga">
-        </iframe>
-      </div>
+                      </div>
 
-    </div>
-  </div>
-</section>
-
-<footer class="footer">
-  <div class="container">
-
-    <div class="footer-grid">
-
-      <!-- ── Col 1 : Brand ── -->
-      <div class="footer-brand">
-        <img src="assets/img/logo/logo.webp" alt="Logo ONIFRA Moramanga">
-        <div class="footer-brand-name">ONIFRA Moramanga</div>
-        <div class="footer-brand-sub">Oniversity FJKM Ravelojaona</div>
-        <p class="footer-brand-desc">
-          Université Chrétienne d'excellence, formant les leaders de demain au service de l'Église et de la Nation Malagasy.
-        </p>
-        <div class="footer-socials">
-          <a href="#" class="social-btn facebook" target="_blank" rel="noopener" title="Facebook ONIFRA">
-            <i class="bi bi-facebook"></i>
-          </a>
-          <a href="#" class="social-btn linkedin" target="_blank" rel="noopener" title="LinkedIn ONIFRA">
-            <i class="bi bi-linkedin"></i>
-          </a>
-        </div>
-      </div>
-
-      <!-- ── Col 2 : Navigation ── -->
-      <div>
-        <h6 class="footer-col-title">Navigation</h6>
-        <ul class="footer-links">
-          <li><a href="#">Accueil</a></li>
-          <li><a href="#">Présentation</a></li>
-          <li><a href="#">Historique</a></li>
-          <li><a href="#">Administration</a></li>
-          <li><a href="#">Valeurs EN CHRIST</a></li>
-          <li><a href="#">Actualités</a></li>
-        </ul>
-      </div>
-
-      <!-- ── Col 3 : Formations ── -->
-      <div>
-        <h6 class="footer-col-title">Formations</h6>
-        <ul class="footer-links">
-          <li><a href="#">Sciences de Gestion</a></li>
-          <li><a href="#">Droit</a></li>
-          <li><a href="#">Sciences Agronomiques</a></li>
-          <li><a href="#">Master <span style="font-size:.7rem;color:var(--accent,#c8a951);">(bientôt)</span></a></li>
-          <li><a href="#">Admissions 2026</a></li>
-          <li><a href="#">Portail étudiant</a></li>
-        </ul>
-      </div>
+                    </div>
+                  </section>
 
 
-    </div>
+                  <section class="effectif-section">
+                    <div class="container position-relative">
 
-    <!-- ── Verset biblique ── -->
-    <div class="footer-verset">
-      <i class="bi bi-quote footer-quote-icon"></i>
-      <p class="footer-verset-text">Dieu fera de vous la tête et non la queue</p>
-      <span class="footer-verset-ref">Deutéronome 28 : 13a</span>
-    </div>
+                      <!-- En-tête -->
+                      <span class="effectif-label">Données institutionnelles</span>
+                      <h2 class="effectif-title">Effectif des Étudiants</h2>
+                      <div class="effectif-divider"></div>
 
-    <!-- ── Barre basse ── -->
-    <div class="footer-bottom">
-      <p class="footer-copy">
-        © 2026 <strong>ONIFRA Moramanga</strong> — Tous droits réservés.
-      </p>
-      <div class="footer-credit">
-        <span class="dev-badge">DEV</span>
-        Site conçu par <strong style="color:rgba(255,255,255,.5); margin: 0 .2rem;">Gasi'Pro</strong> —
-        <a href="https://ronan77.vercel.app" target="_blank" rel="noopener">Ronan Andriamahenitsoa</a>
-      </div>
-    </div>
+                      <!-- Chiffres clés -->
+                      <div class="effectif-stats">
+                        <div class="stat-item">
+                          <div class="stat-num">144</div>
+                          <div class="stat-label">Record historique</div>
+                        </div>
+                        <div class="stat-sep d-none d-sm-block"></div>
+                        <div class="stat-item">
+                          <div class="stat-num">126</div>
+                          <div class="stat-label">2025 — 2ème Sem.</div>
+                        </div>
+                        <div class="stat-sep d-none d-sm-block"></div>
+                        <div class="stat-item">
+                          <div class="stat-num">+100%</div>
+                          <div class="stat-label">Croissance depuis 2020</div>
+                        </div>
+                        <div class="stat-sep d-none d-sm-block"></div>
+                        <div class="stat-item">
+                          <div class="stat-num">5 ans</div>
+                          <div class="stat-label">De données</div>
+                        </div>
+                      </div>
 
-  </div>
-</footer>
+                    </div>
+                  </section>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-(function () {
-  const obsAxes = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const el = entry.target;
-        const delay = parseInt(el.dataset.axeDelay) || 0;
-        setTimeout(() => el.classList.add('axes-visible'), delay);
-      } else {
+                  <section class="enseignants-section">
+                    <div class="container">
 
-        entry.target.classList.remove('axes-visible');
-      }
-    });
-  }, { threshold: 0.15 });
+                      <span class="enseignants-label">Corps enseignant</span>
+                      <h2 class="enseignants-title">Effectif des Enseignants</h2>
+                      <div class="enseignants-divider"></div>
 
-  const axesHeader = document.querySelector('.axes-header-anim');
-  if (axesHeader) obsAxes.observe(axesHeader);
+                      <!-- 3 mentions -->
+                      <div class="enseignants-grid">
 
-  document.querySelectorAll('.axe-card').forEach((el, i) => {
-    el.dataset.axeDelay = i * 80;
-    obsAxes.observe(el);
-  });
-})();
-</script>
-<script>
-(function () {
-  const obsMissions = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const el = entry.target;
-        const delay = parseInt(el.dataset.missionDelay) || 0;
-        setTimeout(() => el.classList.add('missions-visible'), delay);
-      } else {
-        entry.target.classList.remove('missions-visible');
-      }
-    });
-  }, { threshold: 0.15 });
+                        <div class="ens-card gestion">
+                          <i class="bi bi-graph-up-arrow ens-icon"></i>
+                          <div class="ens-num">22</div>
+                          <div class="ens-mention">Gestion</div>
+                          <div class="ens-sub">enseignants</div>
+                        </div>
 
-  document.querySelectorAll('.missions-header-anim, .missions-lead-anim').forEach(el => {
-    obsMissions.observe(el);
-  });
+                        <div class="ens-card droit">
+                          <i class="bi bi-bank ens-icon"></i>
+                          <div class="ens-num">19</div>
+                          <div class="ens-mention">Droit</div>
+                          <div class="ens-sub">enseignants</div>
+                        </div>
 
-  document.querySelectorAll('.mission-card-wrap').forEach((el, i) => {
-    el.dataset.missionDelay = i * 100;
-    obsMissions.observe(el);
-  });
-})();
-</script>
-<script>
-  (function () {
-    const wrap = document.getElementById('partnersScroll');
-    const track = document.getElementById('partnersTrack');
-    if (!wrap || !track) return;
+                        <div class="ens-card agro">
+                          <i class="bi bi-tree ens-icon"></i>
+                          <div class="ens-num">29</div>
+                          <div class="ens-mention">Agronomie</div>
+                          <div class="ens-sub">enseignants</div>
+                        </div>
 
-    let isDragging = false, startX = 0, scrollLeft = 0;
+                      </div>
 
-    wrap.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      wrap.classList.add('dragging');
-      startX = e.pageX - wrap.offsetLeft;
-      scrollLeft = wrap.scrollLeft;
-      track.style.animationPlayState = 'paused';
-    });
+                      <!-- Total -->
+                      <div class="ens-total-card">
+                        <div class="ens-total-num">70</div>
+                        <div class="ens-total-label">
+                          <span>Enseignants au total</span>
+                          <span>Corps enseignant ONIFRA</span>
+                        </div>
+                      </div>
 
-    document.addEventListener('mouseup', () => {
-      if (!isDragging) return;
-      isDragging = false;
-      wrap.classList.remove('dragging');
-      track.style.animationPlayState = 'running';
-    });
+                    </div>
+                  </section>
 
-    wrap.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      e.preventDefault();
-      const x = e.pageX - wrap.offsetLeft;
-      wrap.scrollLeft = scrollLeft - (x - startX) * 1.5;
-    });
+                  <section class="partners-section">
+                    <div class="container">
+                      <span class="partners-label">Ils nous font confiance</span>
+                      <h2 class="partners-title">Nos Partenaires</h2>
+                      <div class="partners-divider"></div>
+                    </div>
 
-    wrap.addEventListener('mouseleave', () => {
-      if (!isDragging) return;
-      isDragging = false;
-      wrap.classList.remove('dragging');
-      track.style.animationPlayState = 'running';
-    });
-  })();
-</script>
-<script>
-  (function () {
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          const el = entry.target;
+                    <div class="partners-fade-wrap">
+                      <div class="partners-scroll-wrap" id="partnersScroll">
+                        <div class="partners-track" id="partnersTrack">
 
-          const delay = el.dataset.delay || 0;
-          setTimeout(() => el.classList.add('infra-visible'), delay);
-          obs.unobserve(el);
-        }
-      });
-    }, { threshold: 0.12 });
+                          <div class="partner-logo" title="OTIV"><img src="assets/img/partenaires/otiv.png" alt="Otiv"></div>
+                          <div class="partner-logo" title="Ecole Supérieur de la Gendarmerie National"><img src="assets/img/partenaires/esgn.png" alt="Esgn"></div>
+                          <div class="partner-logo" title="MFEE"><img src="assets/img/partenaires/mfee.png" alt="Mfee"></div>
+                          <div class="partner-logo" title="Association Tantsoroka"><img src="assets/img/partenaires/#" alt="Association Tantsoroka"></div>
+                          <div class="partner-logo" title="TPI"><img src="assets/img/partenaires/#" alt="TPI"></div>
+                          <div class="partner-logo" title="SMMEC"><img src="assets/img/partenaires/smmec.png" alt="Smmec"></div>
+                          <div class="partner-logo" title="Ambatovy"><img src="assets/img/partenaires/ambatovy.png" alt="Ambatovy"></div>
+                          <div class="partner-logo" title="SIPEM"><img src="assets/img/partenaires/sipem.png" alt="Sipem"></div>
+                          <div class="partner-logo" title="Alliance Française"><img src="assets/img/partenaires/alliance.png" alt="Alliance Française"></div>
+                          <div class="partner-logo" title="BNI Madagascar"><img src="assets/img/partenaires/bni.png" alt="BNI Madagascar"></div>
+                          <div class="partner-logo" title="Madagascar National Parc"><img src="assets/img/partenaires/mnp.png" alt="Madagascar National Parc"></div>
+                          <div class="partner-logo" title="Assurance Ny Havana"><img src="assets/img/partenaires/nyhavana.png" alt="Ny Havana"></div>
+                          <div class="partner-logo" title="Madagascar Chimie Industrie"><img src="assets/img/partenaires/mci.png" alt="Madagascar Chimie Industrie"></div>
+                          <div class="partner-logo" title="Assurance Aro"><img src="assets/img/partenaires/aro.png" alt="Assurance Aro"></div>
+                          <div class="partner-logo" title="Fanalamanga S.A"><img src="assets/img/partenaires/fanalamanga.png" alt="Fanalamanga S.A"></div>
+                          <div class="partner-logo" title="SAF FJKM"><img src="assets/img/partenaires/saffjkm.png" alt="SAF Fjkm"></div>
+                          <div class="partner-logo" title="Campus pour Christ"><img src="assets/img/partenaires/#" alt="Campus pour Christ"></div>
+                          <div class="partner-logo" title="LLB"><img src="assets/img/partenaires/llb.png" alt="LLB"></div>
 
-    document.querySelectorAll('.infra-header-anim').forEach(el => obs.observe(el));
 
-    document.querySelectorAll('.infra-card').forEach((el, i) => {
-      el.dataset.delay = i * 70;
-      obs.observe(el);
-    });
-    document.querySelectorAll('.infra-banner').forEach(el => obs.observe(el));
-  })();
-</script>
-<script>
-  (function () {
-    function animateCounter(el) {
-      const target = parseInt(el.dataset.target);
-      const duration = 1400;
-      const start = performance.now();
+                          <div class="partner-logo" title="OTIV"><img src="assets/img/partenaires/otiv.png" alt="Otiv"></div>
+                          <div class="partner-logo" title="Ecole Supérieur de la Gendarmerie National"><img src="assets/img/partenaires/esgn.png" alt="Esgn"></div>
+                          <div class="partner-logo" title="MFEE"><img src="assets/img/partenaires/mfee.png" alt="Mfee"></div>
+                          <div class="partner-logo" title="Association Tantsoroka"><img src="assets/img/partenaires/#" alt="Association Tantsoroka"></div>
+                          <div class="partner-logo" title="TPI"><img src="assets/img/partenaires/#" alt="TPI"></div>
+                          <div class="partner-logo" title="SMMEC"><img src="assets/img/partenaires/smmec.png" alt="Smmec"></div>
+                          <div class="partner-logo" title="Ambatovy"><img src="assets/img/partenaires/ambatovy.png" alt="Ambatovy"></div>
+                          <div class="partner-logo" title="SIPEM"><img src="assets/img/partenaires/sipem.png" alt="Sipem"></div>
+                          <div class="partner-logo" title="Alliance Française"><img src="assets/img/partenaires/alliance.png" alt="Alliance Française"></div>
+                          <div class="partner-logo" title="BNI Madagascar"><img src="assets/img/partenaires/bni.png" alt="BNI Madagascar"></div>
+                          <div class="partner-logo" title="Madagascar National Parc"><img src="assets/img/partenaires/mnp.png" alt="Madagascar National Parc"></div>
+                          <div class="partner-logo" title="Assurance Ny Havana"><img src="assets/img/partenaires/nyhavana.png" alt="Ny Havana"></div>
+                          <div class="partner-logo" title="Madagascar Chimie Industrie"><img src="assets/img/partenaires/mci.png" alt="Madagascar Chimie Industrie"></div>        
+                          <div class="partner-logo" title="Assurance Aro"><img src="assets/img/partenaires/aro.png" alt="Assurance Aro"></div> 
+                          <div class="partner-logo" title="Fanalamanga S.A"><img src="assets/img/partenaires/fanalamanga.png" alt="Fanalamanga S.A"></div>
+                          <div class="partner-logo" title="SAF FJKM"><img src="assets/img/partenaires/saffjkm.png" alt="SAF Fjkm"></div>
+                          <div class="partner-logo" title="Campus pour Christ"><img src="assets/img/partenaires/#" alt="Campus pour Christ"></div>
+                          <div class="partner-logo" title="LLB"><img src="assets/img/partenaires/llb.png" alt="LLB"></div>
 
-      function step(now) {
-        const elapsed = now - start;
-        const progress = Math.min(elapsed / duration, 1);
-      // easeOutQuart
-        const ease = 1 - Math.pow(1 - progress, 4);
-        el.textContent = Math.round(ease * target);
-        if (progress < 1) requestAnimationFrame(step);
-        else el.textContent = target;
-      }
-      requestAnimationFrame(step);
-    }
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const card = entry.target;
-        const delay = parseInt(card.dataset.insDelay) || 0;
 
-        setTimeout(() => {
-          card.classList.add('ins-visible');
-          const counter = card.querySelector('.ins-count');
-          if (counter) animateCounter(counter);
-        }, delay);
+                        </div>
+                      </div>
+                    </div>
 
-        obs.unobserve(card);
-      });
-    }, { threshold: 0.2 });
+                    <div class="container">
+                      <p class="partners-count"><strong>18 partenaires</strong> institutionnels, académiques et professionnels</p>
+                    </div>
+                  </section>
 
-    document.querySelectorAll('.insertion-card').forEach(el => obs.observe(el));
-  })();
-</script>
-<script>
-  (function () {
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const el = entry.target;
-        const delay = parseInt(el.dataset.projDelay) || 0;
-        setTimeout(() => el.classList.add('proj-visible'), delay);
-        obs.unobserve(el);
-      });
-    }, { threshold: 0.12 });
 
-    document.querySelectorAll('.projets-header-anim, .projets-card').forEach(el => obs.observe(el));
-  })();
-</script>
-<script>
-(function () {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target;
-      const delay = parseInt(el.dataset.valDelay) || 0;
-      setTimeout(() => el.classList.add('val-visible'), delay);
-      obs.unobserve(el);
-    });
-  }, { threshold: 0.1 });
+                  <section class="activites-section">
+                    <div class="container">
+                      <span class="activites-label">Vie du campus</span>
+                      <h2 class="activites-title">Activités Para-Universitaires</h2>
+                      <div class="activites-divider"></div>
 
-  document.querySelectorAll('.valeur-item, .vision-left-anim').forEach(el => obs.observe(el));
-})();
-</script>
-<script>
-(function () {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target;
-      const delay = parseInt(el.dataset.ciDelay) || 0;
-      setTimeout(() => el.classList.add('ci-visible'), delay);
-      obs.unobserve(el);
-    });
-  }, { threshold: 0.1 });
+                      <div class="activites-grid">
 
-  document.querySelectorAll('.contact-info-item, .contact-header-anim').forEach(el => obs.observe(el));
-})();
-</script>
-</body>
-</html>
+                        <div class="acti-card featured">
+                          <div class="acti-img-wrap">
+                            <span class="acti-badge"><i class="bi bi-star-fill me-1"></i>Spiritualité</span>
+                            <img src="assets/img/para-univesitaires/culte.jpg" alt="Culte hebdomadaire">
+                          </div>
+                          <div class="acti-body">
+                            <div class="acti-icon-row">
+                              <div class="acti-icon"><i class="bi bi-heart-fill"></i></div>
+                              <h5 class="acti-name">Culte Hebdomadaire</h5>
+                            </div>
+                            <p class="acti-desc">Un moment de rassemblement spirituel chaque semaine, et une séance d'encouragement <em>« Asa sy fampaherezana »</em> organisée une fois par mois pour toute la communauté universitaire.</p>
+                          </div>
+                        </div>
+
+                        <!-- ── Club Biblique ── -->
+                        <div class="acti-card">
+                          <div class="acti-img-wrap">
+                            <span class="acti-badge"><i class="bi bi-book me-1"></i>Spiritualité</span>
+                            <img src="assets/img/para-univesitaires/club-biblique.jpg" alt="Club Biblique">
+                          </div>
+                          <div class="acti-body">
+                            <div class="acti-icon-row">
+                              <div class="acti-icon"><i class="bi bi-book-fill"></i></div>
+                              <h5 class="acti-name">Club Biblique</h5>
+                            </div>
+                            <p class="acti-desc">Étude et approfondissement de la parole, ouvert à tous les étudiants.</p>
+                          </div>
+                        </div>
+
+                        <!-- ── Club de Langue ── -->
+                        <div class="acti-card">
+                          <div class="acti-img-wrap">
+                            <span class="acti-badge"><i class="bi bi-translate me-1"></i>Culture</span>
+                            <img src="assets/img/para-univesitaires/club-langue.jpg" alt="Club de Langue">
+                          </div>
+                          <div class="acti-body">
+                            <div class="acti-icon-row">
+                              <div class="acti-icon"><i class="bi bi-translate"></i></div>
+                              <h5 class="acti-name">Club de Langue</h5>
+                            </div>
+                            <p class="acti-desc">Pratique et perfectionnement des langues étrangères pour mieux s'ouvrir au monde.</p>
+                          </div>
+                        </div>
+
+                        <!-- ── Club de Sport ── -->
+                        <div class="acti-card">
+                          <div class="acti-img-wrap">
+                            <span class="acti-badge"><i class="bi bi-trophy me-1"></i>Sport</span>
+                            <img src="assets/img/para-univesitaires/club-sport.jpg" alt="Club de Sport">
+                          </div>
+                          <div class="acti-body">
+                            <div class="acti-icon-row">
+                              <div class="acti-icon"><i class="bi bi-trophy-fill"></i></div>
+                              <h5 class="acti-name">Club de Sport</h5>
+                            </div>
+                            <p class="acti-desc">Activités sportives et compétitions inter-universitaires pour favoriser l'esprit d'équipe.</p>
+                          </div>
+                        </div>
+
+                        <!-- ── Chorale ── -->
+                        <div class="acti-card">
+                          <div class="acti-img-wrap">
+                            <span class="acti-badge"><i class="bi bi-music-note me-1"></i>Art</span>
+                            <img src="assets/img/para-univesitaires/chorale.jpg" alt="Chorale">
+                          </div>
+                          <div class="acti-body">
+                            <div class="acti-icon-row">
+                              <div class="acti-icon"><i class="bi bi-music-note-beamed"></i></div>
+                              <h5 class="acti-name">Chorale</h5>
+                            </div>
+                            <p class="acti-desc">Ensemble vocal pour louer et partager la joie à travers le chant au sein du campus.</p>
+                          </div>
+                        </div>
+
+                        <!-- ── Club d'Échecs ── -->
+                        <div class="acti-card">
+                          <div class="acti-img-wrap">
+                            <span class="acti-badge"><i class="bi bi-grid me-1"></i>Stratégie</span>
+                            <img src="assets/img/para-univesitaires/club-echec.jpg" alt="Club d'Échecs">
+                          </div>
+                          <div class="acti-body">
+                            <div class="acti-icon-row">
+                              <div class="acti-icon"><i class="bi bi-grid-3x3-gap-fill"></i></div>
+                              <h5 class="acti-name">Club d'Échecs</h5>
+                            </div>
+                            <p class="acti-desc">Développement de la rigueur, de la logique et de la stratégie autour du jeu d'échecs.</p>
+                          </div>
+                        </div>
+
+                        <!-- ── Conférences ── -->
+                        <div class="acti-card">
+                          <div class="acti-img-wrap">
+                            <span class="acti-badge"><i class="bi bi-mic me-1"></i>Académique</span>
+                            <img src="assets/img/para-univesitaires/conference.jpg" alt="Conférences">
+                          </div>
+                          <div class="acti-body">
+                            <div class="acti-icon-row">
+                              <div class="acti-icon"><i class="bi bi-mic-fill"></i></div>
+                              <h5 class="acti-name">Conférences</h5>
+                            </div>
+                            <p class="acti-desc">Rencontres avec des experts, professionnels et personnalités pour enrichir la formation académique.</p>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="recherche-section">
+                    <div class="container">
+                      <div class="recherche-inner">
+
+                        <!-- ── Texte ── -->
+                        <div class="recherche-text">
+                          <span class="recherche-label">Axe stratégique n°3</span>
+                          <h2 class="recherche-title">Valorisation de<br><span>la Recherche</span></h2>
+                          <div class="recherche-divider"></div>
+
+                          <p class="recherche-desc">
+                            Chaque année, durant la <em>Semaine de l'Oniversity</em>, les étudiants de chaque mention investissent le campus avec leurs stands d'exposition pour présenter leurs travaux de recherche au grand public, aux partenaires et aux professionnels.
+                          </p>
+
+                          <div class="recherche-points">
+
+                            <div class="recherche-point">
+                              <div class="recherche-point-icon"><i class="bi bi-grid-3x3-gap-fill"></i></div>
+                              <div class="recherche-point-text">
+                                <strong>Stands par mention</strong>
+                                Gestion, Droit et Agronomie exposent leurs recherches dans leurs domaines respectifs.
+                              </div>
+                            </div>
+
+                            <div class="recherche-point">
+                              <div class="recherche-point-icon"><i class="bi bi-calendar-week-fill"></i></div>
+                              <div class="recherche-point-text">
+                                <strong>Toute l'année</strong>
+                                Les travaux sont menés et préparés tout au long de l'année académique.
+                              </div>
+                            </div>
+
+                            <div class="recherche-point">
+                              <div class="recherche-point-icon"><i class="bi bi-people-fill"></i></div>
+                              <div class="recherche-point-text">
+                                <strong>Semaine de l'Oniversity</strong>
+                                Un événement ouvert à toute la communauté universitaire, aux partenaires et au public.
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+
+                        <!-- ── Visuel ── -->
+                        <div class="recherche-visual">
+
+                          <div class="recherche-photo-secondary">
+                            <img src="assets/img/para-univesitaires/semaine-univ.jpg" alt="Stand exposition 2">
+                          </div>
+
+                          <div class="recherche-photo-main">
+                            <img src="assets/img/para-univesitaires/stand-principal.jpg" alt="Stands d'exposition ONIFRA">
+                          </div>
+
+                          <div class="recherche-float-badge">
+                            <i class="bi bi-award-fill"></i>
+                            Semaine de l'Oniversity
+                          </div>
+
+                        </div>
+
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="infra-section">
+                    <div class="container">
+
+                      <div class="text-center mb-2 infra-header-anim">
+                        <span class="infra-label">Cadre de vie</span>
+                        <h2 class="infra-title">Infrastructure &amp; Équipements</h2>
+                        <div class="infra-divider"></div>
+                      </div>
+
+                      <div class="infra-grid">
+
+                        <div class="infra-card">
+                          <div class="infra-card-icon">
+                            <i class="bi bi-tree-fill"></i>
+                          </div>
+                          <div class="infra-card-text">
+                            <strong>Jardin</strong>
+                            <span>Espace vert aménagé au sein du campus pour la détente et la vie étudiante.</span>
+                          </div>
+                        </div>
+
+                        <div class="infra-card">
+                          <div class="infra-card-icon">
+                            <i class="bi bi-building"></i>
+                          </div>
+                          <div class="infra-card-text">
+                            <strong>Bâtiment à 3 salles</strong>
+                            <span>Salles de cours équipées pour accueillir les étudiants dans de bonnes conditions.</span>
+                          </div>
+                        </div>
+
+                        <div class="infra-card">
+                          <div class="infra-card-icon">
+                            <i class="bi bi-wifi"></i>
+                          </div>
+                          <div class="infra-card-text">
+                            <strong>Accès Internet</strong>
+                            <span>Connexion internet disponible pour les étudiants sur l'ensemble du campus.</span>
+                          </div>
+                        </div>
+
+                        <div class="infra-card">
+                          <div class="infra-card-icon">
+                            <i class="bi bi-hammer"></i>
+                          </div>
+                          <div class="infra-card-text">
+                            <strong>Réhabilitation salle de classe</strong>
+                            <span>Travaux d'amélioration et de mise aux normes des espaces pédagogiques.</span>
+                          </div>
+                        </div>
+
+                        <div class="infra-card">
+                          <div class="infra-card-icon">
+                            <i class="bi bi-book-fill"></i>
+                          </div>
+                          <div class="infra-card-text">
+                            <strong>Bibliothèque</strong>
+                            <span>Espace de documentation et de lecture pour approfondir les connaissances académiques.</span>
+                          </div>
+                        </div>
+
+                        <div class="infra-card">
+                          <div class="infra-card-icon">
+                            <i class="bi bi-shield-fill"></i>
+                          </div>
+                          <div class="infra-card-text">
+                            <strong>Clôture</strong>
+                            <span>Enceinte sécurisée garantissant un environnement serein et protégé pour tous.</span>
+                          </div>
+                        </div>
+
+                        <div class="infra-card">
+                          <div class="infra-card-icon">
+                            <i class="bi bi-archive-fill"></i>
+                          </div>
+                          <div class="infra-card-text">
+                            <strong>Mobiliers de bureau</strong>
+                            <span>Armoires, étagères et équipements de bureau pour l'administration et les enseignants.</span>
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <div class="infra-banner">
+                        <div class="infra-banner-text">
+                          <strong>Un campus en constante amélioration</strong>
+                          Des infrastructures pensées pour offrir les meilleures conditions d'apprentissage à Moramanga.
+                        </div>
+                        <div class="infra-banner-badge">
+                          <i class="bi bi-patch-check-fill"></i>
+                          7 équipements clés
+                        </div>
+                      </div>
+
+                    </div>
+                  </section>
+
+                  <section class="insertion-section">
+                    <div class="container position-relative">
+
+                      <span class="insertion-label">Axe stratégique n°5</span>
+                      <h2 class="insertion-title">Insertion Professionnelle</h2>
+                      <p class="insertion-subtitle">Activités des diplômés après leurs études à l'ONIFRA Moramanga</p>
+                      <div class="insertion-divider"></div>
+
+                      <div class="insertion-grid">
+
+                        <!-- Étude -->
+                        <div class="insertion-card" style="--card-color:#5b9bd5;" data-ins-delay="0">
+                          <div class="ins-icon"><i class="bi bi-mortarboard-fill"></i></div>
+                          <div class="ins-counter">
+                            <span class="ins-count" data-target="32">0</span><span class="ins-pct">%</span>
+                          </div>
+                          <div class="ins-label">Étude</div>
+                          <div class="ins-desc">Poursuite en Master ou formations supérieures</div>
+                        </div>
+
+                        <!-- Travail -->
+                        <div class="insertion-card" style="--card-color:#e8713c;" data-ins-delay="100">
+                          <div class="ins-icon"><i class="bi bi-briefcase-fill"></i></div>
+                          <div class="ins-counter">
+                            <span class="ins-count" data-target="31">0</span><span class="ins-pct">%</span>
+                          </div>
+                          <div class="ins-label">Travail</div>
+                          <div class="ins-desc">Intégration directe dans le monde professionnel</div>
+                        </div>
+
+                        <!-- En quête de travail -->
+                        <div class="insertion-card" style="--card-color:#f0b429;" data-ins-delay="200">
+                          <div class="ins-icon"><i class="bi bi-search"></i></div>
+                          <div class="ins-counter">
+                            <span class="ins-count" data-target="24">0</span><span class="ins-pct">%</span>
+                          </div>
+                          <div class="ins-label">En quête de travail</div>
+                          <div class="ins-desc">Recherche active d'un premier emploi</div>
+                        </div>
+
+                        <!-- Stage -->
+                        <div class="insertion-card" style="--card-color:#8e9fc5;" data-ins-delay="300">
+                          <div class="ins-icon"><i class="bi bi-building-check"></i></div>
+                          <div class="ins-counter">
+                            <span class="ins-count" data-target="13">0</span><span class="ins-pct">%</span>
+                          </div>
+                          <div class="ins-label">Stage</div>
+                          <div class="ins-desc">En stage professionnel ou d'application</div>
+                        </div>
+
+                      </div>
+
+                      <p class="insertion-note">Données issues du suivi des diplômés de l'ONIFRA Moramanga</p>
+
+                    </div>
+                  </section>
+
+                  <section class="projets-section">
+                    <div class="container">
+
+                      <div class="projets-header-anim">
+                        <span class="projets-label">Vision d'avenir</span>
+                        <h2 class="projets-title">Nos Projets</h2>
+                        <div class="projets-divider"></div>
+                        <p class="projets-accroche">
+                          L'ONIFRA Moramanga se projette vers l'avenir avec ambition.<br>
+                          <strong>Des projets concrets pour offrir un cadre d'excellence</strong> à ses étudiants et renforcer sa place dans l'enseignement supérieur malgache.
+                        </p>
+                      </div>
+
+                      <!-- Cards -->
+                      <div class="projets-grid">
+
+                        <div class="projets-card" style="--card-color:#5b9bd5;" data-proj-delay="0">
+                          <span class="proj-badge"><i class="bi bi-circle-fill" style="font-size:.45rem;"></i>En projet</span>
+                          <div class="proj-icon-wrap"><i class="bi bi-display"></i></div>
+                          <h6 class="proj-title">Renouvellement des matériels de formation</h6>
+                          <p class="proj-desc">Acquisition de nouveaux vidéoprojecteurs et écrans smart pour moderniser les salles de cours.</p>
+                        </div>
+
+                        <div class="projets-card" style="--card-color:#e8713c;" data-proj-delay="100">
+                          <span class="proj-badge"><i class="bi bi-circle-fill" style="font-size:.45rem;"></i>En projet</span>
+                          <div class="proj-icon-wrap"><i class="bi bi-building-add"></i></div>
+                          <h6 class="proj-title">Extension du bâtiment principal</h6>
+                          <p class="proj-desc">Construction de 2 étages supplémentaires avec 5 salles de classe, 1 salle informatique et 1 salle de conférence.</p>
+                        </div>
+
+                        <div class="projets-card" style="--card-color:#c8a951;" data-proj-delay="200">
+                          <span class="proj-badge"><i class="bi bi-circle-fill" style="font-size:.45rem;"></i>En projet</span>
+                          <div class="proj-icon-wrap"><i class="bi bi-shield-check"></i></div>
+                          <h6 class="proj-title">Mise en place de 2 clôtures</h6>
+                          <p class="proj-desc">À la façade principale devant le nouveau bâtiment et à la séparation du lycée et de l'Oniversity.</p>
+                        </div>
+
+                        <div class="projets-card" style="--card-color:#52b788;" data-proj-delay="300">
+                          <span class="proj-badge"><i class="bi bi-circle-fill" style="font-size:.45rem;"></i>En projet</span>
+                          <div class="proj-icon-wrap"><i class="bi bi-flower1"></i></div>
+                          <h6 class="proj-title">Aménagement de la cour</h6>
+                          <p class="proj-desc">Réaménagement et embellissement de la cour de l'enceinte de l'Oniversity pour améliorer la vie du campus.</p>
+                        </div>
+
+                        <div class="projets-card" style="--card-color:#9b72cf;" data-proj-delay="400">
+                          <span class="proj-badge"><i class="bi bi-circle-fill" style="font-size:.45rem;"></i>En projet</span>
+                          <div class="proj-icon-wrap"><i class="bi bi-award-fill"></i></div>
+                          <h6 class="proj-title">Ouverture du Master</h6>
+                          <p class="proj-desc">Préparation et lancement des filières Master en Gestion et en Agronomie pour les diplômés de Licence.</p>
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </section>
+
+                  <section class="vision-section">
+                    <div class="container">
+                      <div class="vision-inner">
+
+                        <!-- ── Gauche : Notre Vision ── -->
+                        <div class="vision-left-anim">
+                          <span class="vision-left-label">Notre vision</span>
+                          <h2 class="vision-left-title">Une université<br>d'excellence<br><em style="color:var(--accent,#c8a951);">EN CHRIST</em></h2>
+                          <div class="vision-divider"></div>
+                          <p class="vision-text">
+                            Être une <strong>Université Chrétienne, pluridisciplinaire, pôle de l'excellence</strong>, reconnue au meilleur niveau national et international, avec une éducation de haute qualité, transformatrice, et axée sur les valeurs.
+                          </p>
+                        </div>
+
+                        <!-- ── Droite : Nos Valeurs ── -->
+                        <div>
+                          <div class="valeurs-title-wrap">
+                            <span class="valeurs-label">Nos valeurs</span>
+                            <div class="valeurs-acronyme">
+                              <span class="lettre">E</span><span class="lettre">N</span><span style="display:inline-block;width:.5em;"></span><span class="lettre">C</span><span class="lettre">H</span><span class="lettre">R</span><span class="lettre">I</span><span class="lettre">S</span><span class="lettre">T</span>
+                            </div>
+                          </div>
+
+                          <div class="valeurs-list">
+
+                            <div class="valeur-item" data-val-delay="0">
+                              <div class="valeur-lettre">E</div>
+                              <div class="valeur-mot">Excellence
+                                <span>Viser le meilleur dans chaque domaine</span>
+                              </div>
+                            </div>
+
+                            <div class="valeur-item" data-val-delay="80">
+                              <div class="valeur-lettre">N</div>
+                              <div class="valeur-mot">Nation Malagasy
+                                <span>Servir et valoriser la nation malgache</span>
+                              </div>
+                            </div>
+
+                            <div class="valeur-item" data-val-delay="160">
+                              <div class="valeur-lettre">C</div>
+                              <div class="valeur-mot">Créativité
+                                <span>Innover et penser autrement</span>
+                              </div>
+                            </div>
+
+                            <div class="valeur-item" data-val-delay="240">
+                              <div class="valeur-lettre">H</div>
+                              <div class="valeur-mot">Humilité
+                                <span>Apprendre avec modestie et ouverture</span>
+                              </div>
+                            </div>
+
+                            <div class="valeur-item" data-val-delay="320">
+                              <div class="valeur-lettre">R</div>
+                              <div class="valeur-mot">Respect
+                                <span>Considérer l'autre dans sa dignité</span>
+                              </div>
+                            </div>
+
+                            <div class="valeur-item" data-val-delay="400">
+                              <div class="valeur-lettre">I</div>
+                              <div class="valeur-mot">Intégrité
+                                <span>Agir avec honnêteté et droiture</span>
+                              </div>
+                            </div>
+
+                            <div class="valeur-item" data-val-delay="480">
+                              <div class="valeur-lettre">S</div>
+                              <div class="valeur-mot">Spiritualité
+                                <span>Enraciner la foi au cœur de la formation</span>
+                              </div>
+                            </div>
+
+                            <div class="valeur-item" data-val-delay="560">
+                              <div class="valeur-lettre">T</div>
+                              <div class="valeur-mot">Technicité
+                                <span>Maîtriser les compétences du métier</span>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="contact-section">
+                    <div class="container">
+
+                      <div class="contact-header-anim">
+                        <span class="contact-label">Localisation</span>
+                        <h2 class="contact-title">Nous Trouver</h2>
+                        <div class="contact-divider"></div>
+                      </div>
+
+                    </div>
+
+                    <!-- Bloc carte + infos pleine largeur -->
+                    <div class="container">
+                      <div class="contact-inner">
+
+                        <!-- ── Infos ── -->
+                        <div class="contact-infos">
+                          <h3 class="contact-infos-title">
+                            <i class="bi bi-geo-alt-fill me-2" style="color:var(--accent,#c8a951);"></i>
+                            ONIFRA Moramanga
+                          </h3>
+
+                          <!-- Adresse -->
+                          <div class="contact-info-item" data-ci-delay="0">
+                            <div class="ci-icon"><i class="bi bi-pin-map-fill"></i></div>
+                            <div class="ci-text">
+                              <strong>Adresse</strong>
+                              <span>Camps de Marie, dans l'enceinte du<br>Lycée FJKM, en face de Tsarafandray<br>Moramanga, Madagascar</span>
+                            </div>
+                          </div>
+
+                          <!-- Téléphone -->
+                          <div class="contact-info-item" data-ci-delay="100">
+                            <div class="ci-icon"><i class="bi bi-telephone-fill"></i></div>
+                            <div class="ci-text">
+                              <strong>Téléphone</strong>
+                              <a href="tel:+261349834402">+261 34 98 344 02</a>
+                            </div>
+                          </div>
+
+                          <!-- Email -->
+                          <div class="contact-info-item" data-ci-delay="200">
+                            <div class="ci-icon"><i class="bi bi-envelope-fill"></i></div>
+                            <div class="ci-text">
+                              <strong>Email</strong>
+                              <a href="mailto:oniversity.ravelojaona.mga">oniversity.ravelojaona.mga</a>
+                            </div>
+                          </div>
+
+                          <!-- Horaires -->
+                          <div class="contact-info-item" data-ci-delay="300">
+                            <div class="ci-icon"><i class="bi bi-clock-fill"></i></div>
+                            <div class="ci-text">
+                              <strong>Horaires d'ouverture</strong>
+                              <div class="horaires-grid">
+                                <div class="horaire-row">
+                                  <span class="jour">Lun – Ven</span>
+                                  <span class="heure">08h00 – 12h00</span>
+                                  <span class="heure">14h00 – 18h00</span>
+                                </div>
+                                <div class="horaire-row">
+                                  <span class="jour">Samedi</span>
+                                  <span class="heure">08h00 – 12h00</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- itinéraire -->
+                          <a href="https://www.google.com/maps/place/UNIVERSITE+FJKM/@-18.9467629,48.2242153,326m/data=!3m1!1e3!4m15!1m8!3m7!1s0x21f1054a2d138fdb:0x2d8defe7b2947dd8!2sDistrict+de+Moramanga!3b1!8m2!3d-18.9489026!4d48.2244268!16s%2Fm%2F02qfx9d!3m5!1s0x21f105ba50177a39:0xc9469975651a3f0c!8m2!3d-18.946489!4d48.2249213!16s%2Fg%2F11ng6j9q_v"
+                          target="_blank" rel="noopener" class="btn-itineraire">
+                          <i class="bi bi-compass-fill"></i>
+                          Obtenir l'itinéraire
+                        </a>
+
+                      </div>
+
+                      <!-- ── Google Maps iframe ── -->
+                      <div class="contact-map">
+                        <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d326.0!2d48.2249213!3d-18.946489!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x21f105ba50177a39%3A0xc9469975651a3f0c!2sUNIVERSITE%20FJKM!5e1!3m2!1sfr!2smg!4v1700000000000"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Localisation ONIFRA Moramanga">
+                      </iframe>
+                    </div>
+
+                  </div>
+                </div>
+              </section>
+
+              <footer class="footer">
+                <div class="container">
+
+                  <div class="footer-grid">
+
+                    <!-- ── Col 1 : Brand ── -->
+                    <div class="footer-brand">
+                      <img src="assets/img/logo/logo.webp" alt="Logo ONIFRA Moramanga">
+                      <div class="footer-brand-name">ONIFRA Moramanga</div>
+                      <div class="footer-brand-sub">Oniversity FJKM Ravelojaona</div>
+                      <p class="footer-brand-desc">
+                        Université Chrétienne d'excellence, formant les leaders de demain au service de l'Église et de la Nation Malagasy.
+                      </p>
+                      <div class="footer-socials">
+                        <a href="#" class="social-btn facebook" target="_blank" rel="noopener" title="Facebook ONIFRA">
+                          <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" class="social-btn linkedin" target="_blank" rel="noopener" title="LinkedIn ONIFRA">
+                          <i class="bi bi-linkedin"></i>
+                        </a>
+                      </div>
+                    </div>
+
+                    <!-- ── Col 2 : Navigation ── -->
+                    <div>
+                      <h6 class="footer-col-title">Navigation</h6>
+                      <ul class="footer-links">
+                        <li><a href="#">Accueil</a></li>
+                        <li><a href="#">Présentation</a></li>
+                        <li><a href="#">Historique</a></li>
+                        <li><a href="#">Administration</a></li>
+                        <li><a href="#">Valeurs EN CHRIST</a></li>
+                        <li><a href="#">Actualités</a></li>
+                      </ul>
+                    </div>
+
+                    <!-- ── Col 3 : Formations ── -->
+                    <div>
+                      <h6 class="footer-col-title">Formations</h6>
+                      <ul class="footer-links">
+                        <li><a href="#">Sciences de Gestion</a></li>
+                        <li><a href="#">Droit</a></li>
+                        <li><a href="#">Sciences Agronomiques</a></li>
+                        <li><a href="#">Master <span style="font-size:.7rem;color:var(--accent,#c8a951);">(bientôt)</span></a></li>
+                        <li><a href="#">Admissions 2026</a></li>
+                        <li><a href="#">Portail étudiant</a></li>
+                      </ul>
+                    </div>
+
+
+                  </div>
+
+                  <!-- ── Verset biblique ── -->
+                  <div class="footer-verset">
+                    <i class="bi bi-quote footer-quote-icon"></i>
+                    <p class="footer-verset-text">Dieu fera de vous la tête et non la queue</p>
+                    <span class="footer-verset-ref">Deutéronome 28 : 13a</span>
+                  </div>
+
+                  <!-- ── Barre basse ── -->
+                  <div class="footer-bottom">
+                    <p class="footer-copy">
+                      © 2026 <strong>ONIFRA Moramanga</strong> — Tous droits réservés.
+                    </p>
+                    <div class="footer-credit">
+                      <span class="dev-badge">DEV</span>
+                      Site conçu par <strong style="color:rgba(255,255,255,.5); margin: 0 .2rem;">Gasi'Pro</strong> —
+                      <a href="https://ronan77.vercel.app" target="_blank" rel="noopener">Ronan Andriamahenitsoa</a>
+                    </div>
+                  </div>
+
+                </div>
+              </footer>
+
+              <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+              <script>
+                const preloader = document.getElementById('preloader');
+                let pageLoaded = false;
+                let minTimeDone = false;
+
+                const tryHide = () => {
+                  if (pageLoaded && minTimeDone) {
+                    preloader.classList.add('loaded');
+                    setTimeout(() => preloader.remove(), 900);
+                  }
+                };
+
+                window.addEventListener('load', () => {
+                  pageLoaded = true;
+                  tryHide();
+                });
+
+                setTimeout(() => {
+                  minTimeDone = true;
+                  tryHide();
+                }, 2000);
+              </script>
+              <script>
+                (function () {
+                  const obsLicence = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                      const el    = entry.target;
+                      const delay = parseInt(el.dataset.licDelay) || 0;
+                      if (entry.isIntersecting) {
+                        setTimeout(() => el.classList.add('lic-visible'), delay);
+                      } else {
+                        el.classList.remove('lic-visible');
+                      }
+                    });
+                  }, { threshold: 0.12 });
+
+    /* Header */
+                  document.querySelectorAll('.licence-header-anim').forEach(el => {
+                    obsLicence.observe(el);
+                  });
+
+    /* Cards avec délai échelonné */
+                  document.querySelectorAll('.mention-hero').forEach((el, i) => {
+                    el.dataset.licDelay = i * 120;
+                    obsLicence.observe(el);
+                  });
+                })();
+              </script>
+              <script>
+                (function () {
+
+
+
+  /* ══════════════════════════════════════
+     AXES STRATÉGIQUES
+  ══════════════════════════════════════ */
+                  const obsAxes = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                      const el = entry.target;
+                      const delay = parseInt(el.dataset.axeDelay) || 0;
+                      if (entry.isIntersecting) {
+                        setTimeout(() => el.classList.add('axes-visible'), delay);
+                      } else {
+                        el.classList.remove('axes-visible');
+                      }
+                    });
+                  }, { threshold: 0.15 });
+
+                  const axesHeader = document.querySelector('.axes-header-anim');
+                  if (axesHeader) obsAxes.observe(axesHeader);
+                  document.querySelectorAll('.axe-card').forEach((el, i) => {
+                    el.dataset.axeDelay = i * 80;
+                    obsAxes.observe(el);
+                  });
+
+  /* ══════════════════════════════════════
+     MISSIONS
+  ══════════════════════════════════════ */
+                  const obsMissions = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                      const el = entry.target;
+                      const delay = parseInt(el.dataset.missionDelay) || 0;
+                      if (entry.isIntersecting) {
+                        setTimeout(() => el.classList.add('missions-visible'), delay);
+                      } else {
+                        el.classList.remove('missions-visible');
+                      }
+                    });
+                  }, { threshold: 0.15 });
+
+                  document.querySelectorAll('.missions-header-anim, .missions-lead-anim').forEach(el => {
+                    obsMissions.observe(el);
+                  });
+                  document.querySelectorAll('.mission-card-wrap').forEach((el, i) => {
+                    el.dataset.missionDelay = i * 100;
+                    obsMissions.observe(el);
+                  });
+
+  /* ══════════════════════════════════════
+     PARTENAIRES
+  ══════════════════════════════════════ */
+                  const wrap  = document.getElementById('partnersScroll');
+                  const track = document.getElementById('partnersTrack');
+                  if (wrap && track) {
+                    let isDragging = false, startX = 0, scrollLeft = 0;
+
+                    wrap.addEventListener('mousedown', (e) => {
+                      isDragging = true;
+                      wrap.classList.add('dragging');
+                      startX = e.pageX - wrap.offsetLeft;
+                      scrollLeft = wrap.scrollLeft;
+                      track.style.animationPlayState = 'paused';
+                    });
+                    document.addEventListener('mouseup', () => {
+                      if (!isDragging) return;
+                      isDragging = false;
+                      wrap.classList.remove('dragging');
+                      track.style.animationPlayState = 'running';
+                    });
+                    wrap.addEventListener('mousemove', (e) => {
+                      if (!isDragging) return;
+                      e.preventDefault();
+                      const x = e.pageX - wrap.offsetLeft;
+                      wrap.scrollLeft = scrollLeft - (x - startX) * 1.5;
+                    });
+                    wrap.addEventListener('mouseleave', () => {
+                      if (!isDragging) return;
+                      isDragging = false;
+                      wrap.classList.remove('dragging');
+                      track.style.animationPlayState = 'running';
+                    });
+                  }
+
+  /* ══════════════════════════════════════
+     INFRASTRUCTURE
+  ══════════════════════════════════════ */
+                  const obsInfra = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                      const el = entry.target;
+                      const delay = parseInt(el.dataset.delay) || 0;
+                      if (entry.isIntersecting) {
+                        setTimeout(() => el.classList.add('infra-visible'), delay);
+                      } else {
+                        el.classList.remove('infra-visible');
+                      }
+                    });
+                  }, { threshold: 0.12 });
+
+                  document.querySelectorAll('.infra-header-anim').forEach(el => obsInfra.observe(el));
+                  document.querySelectorAll('.infra-card').forEach((el, i) => {
+                    el.dataset.delay = i * 70;
+                    obsInfra.observe(el);
+                  });
+                  document.querySelectorAll('.infra-banner').forEach(el => obsInfra.observe(el));
+
+  /* ═════════════════════════════════════
+     iNSERTION
+  ══════════════════════════════════════ */
+                  function animateCounter(el) {
+                    const target   = parseInt(el.dataset.target);
+                    const duration = 1400;
+                    const start    = performance.now();
+                    function step(now) {
+                      const progress = Math.min((now - start) / duration, 1);
+                      const ease     = 1 - Math.pow(1 - progress, 4);
+                      el.textContent = Math.round(ease * target);
+                      if (progress < 1) requestAnimationFrame(step);
+                      else el.textContent = target;
+                    }
+                    requestAnimationFrame(step);
+                  }
+
+                  const obsIns = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                      const card  = entry.target;
+                      const delay = parseInt(card.dataset.insDelay) || 0;
+                      if (entry.isIntersecting) {
+                        setTimeout(() => {
+                          card.classList.add('ins-visible');
+                          const counter = card.querySelector('.ins-count');
+                          if (counter) animateCounter(counter);
+                        }, delay);
+                      } else {
+                        card.classList.remove('ins-visible');
+        // Reset compteur à 0 pour rejouer
+                        const counter = card.querySelector('.ins-count');
+                        if (counter) counter.textContent = '0';
+                      }
+                    });
+                  }, { threshold: 0.2 });
+
+                  document.querySelectorAll('.insertion-card').forEach(el => obsIns.observe(el));
+
+  /* ══════════════════════════════════════
+     PROJETS
+  ══════════════════════════════════════ */
+                  const obsProj = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                      const el    = entry.target;
+                      const delay = parseInt(el.dataset.projDelay) || 0;
+                      if (entry.isIntersecting) {
+                        setTimeout(() => el.classList.add('proj-visible'), delay);
+                      } else {
+                        el.classList.remove('proj-visible');
+                      }
+                    });
+                  }, { threshold: 0.12 });
+
+                  document.querySelectorAll('.projets-header-anim, .projets-card').forEach(el => obsProj.observe(el));
+
+  /* ══════════════════════════════════════
+     VISION & VALEURS
+  ══════════════════════════════════════ */
+                  const obsVal = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                      const el    = entry.target;
+                      const delay = parseInt(el.dataset.valDelay) || 0;
+                      if (entry.isIntersecting) {
+                        setTimeout(() => el.classList.add('val-visible'), delay);
+                      } else {
+                        el.classList.remove('val-visible');
+                      }
+                    });
+                  }, { threshold: 0.1 });
+
+                  document.querySelectorAll('.valeur-item, .vision-left-anim').forEach(el => obsVal.observe(el));
+
+  /* ══════════════════════════════════════
+     CONTACT
+  ══════════════════════════════════════ */
+                  const obsCI = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                      const el    = entry.target;
+                      const delay = parseInt(el.dataset.ciDelay) || 0;
+                      if (entry.isIntersecting) {
+                        setTimeout(() => el.classList.add('ci-visible'), delay);
+                      } else {
+                        el.classList.remove('ci-visible');
+                      }
+                    });
+                  }, { threshold: 0.1 });
+
+                  document.querySelectorAll('.contact-info-item, .contact-header-anim').forEach(el => obsCI.observe(el));
+
+                })();
+              </script>
+            </body>
+            </html>
