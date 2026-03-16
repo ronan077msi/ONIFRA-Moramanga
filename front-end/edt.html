@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EDT — Portail Étudiant ONIFRA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --navy:     #08122d;
+      --navy-mid: #0d1f3c;
+      --accent:   #c8a951;
+      --accent-lt:#e4c96a;
+      --muted:    rgba(255,255,255,0.5);
+      --radius:   14px;
+      --bg:       #f0f4f8;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+
+    /* ══════════════════════
+       HEADER
+    ══════════════════════ */
+    .top-header {
+      background: var(--navy);
+      padding: 1rem 1.25rem .85rem;
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid rgba(200,169,81,.15);
+    }
+    .header-inner {
+      max-width: 680px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .header-left { display: flex; align-items: center; gap: .75rem; min-width: 0; }
+    .avatar {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent-lt));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: .95rem; font-weight: 700; color: var(--navy);
+    }
+    .header-text { min-width: 0; }
+    .header-greeting { font-size: .72rem; color: var(--muted); }
+    .header-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 700; color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .header-badge {
+      display: inline-flex; align-items: center;
+      background: rgba(200,169,81,.15);
+      border: 1px solid rgba(200,169,81,.3);
+      border-radius: 20px; padding: 2px 10px;
+      font-size: .68rem; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      color: var(--accent); margin-top: 3px;
+    }
+    .btn-logout {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px; color: var(--muted);
+      padding: .5rem .75rem; cursor: pointer;
+      font-size: .78rem; font-weight: 500;
+      display: flex; align-items: center; gap: 5px;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: background .15s, color .15s;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .btn-logout:hover { background: rgba(224,92,92,.15); color: #e05c5c; border-color: rgba(224,92,92,.3); }
+
+    /* ══════════════════════
+       CONTENU
+    ══════════════════════ */
+    .main { max-width: 680px; margin: 0 auto; padding: 1.5rem 1.25rem; }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--navy-mid); margin-bottom: .25rem;
+    }
+    .page-sub { font-size: .82rem; color: #6b7a99; margin-bottom: 1.5rem; }
+
+    /* ── Info semaine ── */
+    .semaine-card {
+      background: var(--navy);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; margin-bottom: 1.25rem;
+      border: 1px solid rgba(200,169,81,.2);
+      animation: fadeUp .35s ease both;
+    }
+    .semaine-left { display: flex; align-items: center; gap: .75rem; }
+    .semaine-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(200,169,81,.15);
+      border: 1px solid rgba(200,169,81,.25);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent); font-size: 1.1rem; flex-shrink: 0;
+    }
+    .semaine-label { font-size: .68rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+    .semaine-date  { font-size: .9rem; font-weight: 600; color: #fff; margin-top: 2px; }
+    .semaine-badge {
+      font-size: .68rem; font-weight: 700;
+      padding: 4px 10px; border-radius: 20px;
+      letter-spacing: .06em; text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .semaine-badge.new    { background: rgba(34,197,94,.15); color: #22c55e; border: 1px solid rgba(34,197,94,.3); }
+    .semaine-badge.old    { background: rgba(160,174,192,.1); color: #a0aec0; border: 1px solid rgba(160,174,192,.2); }
+
+    /* ── Historique selector ── */
+    .hist-wrap {
+      display: flex; gap: .5rem; overflow-x: auto;
+      padding-bottom: .25rem; margin-bottom: 1.25rem;
+      scrollbar-width: none;
+      animation: fadeUp .4s ease both;
+    }
+    .hist-wrap::-webkit-scrollbar { display: none; }
+    .hist-btn {
+      background: #fff;
+      border: 1px solid rgba(13,31,60,.1);
+      border-radius: 20px; padding: .38rem .9rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .75rem; font-weight: 500;
+      color: #6b7a99; cursor: pointer; white-space: nowrap;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: all .15s; flex-shrink: 0;
+    }
+    .hist-btn.active {
+      background: var(--navy); border-color: var(--navy); color: #fff;
+    }
+    .hist-btn:hover:not(.active) { border-color: var(--navy-mid); color: var(--navy-mid); }
+
+    /* ── Image EDT ── */
+    .edt-card {
+      background: #fff;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid rgba(13,31,60,.07);
+      box-shadow: 0 2px 16px rgba(13,31,60,.08);
+      animation: fadeUp .45s ease both;
+    }
+
+    .edt-card-header {
+      background: var(--navy);
+      padding: .85rem 1.25rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .edt-card-header span {
+      font-size: .82rem; font-weight: 600; color: #fff;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .btn-dl-edt {
+      background: rgba(200,169,81,.15);
+      border: 1px solid rgba(200,169,81,.3);
+      border-radius: 8px; color: var(--accent);
+      padding: .4rem .8rem; cursor: pointer;
+      font-size: .75rem; font-weight: 600;
+      display: flex; align-items: center; gap: 5px;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: background .15s;
+    }
+    .btn-dl-edt:hover { background: rgba(200,169,81,.28); }
+
+    /* Conteneur image avec zoom pinch */
+    .edt-img-wrap {
+      position: relative;
+      overflow: hidden;
+      min-height: 200px;
+      display: flex; align-items: center; justify-content: center;
+      background: #f8fafc;
+      cursor: grab;
+    }
+    .edt-img-wrap.grabbing { cursor: grabbing; }
+
+    .edt-img {
+      width: 100%; height: auto;
+      display: block;
+      transform-origin: center center;
+      transition: transform .1s ease;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    /* Contrôles zoom */
+    .zoom-controls {
+      display: flex; align-items: center;
+      padding: .65rem 1rem;
+      border-top: 1px solid rgba(13,31,60,.06);
+      gap: .5rem;
+      background: #fff;
+    }
+    .zoom-btn {
+      background: var(--bg);
+      border: 1px solid rgba(13,31,60,.1);
+      border-radius: 8px; color: #0d1f3c;
+      width: 34px; height: 34px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: .95rem;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: background .15s;
+      flex-shrink: 0;
+    }
+    .zoom-btn:hover   { background: #e2e6ed; }
+    .zoom-btn:active  { transform: scale(.94); }
+    .zoom-btn:disabled { opacity: .35; cursor: not-allowed; }
+    .zoom-level {
+      font-size: .75rem; font-weight: 600;
+      color: #6b7a99; min-width: 36px; text-align: center;
+    }
+    .zoom-reset {
+      margin-left: auto;
+      font-size: .72rem; color: var(--accent);
+      background: none; border: none; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-weight: 500;
+      touch-action: manipulation;
+    }
+    .zoom-hint {
+      font-size: .68rem; color: #a0aec0;
+      margin-left: auto; display: flex; align-items: center; gap: 4px;
+    }
+
+    /* ── États ── */
+    .state-box {
+      text-align: center; padding: 3.5rem 1.5rem; color: #8a9ab5;
+    }
+    .state-box i { font-size: 2.8rem; display: block; margin-bottom: .85rem; opacity: .3; }
+    .state-box strong { display: block; font-size: .95rem; color: #4a5568; margin-bottom: .4rem; }
+    .state-box p { font-size: .82rem; line-height: 1.6; }
+
+    .skeleton-edt {
+      background: #fff; border-radius: var(--radius);
+      overflow: hidden; border: 1px solid rgba(13,31,60,.06);
+    }
+    .skel-header { height: 52px; background: linear-gradient(90deg,#1a2d4a 25%,#243d5f 50%,#1a2d4a 75%); background-size: 800px 100%; animation: shimmer 1.4s ease-in-out infinite; }
+    .skel-img    { height: 320px; background: linear-gradient(90deg,#eef0f5 25%,#e2e6ed 50%,#eef0f5 75%); background-size: 800px 100%; animation: shimmer 1.4s ease-in-out infinite; }
+    @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+
+    /* ══════════════════════
+       BOTTOM NAV
+    ══════════════════════ */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--navy);
+      border-top: 1px solid rgba(200,169,81,.15);
+      display: flex; z-index: 100;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .nav-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: .75rem .5rem; gap: 3px;
+      text-decoration: none; color: var(--muted);
+      font-size: .72rem; font-weight: 500;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: color .15s; position: relative;
+    }
+    .nav-item i { font-size: 1.1rem; }
+    .nav-item.active { color: var(--accent); }
+    .nav-item.active::after {
+      content: ''; position: absolute;
+      top: 0; left: 25%; right: 25%; height: 2px;
+      background: var(--accent); border-radius: 0 0 2px 2px;
+    }
+    .nav-dot {
+      position: absolute; top: .6rem; right: calc(50% - 14px);
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #e05c5c; display: none;
+    }
+    .nav-dot.show { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(14px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="top-header">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="avatar" id="avatar">?</div>
+        <div class="header-text">
+          <div class="header-greeting">Bonjour,</div>
+          <div class="header-name" id="headerName">—</div>
+          <div class="header-badge" id="headerBadge">—</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">
+        <i class="bi bi-box-arrow-right"></i> Déconnexion
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENU -->
+  <main class="main">
+    <div class="page-title">Emploi du temps</div>
+    <p class="page-sub" id="pageSub">Publié chaque samedi</p>
+
+    <!-- Info semaine active -->
+    <div class="semaine-card" id="semaineCard" style="display:none;">
+      <div class="semaine-left">
+        <div class="semaine-icon"><i class="bi bi-calendar-week-fill"></i></div>
+        <div>
+          <div class="semaine-label">Semaine en cours</div>
+          <div class="semaine-date" id="semaineDateLabel">—</div>
+        </div>
+      </div>
+      <span class="semaine-badge new" id="semaineBadge">Nouveau</span>
+    </div>
+
+    <!-- Historique semaines -->
+    <div class="hist-wrap" id="histWrap" style="display:none;"></div>
+
+    <!-- EDT image -->
+    <div id="edtContainer">
+      <!-- Skeleton -->
+      <div class="skeleton-edt" id="edtSkeleton">
+        <div class="skel-header"></div>
+        <div class="skel-img"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="page-principale.html" class="nav-item">
+      <i class="bi bi-house-fill"></i>
+      Accueil
+    </a>
+    <a href="cours.html" class="nav-item">
+      <i class="bi bi-journal-bookmark"></i>
+      Cours
+    </a>
+    <a href="edt.html" class="nav-item active">
+      <i class="bi bi-calendar-week-fill"></i>
+      EDT
+    </a>
+    <a href="annonces.html" class="nav-item">
+      <i class="bi bi-megaphone"></i>
+      Annonces
+    </a>
+    <a href="notifications.html" class="nav-item">
+      <i class="bi bi-bell"></i>
+      <div class="nav-dot" id="navDot"></div>
+      Notifs
+    </a>
+  </nav>
+
+  <script>
+    /* ── Auth guard ── */
+    (function () {
+      const t = sessionStorage.getItem('onifra_token');
+      if (!t) { location.href = 'login.html'; return; }
+      try {
+        const p = JSON.parse(atob(t.split('.')[1]));
+        if (p.exp * 1000 < Date.now()) { sessionStorage.clear(); location.href = 'login.html'; }
+      } catch { sessionStorage.clear(); location.href = 'login.html'; }
+    })();
+
+    /* ── Étudiant ── */
+    const etudiant = JSON.parse(sessionStorage.getItem('onifra_etudiant') || '{}');
+    const { nom = '', prenom = '', mention = '', niveau = '' } = etudiant;
+    const mentionLabel = { gestion: 'Gestion', droit: 'Droit', agronomie: 'Agronomie' };
+
+    document.getElementById('avatar').textContent =
+      ((prenom[0] || '') + (nom[0] || '')).toUpperCase() || '?';
+    document.getElementById('headerName').textContent = prenom + ' ' + nom.toUpperCase();
+    document.getElementById('headerBadge').textContent =
+      (mentionLabel[mention] || mention) + ' · ' + niveau;
+
+    /* ── API ── */
+    const API  = '/api';
+    const token = sessionStorage.getItem('onifra_token');
+    const hdrs  = { 'Authorization': 'Bearer ' + token };
+
+    let edtList     = [];
+    let currentEdt  = null;
+    let zoomLevel   = 1;
+    const ZOOM_MIN  = 1;
+    const ZOOM_MAX  = 3;
+    const ZOOM_STEP = 0.5;
+
+    /* ── Charger la liste EDT ── */
+    async function loadEDT() {
+      try {
+        const res  = await fetch(`${API}/edt?mention=${mention}&niveau=${niveau}`, { headers: hdrs });
+        edtList = await res.json();
+
+        document.getElementById('edtSkeleton').remove();
+
+        if (!edtList.length) {
+          showEmpty();
+          return;
+        }
+
+        buildHistorique();
+        showEDT(edtList[0]); /* Le plus récent en premier */
+
+      } catch {
+        document.getElementById('edtSkeleton').remove();
+        document.getElementById('edtContainer').innerHTML = `
+          <div class="edt-card">
+            <div class="state-box">
+              <i class="bi bi-wifi-off"></i>
+              <strong>Connexion impossible</strong>
+              <p>Impossible de charger l'emploi du temps.<br>Vérifiez votre connexion.</p>
+            </div>
+          </div>`;
+      }
+    }
+
+    /* ── État vide ── */
+    function showEmpty() {
+      document.getElementById('edtContainer').innerHTML = `
+        <div class="edt-card">
+          <div class="state-box">
+            <i class="bi bi-calendar2-x"></i>
+            <strong>Aucun emploi du temps disponible</strong>
+            <p>L'emploi du temps est publié chaque samedi.<br>Revenez ce week-end !</p>
+          </div>
+        </div>`;
+    }
+
+    /* ── Historique boutons ── */
+    function buildHistorique() {
+      const wrap = document.getElementById('histWrap');
+      wrap.style.display = 'flex';
+
+      edtList.forEach((edt, i) => {
+        const date = new Date(edt.created_at);
+        const label = i === 0
+          ? 'Cette semaine'
+          : 'Sem. ' + date.toLocaleDateString('fr-FR', { day:'2-digit', month:'short' });
+
+        const btn = document.createElement('button');
+        btn.className = 'hist-btn' + (i === 0 ? ' active' : '');
+        btn.textContent = label;
+        btn.dataset.idx = i;
+        btn.onclick = () => {
+          document.querySelectorAll('.hist-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          showEDT(edtList[i]);
+        };
+        wrap.appendChild(btn);
+      });
+    }
+
+    /* ── Afficher un EDT ── */
+    function showEDT(edt) {
+      currentEdt = edt;
+      zoomLevel  = 1;
+
+      const date     = new Date(edt.created_at);
+      const dateStr  = date.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+      const isNew    = (Date.now() - date.getTime()) < 7 * 24 * 60 * 60 * 1000;
+
+      /* Semaine card */
+      const semaineCard = document.getElementById('semaineCard');
+      semaineCard.style.display = 'flex';
+      document.getElementById('semaineDateLabel').textContent = 'Publié le ' + dateStr;
+      const badge = document.getElementById('semaineBadge');
+      badge.textContent = isNew ? 'Nouveau' : 'Archivé';
+      badge.className   = 'semaine-badge ' + (isNew ? 'new' : 'old');
+
+      /* Image */
+      document.getElementById('edtContainer').innerHTML = `
+        <div class="edt-card">
+          <div class="edt-card-header">
+            <span>
+              <i class="bi bi-calendar-week-fill"></i>
+              EDT — ${mentionLabel[mention] || mention} ${niveau}
+            </span>
+            <button class="btn-dl-edt" onclick="downloadEDT('${edt.id}','${edt.image_url}')">
+              <i class="bi bi-download"></i> Télécharger
+            </button>
+          </div>
+          <div class="edt-img-wrap" id="imgWrap">
+            <img class="edt-img" id="edtImg"
+              src="${edt.image_url}"
+              alt="Emploi du temps ${mentionLabel[mention] || mention} ${niveau}"
+              loading="lazy"
+              onload="onImgLoad()"
+              onerror="onImgError()">
+          </div>
+          <div class="zoom-controls">
+            <button class="zoom-btn" id="btnZoomOut" onclick="zoom(-1)" title="Dézoomer" disabled>
+              <i class="bi bi-dash-lg"></i>
+            </button>
+            <span class="zoom-level" id="zoomLabel">100%</span>
+            <button class="zoom-btn" id="btnZoomIn" onclick="zoom(1)" title="Zoomer">
+              <i class="bi bi-plus-lg"></i>
+            </button>
+            <button class="zoom-reset" onclick="resetZoom()">Réinitialiser</button>
+            <span class="zoom-hint" id="zoomHint" style="display:none;">
+              <i class="bi bi-phone"></i> Pincez pour zoomer
+            </span>
+          </div>
+        </div>`;
+
+      initPinchZoom();
+    }
+
+    /* ── Image chargée ── */
+    function onImgLoad() {
+      /* Afficher hint pinch sur mobile */
+      if ('ontouchstart' in window) {
+        document.getElementById('zoomHint').style.display = 'flex';
+      }
+    }
+    function onImgError() {
+      document.getElementById('imgWrap').innerHTML = `
+        <div class="state-box">
+          <i class="bi bi-image"></i>
+          <p>Impossible d'afficher l'image.<br>Essayez de la télécharger.</p>
+        </div>`;
+    }
+
+    /* ── Zoom boutons ── */
+    function zoom(dir) {
+      zoomLevel = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, zoomLevel + dir * ZOOM_STEP));
+      applyZoom();
+    }
+    function resetZoom() {
+      zoomLevel = 1;
+      applyZoom();
+    }
+    function applyZoom() {
+      const img = document.getElementById('edtImg');
+      if (!img) return;
+      img.style.transform = `scale(${zoomLevel})`;
+      img.style.transition = 'transform .2s ease';
+      document.getElementById('zoomLabel').textContent = Math.round(zoomLevel * 100) + '%';
+      document.getElementById('btnZoomOut').disabled = zoomLevel <= ZOOM_MIN;
+      document.getElementById('btnZoomIn').disabled  = zoomLevel >= ZOOM_MAX;
+    }
+
+    /* ── Pinch-to-zoom mobile ── */
+    function initPinchZoom() {
+      const wrap = document.getElementById('imgWrap');
+      if (!wrap || !('ontouchstart' in window)) return;
+
+      let initDist  = 0;
+      let initZoom  = 1;
+
+      wrap.addEventListener('touchstart', e => {
+        if (e.touches.length === 2) {
+          initDist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+          initZoom = zoomLevel;
+        }
+      }, { passive: true });
+
+      wrap.addEventListener('touchmove', e => {
+        if (e.touches.length !== 2) return;
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        zoomLevel = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, initZoom * (dist / initDist)));
+        applyZoom();
+      }, { passive: true });
+    }
+
+    /* ── Téléchargement EDT ── */
+    async function downloadEDT(id, url) {
+      try {
+        const res  = await fetch(`${API}/edt/${id}/download`, { headers: hdrs });
+        if (!res.ok) throw new Error();
+        const blob = await res.blob();
+        const ext  = url.split('.').pop().split('?')[0] || 'jpg';
+        const a    = document.createElement('a');
+        a.href     = URL.createObjectURL(blob);
+        a.download = `EDT_${mentionLabel[mention] || mention}_${niveau}.${ext}`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+      } catch {
+        /* Fallback : ouvrir l'image directement */
+        window.open(url, '_blank');
+      }
+    }
+
+    /* ── Notif dot ── */
+    async function loadNotifDot() {
+      try {
+        const res  = await fetch(`${API}/notifications/unread-count`, { headers: hdrs });
+        const data = await res.json();
+        if (data.count > 0) document.getElementById('navDot').classList.add('show');
+      } catch {}
+    }
+
+    /* ── Déconnexion ── */
+    async function logout() {
+      try { await fetch(`${API}/auth/logout`, { method: 'POST', headers: hdrs }); } catch {}
+      sessionStorage.clear();
+      location.href = 'login.html';
+    }
+
+    loadEDT();
+    loadNotifDot();
+  </script>
+
+</body>
+</html>

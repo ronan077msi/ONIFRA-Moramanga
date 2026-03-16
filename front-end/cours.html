@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cours — Portail Étudiant ONIFRA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --navy:     #08122d;
+      --navy-mid: #0d1f3c;
+      --accent:   #c8a951;
+      --accent-lt:#e4c96a;
+      --muted:    rgba(255,255,255,0.5);
+      --radius:   14px;
+      --bg:       #f0f4f8;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+
+    /* ══════════════════════
+       HEADER
+    ══════════════════════ */
+    .top-header {
+      background: var(--navy);
+      padding: 1rem 1.25rem .85rem;
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid rgba(200,169,81,.15);
+    }
+    .header-inner {
+      max-width: 680px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .header-left { display: flex; align-items: center; gap: .75rem; min-width: 0; }
+    .avatar {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent-lt));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: .95rem; font-weight: 700; color: var(--navy);
+    }
+    .header-text { min-width: 0; }
+    .header-greeting { font-size: .72rem; color: var(--muted); }
+    .header-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 700; color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .header-badge {
+      display: inline-flex; align-items: center;
+      background: rgba(200,169,81,.15);
+      border: 1px solid rgba(200,169,81,.3);
+      border-radius: 20px; padding: 2px 10px;
+      font-size: .68rem; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      color: var(--accent); margin-top: 3px;
+    }
+    .btn-logout {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px; color: var(--muted);
+      padding: .5rem .75rem; cursor: pointer;
+      font-size: .78rem; font-weight: 500;
+      display: flex; align-items: center; gap: 5px;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: background .15s, color .15s;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .btn-logout:hover { background: rgba(224,92,92,.15); color: #e05c5c; border-color: rgba(224,92,92,.3); }
+
+    /* ══════════════════════
+       CONTENU
+    ══════════════════════ */
+    .main { max-width: 680px; margin: 0 auto; padding: 1.5rem 1.25rem; }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--navy-mid); margin-bottom: .25rem;
+    }
+    .page-sub { font-size: .82rem; color: #6b7a99; margin-bottom: 1.25rem; }
+
+    /* ── Recherche ── */
+    .search-wrap {
+      position: relative; margin-bottom: 1.25rem;
+      animation: fadeUp .3s ease both;
+    }
+    .search-icon {
+      position: absolute; left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: #8a9ab5; font-size: 1rem; pointer-events: none;
+    }
+    .search-input {
+      width: 100%;
+      background: #fff;
+      border: 1px solid rgba(13,31,60,.1);
+      border-radius: 12px; color: #0d1f3c;
+      font-family: 'DM Sans', sans-serif; font-size: .92rem;
+      padding: .75rem 1rem .75rem 2.75rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      box-shadow: 0 2px 8px rgba(13,31,60,.05);
+    }
+    .search-input::placeholder { color: #a0aec0; }
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(200,169,81,.12);
+    }
+    .search-clear {
+      position: absolute; right: 12px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      color: #a0aec0; cursor: pointer; font-size: 1rem;
+      display: none; padding: 4px;
+      touch-action: manipulation;
+    }
+    .search-clear.show { display: block; }
+
+    /* ── Compteur ── */
+    .modules-count {
+      font-size: .75rem; color: #8a9ab5;
+      margin-bottom: .75rem;
+    }
+    .modules-count strong { color: #0d1f3c; }
+
+    /* ── Accordéon ── */
+    .modules-list { display: flex; flex-direction: column; gap: .6rem; }
+
+    .module-item {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1px solid rgba(13,31,60,.07);
+      box-shadow: 0 2px 8px rgba(13,31,60,.05);
+      overflow: hidden;
+      animation: fadeUp .4s ease both;
+      transition: box-shadow .2s;
+    }
+    .module-item:hover { box-shadow: 0 4px 16px rgba(13,31,60,.1); }
+    .module-item.open  { border-color: rgba(200,169,81,.3); box-shadow: 0 4px 20px rgba(200,169,81,.12); }
+
+    /* Header accordéon */
+    .module-header {
+      display: flex; align-items: center; gap: .75rem;
+      padding: 1rem 1.1rem; cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .module-color-bar {
+      width: 4px; height: 36px; border-radius: 2px;
+      background: var(--accent); flex-shrink: 0;
+    }
+    .module-header-text { flex: 1; min-width: 0; }
+    .module-name {
+      font-size: .95rem; font-weight: 600;
+      color: #0d1f3c; line-height: 1.3;
+    }
+    .module-prof {
+      font-size: .75rem; color: #6b7a99; margin-top: 2px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .module-prof i { font-size: .7rem; }
+    .module-support-count {
+      font-size: .68rem; font-weight: 600;
+      background: rgba(13,31,60,.06);
+      border-radius: 20px; padding: 2px 8px;
+      color: #6b7a99; flex-shrink: 0;
+    }
+    .module-chevron {
+      color: #a0aec0; font-size: .9rem; flex-shrink: 0;
+      transition: transform .25s ease;
+    }
+    .module-item.open .module-chevron { transform: rotate(180deg); color: var(--accent); }
+
+    /* Body accordéon */
+    .module-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height .35s cubic-bezier(.4,0,.2,1);
+    }
+    .module-body-inner {
+      border-top: 1px solid rgba(13,31,60,.06);
+      padding: 1rem 1.1rem;
+    }
+
+    /* Introduction module */
+    .module-intro {
+      background: rgba(200,169,81,.06);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: .65rem .9rem;
+      margin-bottom: 1rem;
+      font-size: .82rem; color: #4a5568; line-height: 1.6;
+    }
+    .module-intro-label {
+      font-size: .65rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: .3rem;
+    }
+
+    /* Supports */
+    .supports-label {
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: #8a9ab5; margin-bottom: .6rem;
+    }
+    .support-list { display: flex; flex-direction: column; gap: .5rem; }
+
+    .support-item {
+      display: flex; align-items: flex-start; gap: .75rem;
+      padding: .75rem .85rem;
+      background: var(--bg);
+      border-radius: 10px;
+      border: 1px solid rgba(13,31,60,.06);
+      transition: background .15s;
+    }
+    .support-item:hover { background: #e8edf3; }
+
+    .support-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0; margin-top: 1px;
+    }
+    .support-icon.pdf  { background: rgba(224,92,92,.12); color: #e05c5c; }
+    .support-icon.docx { background: rgba(59,130,246,.12); color: #3b82f6; }
+
+    .support-info { flex: 1; min-width: 0; }
+    .support-titre {
+      font-size: .88rem; font-weight: 600;
+      color: #0d1f3c; line-height: 1.3;
+    }
+    .support-desc {
+      font-size: .75rem; color: #6b7a99;
+      margin-top: .2rem; line-height: 1.5;
+    }
+    .support-meta {
+      font-size: .68rem; color: #a0aec0;
+      margin-top: .3rem; display: flex; gap: .5rem; flex-wrap: wrap;
+    }
+    .support-meta span { display: flex; align-items: center; gap: 3px; }
+
+    .btn-dl {
+      background: var(--navy);
+      border: none; border-radius: 8px;
+      color: var(--accent); padding: .5rem .65rem;
+      cursor: pointer; flex-shrink: 0;
+      font-size: .95rem;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: background .15s, transform .1s;
+      align-self: center;
+    }
+    .btn-dl:hover  { background: var(--accent); color: var(--navy); }
+    .btn-dl:active { transform: scale(.92); }
+
+    /* ── États ── */
+    .state-box {
+      text-align: center; padding: 3rem 1rem; color: #8a9ab5;
+    }
+    .state-box i { font-size: 2.5rem; display: block; margin-bottom: .75rem; opacity: .35; }
+    .state-box p { font-size: .88rem; line-height: 1.6; }
+
+    /* Skeleton */
+    .skeleton-item {
+      background: #fff; border-radius: var(--radius);
+      padding: 1rem 1.1rem; margin-bottom: .6rem;
+      display: flex; align-items: center; gap: .75rem;
+      border: 1px solid rgba(13,31,60,.06);
+    }
+    .skel { border-radius: 6px; background: linear-gradient(90deg,#eef0f5 25%,#e2e6ed 50%,#eef0f5 75%); background-size: 800px 100%; animation: shimmer 1.4s ease-in-out infinite; }
+    .skel-bar  { width: 4px; height: 36px; border-radius: 2px; }
+    .skel-body { flex: 1; display: flex; flex-direction: column; gap: .4rem; }
+    .skel-line { height: 10px; }
+    .skel-line.w80 { width: 80%; }
+    .skel-line.w50 { width: 50%; }
+    @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+
+    /* ══════════════════════
+       BOTTOM NAV
+    ══════════════════════ */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--navy);
+      border-top: 1px solid rgba(200,169,81,.15);
+      display: flex; z-index: 100;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .nav-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: .75rem .5rem; gap: 3px;
+      text-decoration: none; color: var(--muted);
+      font-size: .72rem; font-weight: 500;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: color .15s; position: relative;
+    }
+    .nav-item i { font-size: 1.1rem; }
+    .nav-item.active { color: var(--accent); }
+    .nav-item.active::after {
+      content: ''; position: absolute;
+      top: 0; left: 25%; right: 25%; height: 2px;
+      background: var(--accent); border-radius: 0 0 2px 2px;
+    }
+    .nav-dot {
+      position: absolute; top: .6rem; right: calc(50% - 14px);
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #e05c5c; display: none;
+    }
+    .nav-dot.show { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(14px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="top-header">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="avatar" id="avatar">?</div>
+        <div class="header-text">
+          <div class="header-greeting">Bonjour,</div>
+          <div class="header-name" id="headerName">—</div>
+          <div class="header-badge" id="headerBadge">—</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">
+        <i class="bi bi-box-arrow-right"></i> Déconnexion
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENU -->
+  <main class="main">
+    <div class="page-title">Supports de cours</div>
+    <p class="page-sub" id="pageSub">Chargement…</p>
+
+    <!-- Recherche -->
+    <div class="search-wrap">
+      <i class="bi bi-search search-icon"></i>
+      <input class="search-input" id="searchInput"
+        type="search" placeholder="Rechercher un module…"
+        autocomplete="off" spellcheck="false">
+      <button class="search-clear" id="searchClear" onclick="clearSearch()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div class="modules-count" id="modulesCount"></div>
+    <div class="modules-list" id="modulesList">
+      <!-- Skeletons -->
+      <div class="skeleton-item"><div class="skel skel-bar"></div><div class="skel-body"><div class="skel skel-line w80"></div><div class="skel skel-line w50"></div></div></div>
+      <div class="skeleton-item"><div class="skel skel-bar"></div><div class="skel-body"><div class="skel skel-line w80"></div><div class="skel skel-line w50"></div></div></div>
+      <div class="skeleton-item"><div class="skel skel-bar"></div><div class="skel-body"><div class="skel skel-line w80"></div><div class="skel skel-line w50"></div></div></div>
+      <div class="skeleton-item"><div class="skel skel-bar"></div><div class="skel-body"><div class="skel skel-line w80"></div><div class="skel skel-line w50"></div></div></div>
+    </div>
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="page-principale.html" class="nav-item">
+      <i class="bi bi-house-fill"></i>
+      Accueil
+    </a>
+    <a href="cours.html" class="nav-item active">
+      <i class="bi bi-journal-bookmark-fill"></i>
+      Cours
+    </a>
+    <a href="edt.html" class="nav-item">
+      <i class="bi bi-calendar-week"></i>
+      EDT
+    </a>
+    <a href="annonces.html" class="nav-item">
+      <i class="bi bi-megaphone"></i>
+      Annonces
+    </a>
+    <a href="notifications.html" class="nav-item">
+      <i class="bi bi-bell"></i>
+      <div class="nav-dot" id="navDot"></div>
+      Notifs
+    </a>
+  </nav>
+
+  <script>
+    /* ── Auth guard ── */
+    (function () {
+      const t = sessionStorage.getItem('onifra_token');
+      if (!t) { location.href = 'login.html'; return; }
+      try {
+        const p = JSON.parse(atob(t.split('.')[1]));
+        if (p.exp * 1000 < Date.now()) { sessionStorage.clear(); location.href = 'login.html'; }
+      } catch { sessionStorage.clear(); location.href = 'login.html'; }
+    })();
+
+    /* ── Étudiant ── */
+    const etudiant = JSON.parse(sessionStorage.getItem('onifra_etudiant') || '{}');
+    const { nom = '', prenom = '', mention = '', niveau = '' } = etudiant;
+    const mentionLabel = { gestion: 'Gestion', droit: 'Droit', agronomie: 'Agronomie' };
+
+    document.getElementById('avatar').textContent =
+      ((prenom[0] || '') + (nom[0] || '')).toUpperCase() || '?';
+    document.getElementById('headerName').textContent = prenom + ' ' + nom.toUpperCase();
+    document.getElementById('headerBadge').textContent =
+      (mentionLabel[mention] || mention) + ' · ' + niveau;
+    document.getElementById('pageSub').textContent =
+      (mentionLabel[mention] || mention) + ' — ' + niveau;
+
+    /* ── State ── */
+    const API     = '/api';
+    const token   = sessionStorage.getItem('onifra_token');
+    const hdrs    = { 'Authorization': 'Bearer ' + token };
+    let   allData = []; /* modules groupés */
+
+    /* ── Charger depuis API ── */
+    async function loadCours() {
+      try {
+        const res  = await fetch(`${API}/cours?mention=${mention}&niveau=${niveau}`, { headers: hdrs });
+        const data = await res.json();
+        /* Grouper par module */
+        const map = {};
+        data.forEach(c => {
+          if (!map[c.module]) {
+            map[c.module] = {
+              module:      c.module,
+              prof:        c.enseignant,
+              introduction:c.introduction || null,
+              supports:    []
+            };
+          }
+          map[c.module].supports.push(c);
+        });
+        allData = Object.values(map);
+        render(allData);
+      } catch {
+        document.getElementById('modulesList').innerHTML = `
+          <div class="state-box">
+            <i class="bi bi-wifi-off"></i>
+            <p>Impossible de charger les cours.<br>Vérifiez votre connexion.</p>
+          </div>`;
+      }
+    }
+
+    /* ── Rendu ── */
+    function render(modules) {
+      const list = document.getElementById('modulesList');
+      const count = document.getElementById('modulesCount');
+
+      count.innerHTML = modules.length
+        ? `<strong>${modules.length}</strong> module${modules.length > 1 ? 's' : ''} disponible${modules.length > 1 ? 's' : ''}`
+        : '';
+
+      if (!modules.length) {
+        list.innerHTML = `
+          <div class="state-box">
+            <i class="bi bi-journal-x"></i>
+            <p>Aucun module trouvé.</p>
+          </div>`;
+        return;
+      }
+
+      list.innerHTML = modules.map((m, i) => `
+        <div class="module-item" style="animation-delay:${i * 55}ms" id="mod-${i}">
+
+          <div class="module-header" onclick="toggle(${i})" >
+            <div class="module-color-bar"></div>
+            <div class="module-header-text">
+              <div class="module-name">${m.module}</div>
+              <div class="module-prof">
+                <i class="bi bi-person-fill"></i>
+                ${m.prof || 'Enseignant non renseigné'}
+              </div>
+            </div>
+            <span class="module-support-count">${m.supports.length} support${m.supports.length > 1 ? 's' : ''}</span>
+            <i class="bi bi-chevron-down module-chevron"></i>
+          </div>
+
+          <div class="module-body" id="body-${i}">
+            <div class="module-body-inner">
+
+              ${m.introduction ? `
+                <div class="module-intro">
+                  <div class="module-intro-label">À propos de ce module</div>
+                  ${m.introduction}
+                </div>` : ''}
+
+              <div class="supports-label">Supports disponibles</div>
+              <div class="support-list">
+                ${m.supports.map(s => {
+                  const ext  = (s.fichier_path || '').split('.').pop().toLowerCase();
+                  const isPdf = ext === 'pdf';
+                  const date  = new Date(s.created_at).toLocaleDateString('fr-FR');
+                  return `
+                    <div class="support-item">
+                      <div class="support-icon ${isPdf ? 'pdf' : 'docx'}">
+                        <i class="bi bi-filetype-${isPdf ? 'pdf' : 'docx'}"></i>
+                      </div>
+                      <div class="support-info">
+                        <div class="support-titre">${s.titre}</div>
+                        ${s.description ? `<div class="support-desc">${s.description}</div>` : ''}
+                        <div class="support-meta">
+                          <span><i class="bi bi-calendar3"></i>${date}</span>
+                          <span><i class="bi bi-file-earmark"></i>${ext.toUpperCase()}</span>
+                        </div>
+                      </div>
+                      <button class="btn-dl" onclick="telecharger('${s.id}','${s.titre}','${ext}')" title="Télécharger">
+                        <i class="bi bi-download"></i>
+                      </button>
+                    </div>`;
+                }).join('')}
+              </div>
+
+            </div>
+          </div>
+        </div>`
+      ).join('');
+    }
+
+    /* ── Accordéon ── */
+    function toggle(i) {
+      const item = document.getElementById('mod-' + i);
+      const body = document.getElementById('body-' + i);
+      const isOpen = item.classList.contains('open');
+
+      /* Fermer tous les autres */
+      document.querySelectorAll('.module-item.open').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.module-body').style.maxHeight = '0';
+      });
+
+      if (!isOpen) {
+        item.classList.add('open');
+        body.style.maxHeight = body.scrollHeight + 'px';
+        /* Scroll vers le module ouvert */
+        setTimeout(() => item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+      }
+    }
+
+    /* ── Recherche ── */
+    const searchInput = document.getElementById('searchInput');
+    const searchClear = document.getElementById('searchClear');
+
+    searchInput.addEventListener('input', function () {
+      const q = this.value.trim().toLowerCase();
+      searchClear.classList.toggle('show', q.length > 0);
+      if (!q) { render(allData); return; }
+      const filtered = allData.filter(m =>
+        m.module.toLowerCase().includes(q) ||
+        (m.prof || '').toLowerCase().includes(q)
+      );
+      render(filtered);
+      /* Ré-ouvrir si 1 seul résultat */
+      if (filtered.length === 1) {
+        requestAnimationFrame(() => toggle(0));
+      }
+    }, { passive: true });
+
+    function clearSearch() {
+      searchInput.value = '';
+      searchClear.classList.remove('show');
+      render(allData);
+      searchInput.focus();
+    }
+
+    /* ── Téléchargement ── */
+    async function telecharger(id, titre, ext) {
+      try {
+        const res = await fetch(`${API}/cours/${id}/download`, { headers: hdrs });
+        if (!res.ok) throw new Error();
+        const blob = await res.blob();
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href = url; a.download = titre + '.' + ext; a.click();
+        URL.revokeObjectURL(url);
+      } catch {
+        alert('Impossible de télécharger ce fichier. Réessayez.');
+      }
+    }
+
+    /* ── Notif dot ── */
+    async function loadNotifDot() {
+      try {
+        const res  = await fetch(`${API}/notifications/unread-count`, { headers: hdrs });
+        const data = await res.json();
+        if (data.count > 0) document.getElementById('navDot').classList.add('show');
+      } catch {}
+    }
+
+    /* ── Déconnexion ── */
+    async function logout() {
+      try { await fetch(`${API}/auth/logout`, { method: 'POST', headers: hdrs }); } catch {}
+      sessionStorage.clear();
+      location.href = 'login.html';
+    }
+
+    loadCours();
+    loadNotifDot();
+  </script>
+
+</body>
+</html>
