@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Annonces — Portail Étudiant ONIFRA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --navy:     #08122d;
+      --navy-mid: #0d1f3c;
+      --accent:   #c8a951;
+      --accent-lt:#e4c96a;
+      --muted:    rgba(255,255,255,0.5);
+      --radius:   14px;
+      --bg:       #f0f4f8;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+
+    /* ══════════════════════
+       HEADER
+    ══════════════════════ */
+    .top-header {
+      background: var(--navy);
+      padding: 1rem 1.25rem .85rem;
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid rgba(200,169,81,.15);
+    }
+    .header-inner {
+      max-width: 680px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .header-left { display: flex; align-items: center; gap: .75rem; min-width: 0; }
+    .avatar {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent-lt));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: .95rem; font-weight: 700; color: var(--navy);
+    }
+    .header-text { min-width: 0; }
+    .header-greeting { font-size: .72rem; color: var(--muted); }
+    .header-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 700; color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .header-badge {
+      display: inline-flex; align-items: center;
+      background: rgba(200,169,81,.15);
+      border: 1px solid rgba(200,169,81,.3);
+      border-radius: 20px; padding: 2px 10px;
+      font-size: .68rem; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      color: var(--accent); margin-top: 3px;
+    }
+    .btn-logout {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px; color: var(--muted);
+      padding: .5rem .75rem; cursor: pointer;
+      font-size: .78rem; font-weight: 500;
+      display: flex; align-items: center; gap: 5px;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: background .15s, color .15s;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .btn-logout:hover { background: rgba(224,92,92,.15); color: #e05c5c; border-color: rgba(224,92,92,.3); }
+
+    /* ══════════════════════
+       CONTENU
+    ══════════════════════ */
+    .main { max-width: 680px; margin: 0 auto; padding: 1.5rem 1.25rem; }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--navy-mid); margin-bottom: .25rem;
+    }
+    .page-sub { font-size: .82rem; color: #6b7a99; margin-bottom: 1.25rem; }
+
+    /* ── Filtres ── */
+    .filter-wrap {
+      display: flex; gap: .5rem; overflow-x: auto;
+      padding-bottom: .25rem; margin-bottom: 1.25rem;
+      scrollbar-width: none;
+      animation: fadeUp .3s ease both;
+    }
+    .filter-wrap::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      background: #fff;
+      border: 1px solid rgba(13,31,60,.1);
+      border-radius: 20px; padding: .38rem .9rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .75rem; font-weight: 500;
+      color: #6b7a99; cursor: pointer; white-space: nowrap;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: all .15s; flex-shrink: 0;
+    }
+    .filter-btn.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+    .filter-btn.event.active  { background: #c8a951; border-color: #c8a951; color: #0d1f3c; }
+    .filter-btn.info.active   { background: #3b82f6; border-color: #3b82f6; color: #fff; }
+    .filter-btn.urgent.active { background: #e05c5c; border-color: #e05c5c; color: #fff; }
+    .filter-btn:hover:not(.active) { border-color: var(--navy-mid); color: var(--navy-mid); }
+
+    /* ── Liste annonces ── */
+    .annonces-list { display: flex; flex-direction: column; gap: .85rem; }
+
+    /* ── Card annonce ── */
+    .annonce-card {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1px solid rgba(13,31,60,.07);
+      box-shadow: 0 2px 10px rgba(13,31,60,.05);
+      overflow: hidden;
+      animation: fadeUp .4s ease both;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .annonce-card:hover { box-shadow: 0 6px 24px rgba(13,31,60,.1); transform: translateY(-2px); }
+
+    .annonce-top-bar { height: 3px; }
+    .annonce-top-bar.event  { background: var(--accent); }
+    .annonce-top-bar.info   { background: #3b82f6; }
+    .annonce-top-bar.urgent { background: #e05c5c; }
+
+    .annonce-body { padding: 1rem 1.1rem; }
+
+    .annonce-meta {
+      display: flex; align-items: center; gap: .5rem;
+      margin-bottom: .6rem; flex-wrap: wrap;
+    }
+    .annonce-type {
+      font-size: .62rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 20px;
+    }
+    .annonce-type.event  { background: rgba(200,169,81,.15); color: #a07d20; }
+    .annonce-type.info   { background: rgba(59,130,246,.12); color: #2563eb; }
+    .annonce-type.urgent { background: rgba(224,92,92,.12);  color: #c0392b; }
+
+    .annonce-date {
+      font-size: .72rem; color: #8a9ab5;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .annonce-new {
+      font-size: .6rem; font-weight: 700;
+      background: #22c55e; color: #fff;
+      border-radius: 20px; padding: 2px 7px;
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+
+    .annonce-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem; font-weight: 600;
+      color: #0d1f3c; line-height: 1.35;
+      margin-bottom: .5rem;
+    }
+    .annonce-contenu {
+      font-size: .85rem; color: #4a5568;
+      line-height: 1.65; margin-bottom: .75rem;
+    }
+
+    /* Date événement si type=event */
+    .annonce-event-date {
+      display: flex; align-items: center; gap: .5rem;
+      background: rgba(200,169,81,.08);
+      border: 1px solid rgba(200,169,81,.2);
+      border-radius: 8px; padding: .5rem .75rem;
+      margin-bottom: .75rem;
+    }
+    .annonce-event-date i { color: var(--accent); font-size: .9rem; flex-shrink: 0; }
+    .annonce-event-date span { font-size: .8rem; font-weight: 500; color: #0d1f3c; }
+
+    /* ── Actions ── */
+    .annonce-actions {
+      display: flex; align-items: center; gap: .6rem;
+      padding-top: .75rem;
+      border-top: 1px solid rgba(13,31,60,.06);
+      flex-wrap: wrap;
+    }
+
+    /* Bouton commenter */
+    .btn-comment {
+      background: none; border: 1px solid rgba(13,31,60,.12);
+      border-radius: 8px; color: #6b7a99;
+      padding: .45rem .85rem; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: .78rem; font-weight: 500;
+      display: flex; align-items: center; gap: 5px;
+      touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+      transition: all .15s;
+    }
+    .btn-comment:hover { border-color: #3b82f6; color: #3b82f6; background: rgba(59,130,246,.05); }
+    .btn-comment.active { border-color: #3b82f6; color: #3b82f6; background: rgba(59,130,246,.08); }
+
+    /* Bouton infos scolarité */
+    .btn-contact {
+      background: none; border: 1px solid rgba(200,169,81,.3);
+      border-radius: 8px; color: var(--accent);
+      padding: .45rem .85rem; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: .78rem; font-weight: 500;
+      display: flex; align-items: center; gap: 5px;
+      text-decoration: none;
+      touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+      transition: all .15s;
+    }
+    .btn-contact:hover { background: rgba(200,169,81,.1); border-color: var(--accent); }
+
+    .comment-count {
+      font-size: .72rem; color: #8a9ab5;
+      margin-left: auto; display: flex; align-items: center; gap: 4px;
+    }
+
+    /* ── Zone commentaires ── */
+    .comments-wrap {
+      max-height: 0; overflow: hidden;
+      transition: max-height .35s cubic-bezier(.4,0,.2,1);
+    }
+    .comments-wrap.open { max-height: 1000px; }
+    .comments-inner {
+      border-top: 1px solid rgba(13,31,60,.06);
+      padding: .85rem 1.1rem;
+      background: #f8fafc;
+    }
+
+    .comment-item {
+      display: flex; gap: .6rem; margin-bottom: .75rem;
+    }
+    .comment-avatar {
+      width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent-lt));
+      display: flex; align-items: center; justify-content: center;
+      font-size: .7rem; font-weight: 700; color: var(--navy);
+    }
+    .comment-bubble {
+      flex: 1; background: #fff;
+      border-radius: 0 10px 10px 10px;
+      padding: .5rem .75rem;
+      border: 1px solid rgba(13,31,60,.07);
+    }
+    .comment-author {
+      font-size: .72rem; font-weight: 600;
+      color: #0d1f3c; margin-bottom: 2px;
+    }
+    .comment-text { font-size: .8rem; color: #4a5568; line-height: 1.5; }
+    .comment-time { font-size: .65rem; color: #a0aec0; margin-top: 3px; }
+
+    /* Input commentaire */
+    .comment-input-wrap {
+      display: flex; gap: .5rem; margin-top: .25rem;
+    }
+    .comment-avatar-me {
+      width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent-lt));
+      display: flex; align-items: center; justify-content: center;
+      font-size: .7rem; font-weight: 700; color: var(--navy);
+    }
+    .comment-input {
+      flex: 1; background: #fff;
+      border: 1px solid rgba(13,31,60,.12);
+      border-radius: 20px; color: #0d1f3c;
+      font-family: 'DM Sans', sans-serif; font-size: .82rem;
+      padding: .45rem 1rem; outline: none;
+      transition: border-color .2s;
+    }
+    .comment-input:focus { border-color: var(--accent); }
+    .comment-input::placeholder { color: #a0aec0; }
+    .btn-send {
+      background: var(--navy); border: none;
+      border-radius: 50%; width: 34px; height: 34px;
+      color: var(--accent); cursor: pointer; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem;
+      touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+      transition: background .15s, transform .1s;
+    }
+    .btn-send:hover  { background: var(--accent); color: var(--navy); }
+    .btn-send:active { transform: scale(.9); }
+
+    /* ── États ── */
+    .state-box {
+      text-align: center; padding: 3rem 1rem; color: #8a9ab5;
+    }
+    .state-box i { font-size: 2.5rem; display: block; margin-bottom: .75rem; opacity: .3; }
+    .state-box p { font-size: .88rem; line-height: 1.6; }
+
+    /* Skeleton */
+    .skel-card {
+      background: #fff; border-radius: var(--radius);
+      padding: 1rem 1.1rem; margin-bottom: .85rem;
+      border: 1px solid rgba(13,31,60,.06);
+    }
+    .skel { border-radius: 6px; background: linear-gradient(90deg,#eef0f5 25%,#e2e6ed 50%,#eef0f5 75%); background-size: 800px 100%; animation: shimmer 1.4s ease-in-out infinite; }
+    .skel-line { height: 10px; margin-bottom: .5rem; }
+    .skel-line.w30 { width: 30%; }
+    .skel-line.w60 { width: 60%; }
+    .skel-line.w90 { width: 90%; }
+    .skel-line.w100 { width: 100%; }
+    .skel-line.h16 { height: 16px; }
+    @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+
+    /* ══════════════════════
+       BOTTOM NAV
+    ══════════════════════ */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--navy);
+      border-top: 1px solid rgba(200,169,81,.15);
+      display: flex; z-index: 100;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .nav-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: .75rem .5rem; gap: 3px;
+      text-decoration: none; color: var(--muted);
+      font-size: .72rem; font-weight: 500;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: color .15s; position: relative;
+    }
+    .nav-item i { font-size: 1.1rem; }
+    .nav-item.active { color: var(--accent); }
+    .nav-item.active::after {
+      content: ''; position: absolute;
+      top: 0; left: 25%; right: 25%; height: 2px;
+      background: var(--accent); border-radius: 0 0 2px 2px;
+    }
+    .nav-dot {
+      position: absolute; top: .6rem; right: calc(50% - 14px);
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #e05c5c; display: none;
+    }
+    .nav-dot.show { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(14px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="top-header">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="avatar" id="avatar">?</div>
+        <div class="header-text">
+          <div class="header-greeting">Bonjour,</div>
+          <div class="header-name" id="headerName">—</div>
+          <div class="header-badge" id="headerBadge">—</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">
+        <i class="bi bi-box-arrow-right"></i> Déconnexion
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENU -->
+  <main class="main">
+    <div class="page-title">Annonces</div>
+    <p class="page-sub">Événements, informations et actualités</p>
+
+    <!-- Filtres -->
+    <div class="filter-wrap">
+      <button class="filter-btn active" data-type="tous"   onclick="filter('tous',this)">Toutes</button>
+      <button class="filter-btn event"  data-type="event"  onclick="filter('event',this)">Événements</button>
+      <button class="filter-btn info"   data-type="info"   onclick="filter('info',this)">Informations</button>
+      <button class="filter-btn urgent" data-type="urgent" onclick="filter('urgent',this)">Urgent</button>
+    </div>
+
+    <!-- Liste -->
+    <div class="annonces-list" id="annoncesList">
+      <div class="skel-card"><div class="skel skel-line w30"></div><div class="skel skel-line h16 w60"></div><div class="skel skel-line w100"></div><div class="skel skel-line w90"></div></div>
+      <div class="skel-card"><div class="skel skel-line w30"></div><div class="skel skel-line h16 w60"></div><div class="skel skel-line w100"></div><div class="skel skel-line w90"></div></div>
+      <div class="skel-card"><div class="skel skel-line w30"></div><div class="skel skel-line h16 w60"></div><div class="skel skel-line w100"></div><div class="skel skel-line w90"></div></div>
+    </div>
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="page-principale.html" class="nav-item">
+      <i class="bi bi-house-fill"></i>Accueil
+    </a>
+    <a href="cours.html" class="nav-item">
+      <i class="bi bi-journal-bookmark"></i>Cours
+    </a>
+    <a href="edt.html" class="nav-item">
+      <i class="bi bi-calendar-week"></i>EDT
+    </a>
+    <a href="annonces.html" class="nav-item active">
+      <i class="bi bi-megaphone-fill"></i>Annonces
+    </a>
+    <a href="notifications.html" class="nav-item">
+      <i class="bi bi-bell"></i>
+      <div class="nav-dot" id="navDot"></div>
+      Notifs
+    </a>
+  </nav>
+
+  <script>
+    /* ── Auth guard ── */
+    (function () {
+      const t = sessionStorage.getItem('onifra_token');
+      if (!t) { location.href = 'login.html'; return; }
+      try {
+        const p = JSON.parse(atob(t.split('.')[1]));
+        if (p.exp * 1000 < Date.now()) { sessionStorage.clear(); location.href = 'login.html'; }
+      } catch { sessionStorage.clear(); location.href = 'login.html'; }
+    })();
+
+    /* ── Étudiant ── */
+    const etudiant = JSON.parse(sessionStorage.getItem('onifra_etudiant') || '{}');
+    const { nom = '', prenom = '', mention = '', niveau = '' } = etudiant;
+    const mentionLabel = { gestion: 'Gestion', droit: 'Droit', agronomie: 'Agronomie' };
+    const initiales = ((prenom[0] || '') + (nom[0] || '')).toUpperCase() || '?';
+
+    document.getElementById('avatar').textContent      = initiales;
+    document.getElementById('headerName').textContent  = prenom + ' ' + nom.toUpperCase();
+    document.getElementById('headerBadge').textContent =
+      (mentionLabel[mention] || mention) + ' · ' + niveau;
+
+    /* ── API ── */
+    const API   = '/api';
+    const token = sessionStorage.getItem('onifra_token');
+    const hdrs  = { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' };
+
+    const TEL_SCOLARITE = '+261349834402';
+    let allAnnonces = [];
+    let activeType  = 'tous';
+
+    /* ── Charger annonces ── */
+    async function loadAnnonces() {
+      try {
+        const res  = await fetch(`${API}/actualites`, { headers: hdrs });
+        allAnnonces = await res.json();
+        render(allAnnonces);
+      } catch {
+        document.getElementById('annoncesList').innerHTML = `
+          <div class="state-box">
+            <i class="bi bi-wifi-off"></i>
+            <p>Impossible de charger les annonces.<br>Vérifiez votre connexion.</p>
+          </div>`;
+      }
+    }
+
+    /* ── Filtre ── */
+    function filter(type, btn) {
+      activeType = type;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filtered = type === 'tous' ? allAnnonces : allAnnonces.filter(a => a.type === type);
+      render(filtered);
+    }
+
+    /* ── Rendu ── */
+    function render(annonces) {
+      const list = document.getElementById('annoncesList');
+
+      if (!annonces.length) {
+        list.innerHTML = `
+          <div class="state-box">
+            <i class="bi bi-megaphone"></i>
+            <p>Aucune annonce pour le moment.</p>
+          </div>`;
+        return;
+      }
+
+      const types  = { event: 'Événement', info: 'Information', urgent: 'Urgent' };
+      const now    = Date.now();
+
+      list.innerHTML = annonces.map((a, i) => {
+        const date    = new Date(a.created_at);
+        const dateStr = date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+        const isNew   = (now - date.getTime()) < 3 * 24 * 60 * 60 * 1000; /* < 3 jours */
+
+        const eventDateBlock = a.date_evenement ? `
+          <div class="annonce-event-date">
+            <i class="bi bi-calendar-event-fill"></i>
+            <span>${new Date(a.date_evenement).toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' })}</span>
+          </div>` : '';
+
+        return `
+          <div class="annonce-card" style="animation-delay:${i * 60}ms" id="ann-${a.id}">
+            <div class="annonce-top-bar ${a.type}"></div>
+            <div class="annonce-body">
+              <div class="annonce-meta">
+                <span class="annonce-type ${a.type}">${types[a.type] || 'Info'}</span>
+                <span class="annonce-date"><i class="bi bi-clock"></i>${dateStr}</span>
+                ${isNew ? '<span class="annonce-new">Nouveau</span>' : ''}
+              </div>
+              <div class="annonce-title">${a.titre}</div>
+              ${eventDateBlock}
+              <div class="annonce-contenu">${a.contenu}</div>
+              <div class="annonce-actions">
+                <button class="btn-comment" onclick="toggleComments(${a.id}, this)">
+                  <i class="bi bi-chat"></i> Commenter
+                </button>
+                <a class="btn-contact" href="tel:${TEL_SCOLARITE}">
+                  <i class="bi bi-telephone-fill"></i> Plus d'infos
+                </a>
+                <span class="comment-count" id="count-${a.id}">
+                  <i class="bi bi-chat-dots"></i>
+                  <span id="countNum-${a.id}">${a.comment_count || 0}</span>
+                </span>
+              </div>
+            </div>
+            <div class="comments-wrap" id="comments-${a.id}">
+              <div class="comments-inner">
+                <div id="commentsList-${a.id}">
+                  <div style="text-align:center;padding:.75rem;font-size:.78rem;color:#a0aec0;">
+                    Chargement…
+                  </div>
+                </div>
+                <div class="comment-input-wrap">
+                  <div class="comment-avatar-me">${initiales}</div>
+                  <input class="comment-input" id="input-${a.id}"
+                    type="text" placeholder="Écrire un commentaire…"
+                    maxlength="300" autocomplete="off">
+                  <button class="btn-send" onclick="sendComment(${a.id})">
+                    <i class="bi bi-send-fill"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    /* ── Toggle commentaires ── */
+    async function toggleComments(id, btn) {
+      const wrap = document.getElementById('comments-' + id);
+      const isOpen = wrap.classList.contains('open');
+
+      if (isOpen) {
+        wrap.classList.remove('open');
+        btn.classList.remove('active');
+        return;
+      }
+
+      wrap.classList.add('open');
+      btn.classList.add('active');
+      await loadComments(id);
+
+      /* Focus input */
+      setTimeout(() => {
+        document.getElementById('input-' + id)?.focus();
+      }, 350);
+    }
+
+    /* ── Charger commentaires ── */
+    async function loadComments(id) {
+      try {
+        const res  = await fetch(`${API}/actualites/${id}/commentaires`, { headers: hdrs });
+        const data = await res.json();
+        renderComments(id, data);
+      } catch {
+        document.getElementById('commentsList-' + id).innerHTML =
+          '<p style="font-size:.78rem;color:#a0aec0;text-align:center;padding:.5rem;">Impossible de charger les commentaires.</p>';
+      }
+    }
+
+    /* ── Rendu commentaires ── */
+    function renderComments(id, comments) {
+      const list = document.getElementById('commentsList-' + id);
+      if (!comments.length) {
+        list.innerHTML = '<p style="font-size:.78rem;color:#a0aec0;text-align:center;padding:.5rem 0 .75rem;">Soyez le premier à commenter.</p>';
+        return;
+      }
+      list.innerHTML = comments.map(c => {
+        const init = ((c.prenom?.[0] || '') + (c.nom?.[0] || '')).toUpperCase() || '?';
+        const time = new Date(c.created_at).toLocaleString('fr-FR', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+        return `
+          <div class="comment-item">
+            <div class="comment-avatar">${init}</div>
+            <div class="comment-bubble">
+              <div class="comment-author">${c.prenom} ${c.nom?.[0] || ''}.</div>
+              <div class="comment-text">${c.contenu}</div>
+              <div class="comment-time">${time}</div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    /* ── Envoyer commentaire ── */
+    async function sendComment(id) {
+      const input   = document.getElementById('input-' + id);
+      const contenu = input.value.trim();
+      if (!contenu) return;
+
+      input.value = '';
+      input.disabled = true;
+
+      try {
+        const res = await fetch(`${API}/actualites/${id}/commentaires`, {
+          method: 'POST',
+          headers: hdrs,
+          body: JSON.stringify({ contenu })
+        });
+        if (!res.ok) throw new Error();
+
+        /* Mettre à jour le compteur */
+        const numEl = document.getElementById('countNum-' + id);
+        if (numEl) numEl.textContent = parseInt(numEl.textContent || 0) + 1;
+
+        await loadComments(id);
+      } catch {
+        input.value = contenu; /* Remettre le texte si erreur */
+        alert('Impossible d\'envoyer le commentaire. Réessayez.');
+      } finally {
+        input.disabled = false;
+        input.focus();
+      }
+    }
+
+    /* Enter pour envoyer */
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Enter') return;
+      const focused = document.activeElement;
+      if (!focused?.classList.contains('comment-input')) return;
+      const id = focused.id.replace('input-', '');
+      sendComment(id);
+    });
+
+    /* ── Notif dot ── */
+    async function loadNotifDot() {
+      try {
+        const res  = await fetch(`${API}/notifications/unread-count`, { headers: hdrs });
+        const data = await res.json();
+        if (data.count > 0) document.getElementById('navDot').classList.add('show');
+      } catch {}
+    }
+
+    /* ── Déconnexion ── */
+    async function logout() {
+      try { await fetch(`${API}/auth/logout`, { method: 'POST', headers: hdrs }); } catch {}
+      sessionStorage.clear();
+      location.href = 'login.html';
+    }
+
+    loadAnnonces();
+    loadNotifDot();
+  </script>
+
+</body>
+</html>
