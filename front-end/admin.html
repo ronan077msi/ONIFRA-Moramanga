@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Administration — ONIFRA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --navy:      #08122d;
+      --navy-mid:  #0d1f3c;
+      --navy-lt:   #162848;
+      --accent:    #c8a951;
+      --accent-lt: #e4c96a;
+      --green:     #22c55e;
+      --red:       #e05c5c;
+      --blue:      #3b82f6;
+      --muted:     rgba(255,255,255,0.45);
+      --radius:    12px;
+      --bg:        #f0f4f8;
+      --sidebar-w: 240px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+    }
+
+    /* ══════════════════════
+       LAYOUT
+    ══════════════════════ */
+    .layout { display: flex; min-height: 100vh; }
+
+    /* ══════════════════════
+       SIDEBAR
+    ══════════════════════ */
+    .sidebar {
+      width: var(--sidebar-w); flex-shrink: 0;
+      background: var(--navy);
+      position: fixed; top: 0; left: 0; bottom: 0;
+      display: flex; flex-direction: column;
+      border-right: 1px solid rgba(200,169,81,.12);
+      z-index: 200;
+      transition: transform .3s ease;
+    }
+    .sidebar-brand {
+      padding: 1.25rem 1.1rem 1rem;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      display: flex; align-items: center; gap: .75rem;
+    }
+    .brand-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(200,169,81,.15);
+      border: 1px solid rgba(200,169,81,.25);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent); font-size: 1rem; flex-shrink: 0;
+    }
+    .brand-text { min-width: 0; }
+    .brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: .9rem; font-weight: 700; color: #fff;
+    }
+    .brand-sub { font-size: .65rem; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+
+    .sidebar-nav { flex: 1; padding: .75rem 0; overflow-y: auto; }
+    .nav-section-label {
+      font-size: .6rem; font-weight: 700; letter-spacing: .16em;
+      text-transform: uppercase; color: rgba(255,255,255,.25);
+      padding: .75rem 1.1rem .3rem;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: .7rem;
+      padding: .6rem 1.1rem; cursor: pointer;
+      color: rgba(255,255,255,.55); font-size: .82rem; font-weight: 500;
+      touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+      transition: color .15s, background .15s;
+      border-left: 2px solid transparent;
+      user-select: none;
+    }
+    .nav-item i { font-size: 1rem; flex-shrink: 0; width: 18px; text-align: center; }
+    .nav-item:hover { color: #fff; background: rgba(255,255,255,.05); }
+    .nav-item.active {
+      color: var(--accent); background: rgba(200,169,81,.08);
+      border-left-color: var(--accent);
+    }
+
+    .sidebar-footer {
+      padding: .85rem 1.1rem;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .admin-info {
+      display: flex; align-items: center; gap: .65rem; margin-bottom: .6rem;
+    }
+    .admin-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-lt));
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem; font-weight: 700; color: var(--navy); flex-shrink: 0;
+    }
+    .admin-name { font-size: .78rem; font-weight: 600; color: #fff; }
+    .admin-role { font-size: .65rem; color: var(--muted); }
+    .btn-logout-sidebar {
+      width: 100%; background: rgba(224,92,92,.1);
+      border: 1px solid rgba(224,92,92,.2);
+      border-radius: 8px; color: #e05c5c;
+      padding: .45rem; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: .75rem; font-weight: 500;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+      touch-action: manipulation; transition: background .15s;
+    }
+    .btn-logout-sidebar:hover { background: rgba(224,92,92,.2); }
+
+    /* ── Overlay mobile ── */
+    .sidebar-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.5); z-index: 190;
+    }
+    .sidebar-overlay.show { display: block; }
+
+    /* ══════════════════════
+       CONTENU PRINCIPAL
+    ══════════════════════ */
+    .main-content {
+      margin-left: var(--sidebar-w);
+      flex: 1; min-width: 0;
+    }
+
+    /* Topbar mobile */
+    .topbar-mobile {
+      display: none;
+      background: var(--navy);
+      padding: .75rem 1rem;
+      align-items: center; gap: .75rem;
+      border-bottom: 1px solid rgba(200,169,81,.12);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .btn-menu {
+      background: none; border: none; color: #fff;
+      font-size: 1.2rem; cursor: pointer; padding: 4px;
+      touch-action: manipulation;
+    }
+    .topbar-title {
+      font-family: 'Playfair Display', serif;
+      font-size: .95rem; font-weight: 700; color: #fff;
+    }
+
+    .content-area { padding: 1.75rem 1.5rem; max-width: 900px; }
+
+    /* Section header */
+    .section-header { margin-bottom: 1.5rem; }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 700; color: var(--navy-mid);
+    }
+    .section-sub { font-size: .82rem; color: #6b7a99; margin-top: .2rem; }
+
+    /* Sections */
+    .section { display: none; }
+    .section.active { display: block; animation: fadeUp .35s ease both; }
+
+    /* ══════════════════════
+       COMPOSANTS COMMUNS
+    ══════════════════════ */
+
+    /* Card contenu */
+    .card {
+      background: #fff; border-radius: var(--radius);
+      border: 1px solid rgba(13,31,60,.07);
+      box-shadow: 0 2px 10px rgba(13,31,60,.05);
+      padding: 1.25rem; margin-bottom: 1rem;
+    }
+    .card-title {
+      font-size: .85rem; font-weight: 700;
+      color: #0d1f3c; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .card-title i { color: var(--accent); }
+
+    /* Formulaire */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .form-grid.col3 { grid-template-columns: 1fr 1fr 1fr; }
+    .form-grid.col1 { grid-template-columns: 1fr; }
+    .form-row { display: flex; flex-direction: column; gap: .3rem; }
+    .form-row.span2 { grid-column: span 2; }
+    .form-row.span3 { grid-column: span 3; }
+    .form-label {
+      font-size: .7rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase; color: #6b7a99;
+    }
+    .form-label .req { color: var(--red); margin-left: 2px; }
+    .form-input, .form-select, .form-textarea {
+      background: #f8fafc; border: 1px solid rgba(13,31,60,.12);
+      border-radius: 8px; color: #0d1f3c;
+      font-family: 'DM Sans', sans-serif; font-size: .88rem;
+      padding: .55rem .8rem; outline: none;
+      transition: border-color .2s; width: 100%;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
+    .form-input::placeholder, .form-textarea::placeholder { color: #a0aec0; }
+    .form-textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+    .form-select { cursor: pointer; }
+
+    /* Boutons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      border-radius: 8px; font-family: 'DM Sans', sans-serif;
+      font-size: .82rem; font-weight: 600; cursor: pointer;
+      padding: .55rem 1.1rem; border: none;
+      touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+      transition: all .15s;
+    }
+    .btn-primary { background: var(--navy); color: var(--accent); }
+    .btn-primary:hover { background: var(--navy-lt); }
+    .btn-success { background: var(--green); color: #fff; }
+    .btn-success:hover { background: #16a34a; }
+    .btn-danger  { background: var(--red); color: #fff; }
+    .btn-danger:hover  { background: #c0392b; }
+    .btn-outline {
+      background: none; border: 1px solid rgba(13,31,60,.15); color: #6b7a99;
+    }
+    .btn-outline:hover { border-color: var(--navy); color: var(--navy); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .btn-sm { padding: .35rem .75rem; font-size: .75rem; }
+
+    /* Tableau */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+    th {
+      background: #f8fafc; font-weight: 700; font-size: .68rem;
+      letter-spacing: .08em; text-transform: uppercase; color: #6b7a99;
+      padding: .65rem .85rem; text-align: left;
+      border-bottom: 1px solid rgba(13,31,60,.08);
+    }
+    td {
+      padding: .7rem .85rem; color: #0d1f3c;
+      border-bottom: 1px solid rgba(13,31,60,.05);
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f8fafc; }
+
+    /* Badge */
+    .badge {
+      display: inline-flex; align-items: center;
+      font-size: .65rem; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 20px;
+    }
+    .badge-gestion  { background: rgba(200,169,81,.15); color: #a07d20; }
+    .badge-droit    { background: rgba(59,130,246,.12); color: #2563eb; }
+    .badge-agro     { background: rgba(34,197,94,.12);  color: #16a34a; }
+    .badge-niveau   { background: rgba(139,92,246,.12); color: #7c3aed; }
+    .badge-info     { background: rgba(59,130,246,.12); color: #2563eb; }
+    .badge-event    { background: rgba(200,169,81,.15); color: #a07d20; }
+    .badge-urgent   { background: rgba(224,92,92,.12);  color: #c0392b; }
+
+    /* Actions tableau */
+    .table-actions { display: flex; gap: .4rem; }
+
+    /* Upload zone */
+    .file-drop {
+      border: 1.5px dashed rgba(13,31,60,.2);
+      border-radius: 10px; padding: 1.5rem;
+      text-align: center; cursor: pointer;
+      transition: border-color .2s, background .2s;
+      background: #f8fafc; position: relative;
+    }
+    .file-drop:hover, .file-drop.drag { border-color: var(--accent); background: rgba(200,169,81,.04); }
+    .file-drop input[type=file] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .file-drop-icon { font-size: 2rem; color: #a0aec0; margin-bottom: .5rem; }
+    .file-drop-text { font-size: .8rem; color: #6b7a99; line-height: 1.6; }
+    .file-drop-text strong { color: var(--accent); }
+    .file-preview {
+      display: none; align-items: center; gap: .6rem;
+      background: rgba(200,169,81,.08); border: 1px solid rgba(200,169,81,.2);
+      border-radius: 8px; padding: .55rem .85rem; margin-top: .6rem;
+    }
+    .file-preview.show { display: flex; }
+    .file-preview i { color: var(--accent); }
+    .file-preview span { font-size: .78rem; color: #0d1f3c; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .file-preview button { background: none; border: none; color: #a0aec0; cursor: pointer; font-size: .85rem; }
+
+    /* Modules assignés (enseignants) */
+    .modules-assign {
+      display: flex; flex-direction: column; gap: .5rem;
+      margin-top: .5rem;
+    }
+    .module-assign-row {
+      display: grid; grid-template-columns: 1fr 1fr 1fr auto;
+      gap: .5rem; align-items: end;
+    }
+    .btn-add-module-row {
+      background: none; border: 1px dashed rgba(13,31,60,.2);
+      border-radius: 8px; color: #6b7a99;
+      padding: .45rem; cursor: pointer; font-size: .8rem;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+      touch-action: manipulation; transition: all .15s; width: 100%;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-add-module-row:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-remove-row {
+      background: none; border: 1px solid rgba(224,92,92,.2);
+      border-radius: 8px; color: var(--red);
+      width: 32px; height: 32px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .85rem; flex-shrink: 0;
+      touch-action: manipulation; transition: background .15s;
+    }
+    .btn-remove-row:hover { background: rgba(224,92,92,.1); }
+
+    /* Notification ciblage */
+    .target-options { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .75rem; }
+    .target-btn {
+      background: #f8fafc; border: 1px solid rgba(13,31,60,.12);
+      border-radius: 20px; color: #6b7a99;
+      padding: .38rem .9rem; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: .75rem; font-weight: 500;
+      touch-action: manipulation; transition: all .15s;
+    }
+    .target-btn.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+    /* Mot de passe sécurité */
+    .pwd-input-wrap { position: relative; }
+    .pwd-input-wrap .form-input { padding-right: 2.5rem; }
+    .btn-eye-pwd {
+      position: absolute; right: 10px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none; color: #a0aec0;
+      cursor: pointer; font-size: .95rem; padding: 3px;
+      touch-action: manipulation; transition: color .15s;
+    }
+    .btn-eye-pwd:hover { color: var(--accent); }
+
+    /* Strength bar */
+    .strength-bar { height: 3px; background: #e2e6ed; border-radius: 2px; overflow: hidden; margin-top: .35rem; }
+    .strength-fill { height: 100%; border-radius: 2px; transition: width .3s, background .3s; width: 0%; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #0d1f3c; color: #fff;
+      border-radius: 10px; padding: .65rem 1.25rem;
+      font-size: .82rem; font-weight: 500;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 8px 24px rgba(13,31,60,.3);
+      z-index: 999; opacity: 0;
+      transition: opacity .3s, transform .3s;
+      pointer-events: none; white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.success i { color: var(--green); }
+    .toast.error   i { color: var(--red); }
+
+    /* Modal confirmation */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.5); z-index: 500;
+      align-items: center; justify-content: center; padding: 1rem;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: #fff; border-radius: 16px;
+      padding: 1.5rem; max-width: 380px; width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,.2);
+      animation: fadeUp .3s ease both;
+    }
+    .modal-icon { font-size: 2rem; margin-bottom: .75rem; display: block; text-align: center; }
+    .modal-title { font-size: 1rem; font-weight: 700; color: #0d1f3c; text-align: center; margin-bottom: .4rem; }
+    .modal-msg   { font-size: .82rem; color: #6b7a99; text-align: center; line-height: 1.5; margin-bottom: 1.25rem; }
+    .modal-actions { display: flex; gap: .6rem; }
+    .modal-actions .btn { flex: 1; justify-content: center; }
+
+    /* Skeleton */
+    .skel { border-radius: 6px; background: linear-gradient(90deg,#eef0f5 25%,#e2e6ed 50%,#eef0f5 75%); background-size: 800px 100%; animation: shimmer 1.4s ease-in-out infinite; }
+    .skel-row { height: 44px; margin-bottom: .5rem; }
+    @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ══════════════════════
+       RESPONSIVE
+    ══════════════════════ */
+    @media(max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main-content { margin-left: 0; }
+      .topbar-mobile { display: flex; }
+      .content-area { padding: 1.25rem 1rem; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-grid.col3 { grid-template-columns: 1fr; }
+      .form-row.span2, .form-row.span3 { grid-column: span 1; }
+      .module-assign-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="layout">
+
+    <!-- ══ SIDEBAR ══ -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon"><i class="bi bi-shield-lock-fill"></i></div>
+        <div class="brand-text">
+          <div class="brand-name">ONIFRA</div>
+          <div class="brand-sub">Administration</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Gestion</div>
+        <div class="nav-item active" onclick="showSection('etudiants', this)">
+          <i class="bi bi-people-fill"></i> Étudiants
+        </div>
+        <div class="nav-item" onclick="showSection('enseignants', this)">
+          <i class="bi bi-person-workspace"></i> Enseignants
+        </div>
+        <div class="nav-item" onclick="showSection('modules', this)">
+          <i class="bi bi-journal-bookmark-fill"></i> Modules
+        </div>
+
+        <div class="nav-section-label">Contenu</div>
+        <div class="nav-item" onclick="showSection('edt', this)">
+          <i class="bi bi-calendar-week-fill"></i> EDT
+        </div>
+        <div class="nav-item" onclick="showSection('actualites', this)">
+          <i class="bi bi-megaphone-fill"></i> Actualités
+        </div>
+        <div class="nav-item" onclick="showSection('notifications', this)">
+          <i class="bi bi-bell-fill"></i> Notifications
+        </div>
+
+        <div class="nav-section-label">Compte</div>
+        <div class="nav-item" onclick="showSection('securite', this)">
+          <i class="bi bi-lock-fill"></i> Sécurité
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="admin-info">
+          <div class="admin-avatar">A</div>
+          <div>
+            <div class="admin-name">Administrateur</div>
+            <div class="admin-role">ONIFRA Moramanga</div>
+          </div>
+        </div>
+        <button class="btn-logout-sidebar" onclick="logout()">
+          <i class="bi bi-box-arrow-right"></i> Déconnexion
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- ══ CONTENU ══ -->
+    <div class="main-content">
+
+      <!-- Topbar mobile -->
+      <div class="topbar-mobile">
+        <button class="btn-menu" onclick="openSidebar()">
+          <i class="bi bi-list"></i>
+        </button>
+        <span class="topbar-title" id="topbarTitle">Étudiants</span>
+      </div>
+
+      <div class="content-area">
+
+        <!-- ══════════════════════
+             ÉTUDIANTS
+        ══════════════════════ -->
+        <div class="section active" id="sec-etudiants">
+          <div class="section-header">
+            <div class="section-title">Étudiants</div>
+            <div class="section-sub">Gérer les comptes étudiants</div>
+          </div>
+
+          <!-- Formulaire ajout -->
+          <div class="card">
+            <div class="card-title"><i class="bi bi-person-plus-fill"></i> Ajouter un étudiant</div>
+            <div class="form-grid">
+              <div class="form-row">
+                <label class="form-label">Nom <span class="req">*</span></label>
+                <input class="form-input" id="etNom" type="text" placeholder="RAKOTO">
+              </div>
+              <div class="form-row">
+                <label class="form-label">Prénom <span class="req">*</span></label>
+                <input class="form-input" id="etPrenom" type="text" placeholder="Jean">
+              </div>
+              <div class="form-row">
+                <label class="form-label">Matricule <span class="req">*</span></label>
+                <input class="form-input" id="etMatricule" type="text" placeholder="2024-GES-001">
+              </div>
+              <div class="form-row">
+                <label class="form-label">Téléphone <span class="req">*</span></label>
+                <input class="form-input" id="etTel" type="tel" placeholder="+261 34 XX XXX XX">
+              </div>
+              <div class="form-row">
+                <label class="form-label">Mention <span class="req">*</span></label>
+                <select class="form-select" id="etMention">
+                  <option value="">— Choisir —</option>
+                  <option value="gestion">Gestion</option>
+                  <option value="droit">Droit</option>
+                  <option value="agronomie">Agronomie</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label class="form-label">Niveau <span class="req">*</span></label>
+                <select class="form-select" id="etNiveau">
+                  <option value="">— Choisir —</option>
+                  <option value="L1">L1</option>
+                  <option value="L2">L2</option>
+                  <option value="L3">L3</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-top:.85rem; display:flex; gap:.6rem;">
+              <button class="btn btn-primary" onclick="addEtudiant()">
+                <i class="bi bi-plus-lg"></i> Ajouter
+              </button>
+              <button class="btn btn-outline" onclick="clearEtudiantForm()">
+                <i class="bi bi-x"></i> Effacer
+              </button>
+            </div>
+          </div>
+
+          <!-- Liste étudiants -->
+          <div class="card">
+            <div class="card-title" style="justify-content:space-between;">
+              <span><i class="bi bi-list-ul"></i> Liste des étudiants</span>
+              <input class="form-input" id="searchEt" type="search"
+                placeholder="Rechercher…" style="width:180px;padding:.35rem .75rem;font-size:.78rem;"
+                oninput="filterEtudiants(this.value)">
+            </div>
+            <div class="table-wrap">
+              <table id="etTable">
+                <thead>
+                  <tr>
+                    <th>Nom & Prénom</th>
+                    <th>Matricule</th>
+                    <th>Mention</th>
+                    <th>Niveau</th>
+                    <th>Tél</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="etTbody">
+                  <tr><td colspan="6"><div class="skel skel-row"></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════
+             ENSEIGNANTS
+        ══════════════════════ -->
+        <div class="section" id="sec-enseignants">
+          <div class="section-header">
+            <div class="section-title">Enseignants</div>
+            <div class="section-sub">Gérer les comptes enseignants et leurs modules</div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="bi bi-person-plus-fill"></i> Ajouter un enseignant</div>
+            <div class="form-grid">
+              <div class="form-row">
+                <label class="form-label">Nom <span class="req">*</span></label>
+                <input class="form-input" id="ensNom" type="text" placeholder="RAZAFY">
+              </div>
+              <div class="form-row">
+                <label class="form-label">Prénom <span class="req">*</span></label>
+                <input class="form-input" id="ensPrenom" type="text" placeholder="Marie">
+              </div>
+              <div class="form-row">
+                <label class="form-label">Grade / Titre</label>
+                <input class="form-input" id="ensGrade" type="text" placeholder="Dr., Prof., M., Mme">
+              </div>
+              <div class="form-row">
+                <label class="form-label">PIN (6 chiffres) <span class="req">*</span></label>
+                <input class="form-input" id="ensPin" type="text"
+                  placeholder="ex: 123456" maxlength="6" pattern="[0-9]{6}">
+              </div>
+            </div>
+
+            <!-- Modules assignés -->
+            <div style="margin-top:.85rem;">
+              <label class="form-label" style="margin-bottom:.5rem;display:block;">
+                Modules assignés <span class="req">*</span>
+              </label>
+              <div class="modules-assign" id="modulesAssign">
+                <div class="module-assign-row" id="modRow-0">
+                  <div class="form-row">
+                    <label class="form-label">Nom du module</label>
+                    <input class="form-input mod-name" type="text" placeholder="Analyse Financière">
+                  </div>
+                  <div class="form-row">
+                    <label class="form-label">Mention</label>
+                    <select class="form-select mod-mention">
+                      <option value="">—</option>
+                      <option value="gestion">Gestion</option>
+                      <option value="droit">Droit</option>
+                      <option value="agronomie">Agronomie</option>
+                    </select>
+                  </div>
+                  <div class="form-row">
+                    <label class="form-label">Niveau</label>
+                    <select class="form-select mod-niveau">
+                      <option value="">—</option>
+                      <option value="L1">L1</option>
+                      <option value="L2">L2</option>
+                      <option value="L3">L3</option>
+                    </select>
+                  </div>
+                  <button class="btn-remove-row" onclick="removeModRow(0)" style="margin-top:1.4rem;">
+                    <i class="bi bi-trash3"></i>
+                  </button>
+                </div>
+              </div>
+              <button class="btn-add-module-row" style="margin-top:.5rem;" onclick="addModRow()">
+                <i class="bi bi-plus-circle"></i> Ajouter un autre module
+              </button>
+            </div>
+
+            <div style="margin-top:.85rem; display:flex; gap:.6rem;">
+              <button class="btn btn-primary" onclick="addEnseignant()">
+                <i class="bi bi-plus-lg"></i> Ajouter
+              </button>
+              <button class="btn btn-outline" onclick="clearEnsForm()">
+                <i class="bi bi-x"></i> Effacer
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="bi bi-list-ul"></i> Liste des enseignants</div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Nom & Prénom</th>
+                    <th>Grade</th>
+                    <th>Modules</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="ensTbody">
+                  <tr><td colspan="4"><div class="skel skel-row"></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════
+             MODULES
+        ══════════════════════ -->
+        <div class="section" id="sec-modules">
+          <div class="section-header">
+            <div class="section-title">Modules</div>
+            <div class="section-sub">Créer et gérer les modules de cours</div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="bi bi-journal-plus"></i> Créer un module</div>
+            <div class="form-grid col3">
+              <div class="form-row">
+                <label class="form-label">Nom du module <span class="req">*</span></label>
+                <input class="form-input" id="modNom" type="text" placeholder="Analyse Financière">
+              </div>
+              <div class="form-row">
+                <label class="form-label">Mention <span class="req">*</span></label>
+                <select class="form-select" id="modMention">
+                  <option value="">— Choisir —</option>
+                  <option value="gestion">Gestion</option>
+                  <option value="droit">Droit</option>
+                  <option value="agronomie">Agronomie</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label class="form-label">Niveau <span class="req">*</span></label>
+                <select class="form-select" id="modNiveau">
+                  <option value="">— Choisir —</option>
+                  <option value="L1">L1</option>
+                  <option value="L2">L2</option>
+                  <option value="L3">L3</option>
+                </select>
+              </div>
+              <div class="form-row span3">
+                <label class="form-label">Enseignant assigné <span class="req">*</span></label>
+                <select class="form-select" id="modEnseignant">
+                  <option value="">— Choisir un enseignant —</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-top:.85rem;">
+              <button class="btn btn-primary" onclick="addModule()">
+                <i class="bi bi-plus-lg"></i> Créer le module
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="bi bi-list-ul"></i> Modules existants</div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Module</th>
+                    <th>Mention</th>
+                    <th>Niveau</th>
+                    <th>Enseignant</th>
+                    <th>Supports</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="modTbody">
+                  <tr><td colspan="6"><div class="skel skel-row"></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════
+             EDT
+        ══════════════════════ -->
+        <div class="section" id="sec-edt">
+          <div class="section-header">
+            <div class="section-title">Emploi du temps</div>
+            <div class="section-sub">Publier les EDT par mention et niveau</div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="bi bi-upload"></i> Publier un EDT</div>
+            <div class="form-grid">
+              <div class="form-row">
+                <label class="form-label">Mention <span class="req">*</span></label>
+                <select class="form-select" id="edtMention">
+                  <option value="">— Choisir —</option>
+                  <option value="gestion">Gestion</option>
+                  <option value="droit">Droit</option>
+                  <option value="agronomie">Agronomie</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label class="form-label">Niveau <span class="req">*</span></label>
+                <select class="form-select" id="edtNiveau">
+                  <option value="">— Choisir —</option>
+                  <option value="L1">L1</option>
+                  <option value="L2">L2</option>
+                  <option value="L3">L3</option>
+                </select>
+              </div>
+              <div class="form-row span2">
+                <label class="form-label">Image EDT (JPG/PNG) <span class="req">*</span></label>
+                <div class="file-drop" id="edtFileDrop"
+                  ondragover="dragOver(event,'edtFileDrop')"
+                  ondragleave="dragLeave('edtFileDrop')"
+                  ondrop="dropFile(event,'edtFileInput','edtFileDrop','edtFilePreview','edtFileName')">
+                  <input type="file" id="edtFileInput" accept="image/jpeg,image/png"
+                    onchange="fileChange('edtFileInput','edtFileDrop','edtFilePreview','edtFileName')">
+                  <div class="file-drop-icon"><i class="bi bi-image"></i></div>
+                  <div class="file-drop-text">
+                    <strong>Cliquez ou glissez</strong> l'image ici<br>
+                    JPG ou PNG — max 10 Mo
+                  </div>
+                </div>
+                <div class="file-preview" id="edtFilePreview">
+                  <i class="bi bi-image-fill"></i>
+                  <span id="edtFileName">—</span>
+                  <button onclick="clearFileDrop('edtFileInput','edtFileDrop','edtFilePreview')">
+                    <i class="bi bi-x"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:.85rem;">
+              <button class="btn btn-primary" onclick="publishEDT()">
+                <i class="bi bi-calendar-check"></i> Publier l'EDT
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="bi bi-clock-history"></i> EDT publiés</div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Mention</th><th>Niveau</th><th>Date publication</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="edtTbody">
+                  <tr><td colspan="4"><div class="skel skel-row"></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════
+             ACTUALITÉS
+        ══════════════════════ -->
+        <div class="section" id="sec-actualites">
+          <div class="section-header">
+            <div class="section-title">Actualités</div>
+            <div class="section-sub">Publier et gérer les annonces</div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="bi bi-megaphone-fill"></i> Nouvelle annonce</div>
+            <div class="form-grid">
+              <div class="form-row span2">
+                <label class="form-label">Titre <span class="req">*</span></label>
+                <input class="form-input" id="actTitre" type="text"
+                  placeholder="Titre de l'annonce">
+              </div>
+              <div class="form-row">
+                <label class="form-label">Type <span class="req">*</span></label>
+                <select class="form-select" id="actType">
+                  <option value="info">Information</option>
+                  <option value="event">Événement</option>
+                  <option value="urgent">Urgent</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label class="form-label">Date événement <span style="color:#a0aec0;font-weight:400">(si événement)</span></label>
+                <input class="form-input" id="actDateEvt" type="date">
+              </div>
+              <div class="form-row span2">
+                <label class="form-label">Contenu <span class="req">*</span></label>
+                <textarea class="form-textarea" id="actContenu"
+                  placeholder="Contenu de l'annonce…" rows="4"></textarea>
+              </div>
+              <div class="form-row span2">
+                <label class="form-label">Image <span style="color:#a0aec0;font-weight:400">(facultatif)</span></label>
+                <div class="file-drop" id="actFileDrop"
+                  ondragover="dragOver(event,'actFileDrop')"
+                  ondragleave="dragLeave('actFileDrop')"
+                  ondrop="dropFile(event,'actFileInput','actFileDrop','actFilePreview','actFileName')">
+                  <input type="file" id="actFileInput" accept="image/jpeg,image/png,image/webp"
+                    onchange="fileChange('actFileInput','actFileDrop','actFilePreview','actFileName')">
+                  <div class="file-drop-icon"><i class="bi bi-image"></i></div>
+                  <div class="file-drop-text">
+                    <strong>Cliquez ou glissez</strong> une image<br>JPG, PNG ou WebP
+                  </div>
+                </div>
+                <div class="file-preview" id="actFilePreview">
+                  <i class="bi bi-image-fill"></i>
+                  <span id="actFileName">—</span>
+                  <button onclick="clearFileDrop('actFileInput','actFileDrop','actFilePreview')">
+                    <i class="bi bi-x"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:.85rem;">
+              <button class="btn btn-primary" onclick="publishActualite()">
+                <i class="bi bi-send-fill"></i> Publier
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="bi bi-list-ul"></i> Annonces publiées</div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Titre</th><th>Type</th><th>Date</th><th>Commentaires</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="actTbody">
+                  <tr><td colspan="5"><div class="skel skel-row"></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════
+             NOTIFICATIONS
+        ══════════════════════ -->
+        <div class="section" id="sec-notifications">
+          <div class="section-header">
+            <div class="section-title">Notifications</div>
+            <div class="section-sub">Envoyer des notifications aux étudiants</div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="bi bi-bell-fill"></i> Envoyer une notification</div>
+
+            <div style="margin-bottom:.75rem;">
+              <label class="form-label" style="margin-bottom:.4rem;display:block;">
+                Cibler <span class="req">*</span>
+              </label>
+              <div class="target-options" id="targetOptions">
+                <button class="target-btn active" data-target="tous" onclick="setTarget('tous',this)">
+                  Tous les étudiants
+                </button>
+                <button class="target-btn" data-target="mention" onclick="setTarget('mention',this)">
+                  Par mention
+                </button>
+                <button class="target-btn" data-target="niveau" onclick="setTarget('niveau',this)">
+                  Par mention + niveau
+                </button>
+              </div>
+            </div>
+
+            <!-- Filtres mention/niveau (conditionnels) -->
+            <div id="targetFilters" style="display:none;" class="form-grid" style="margin-bottom:.75rem;">
+              <div class="form-row" id="filterMentionRow">
+                <label class="form-label">Mention</label>
+                <select class="form-select" id="notifMention">
+                  <option value="">Toutes</option>
+                  <option value="gestion">Gestion</option>
+                  <option value="droit">Droit</option>
+                  <option value="agronomie">Agronomie</option>
+                </select>
+              </div>
+              <div class="form-row" id="filterNiveauRow" style="display:none;">
+                <label class="form-label">Niveau</label>
+                <select class="form-select" id="notifNiveau">
+                  <option value="">Tous</option>
+                  <option value="L1">L1</option>
+                  <option value="L2">L2</option>
+                  <option value="L3">L3</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid col1">
+              <div class="form-row">
+                <label class="form-label">Type <span class="req">*</span></label>
+                <select class="form-select" id="notifType">
+                  <option value="admin">Information admin</option>
+                  <option value="edt">Changement EDT</option>
+                  <option value="annonce">Annonce</option>
+                  <option value="urgent">Urgent</option>
+                  <option value="cours">Nouveau cours</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label class="form-label">Titre <span class="req">*</span></label>
+                <input class="form-input" id="notifTitre" type="text"
+                  placeholder="ex : Changement EDT Gestion L2">
+              </div>
+              <div class="form-row">
+                <label class="form-label">Message <span class="req">*</span></label>
+                <textarea class="form-textarea" id="notifMessage"
+                  placeholder="Contenu de la notification…" rows="3"></textarea>
+              </div>
+            </div>
+
+            <div style="margin-top:.85rem;">
+              <button class="btn btn-primary" onclick="sendNotification()">
+                <i class="bi bi-send-fill"></i> Envoyer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════
+             SÉCURITÉ
+        ══════════════════════ -->
+        <div class="section" id="sec-securite">
+          <div class="section-header">
+            <div class="section-title">Sécurité</div>
+            <div class="section-sub">Modifier le mot de passe administrateur</div>
+          </div>
+
+          <div class="card" style="max-width:480px;">
+            <div class="card-title"><i class="bi bi-lock-fill"></i> Changer le mot de passe</div>
+            <div class="form-grid col1">
+              <div class="form-row">
+                <label class="form-label">Mot de passe actuel <span class="req">*</span></label>
+                <div class="pwd-input-wrap">
+                  <input class="form-input" id="pwdActuel" type="password"
+                    placeholder="Mot de passe actuel" autocomplete="current-password">
+                  <button class="btn-eye-pwd" type="button" onclick="togglePwd('pwdActuel',this)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="form-row">
+                <label class="form-label">Nouveau mot de passe <span class="req">*</span></label>
+                <div class="pwd-input-wrap">
+                  <input class="form-input" id="pwdNouveau" type="password"
+                    placeholder="Min. 8 caractères" autocomplete="new-password"
+                    oninput="checkPwdStrength(this)">
+                  <button class="btn-eye-pwd" type="button" onclick="togglePwd('pwdNouveau',this)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+                <div class="strength-bar">
+                  <div class="strength-fill" id="secStrengthFill"></div>
+                </div>
+              </div>
+              <div class="form-row">
+                <label class="form-label">Confirmer <span class="req">*</span></label>
+                <div class="pwd-input-wrap">
+                  <input class="form-input" id="pwdConfirm" type="password"
+                    placeholder="Répétez le nouveau mot de passe" autocomplete="new-password">
+                  <button class="btn-eye-pwd" type="button" onclick="togglePwd('pwdConfirm',this)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:.85rem;">
+              <button class="btn btn-primary" onclick="changePassword()">
+                <i class="bi bi-check-lg"></i> Enregistrer
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- .content-area -->
+    </div><!-- .main-content -->
+  </div><!-- .layout -->
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="bi bi-check-circle-fill"></i>
+    <span id="toastText">—</span>
+  </div>
+
+  <!-- Modal confirmation -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <span class="modal-icon" id="modalIcon">⚠️</span>
+      <div class="modal-title" id="modalTitle">Confirmer</div>
+      <div class="modal-msg"   id="modalMsg">Êtes-vous sûr ?</div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">Annuler</button>
+        <button class="btn btn-danger"  id="modalConfirmBtn" onclick="confirmAction()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ── Auth guard ── */
+    (function () {
+      const t = sessionStorage.getItem('onifra_admin_token');
+      if (!t) { location.href = 'login-admin.html'; return; }
+      try {
+        const p = JSON.parse(atob(t.split('.')[1]));
+        if (p.exp * 1000 < Date.now()) { sessionStorage.clear(); location.href = 'login-admin.html'; }
+      } catch { sessionStorage.clear(); location.href = 'login-admin.html'; }
+    })();
+
+    const API   = '/api';
+    const token = sessionStorage.getItem('onifra_admin_token');
+    const hdrs  = { 'Authorization': 'Bearer ' + token };
+    const hdrsJ = { ...hdrs, 'Content-Type': 'application/json' };
+    const mentionLabel = { gestion: 'Gestion', droit: 'Droit', agronomie: 'Agronomie' };
+
+    let allEtudiants = [];
+    let pendingAction = null;
+    let modRowCount = 1;
+    let activeTarget = 'tous';
+
+    /* ══════════════════════
+       NAVIGATION
+    ══════════════════════ */
+    function showSection(id, el) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('sec-' + id).classList.add('active');
+      el.classList.add('active');
+      document.getElementById('topbarTitle').textContent = el.textContent.trim();
+      closeSidebar();
+      /* Charger données de la section */
+      loadSection(id);
+    }
+
+    function loadSection(id) {
+      const loaders = {
+        etudiants:    loadEtudiants,
+        enseignants:  loadEnseignants,
+        modules:      loadModules,
+        edt:          loadEDT,
+        actualites:   loadActualites,
+      };
+      if (loaders[id]) loaders[id]();
+    }
+
+    /* ══════════════════════
+       SIDEBAR MOBILE
+    ══════════════════════ */
+    function openSidebar() {
+      document.getElementById('sidebar').classList.add('open');
+      document.getElementById('sidebarOverlay').classList.add('show');
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('show');
+    }
+
+    /* ══════════════════════
+       ÉTUDIANTS
+    ══════════════════════ */
+    async function loadEtudiants() {
+      try {
+        const res = await fetch(`${API}/admin/etudiants`, { headers: hdrs });
+        allEtudiants = await res.json();
+        renderEtudiants(allEtudiants);
+      } catch { showToast('Erreur chargement étudiants', 'error'); }
+    }
+
+    function renderEtudiants(data) {
+      const tbody = document.getElementById('etTbody');
+      if (!data.length) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#a0aec0;padding:1.5rem;">
+          Aucun étudiant enregistré</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = data.map(e => `
+        <tr>
+          <td><strong>${e.nom} ${e.prenom}</strong></td>
+          <td style="font-family:monospace;font-size:.8rem;">${e.matricule}</td>
+          <td><span class="badge badge-${e.mention}">${mentionLabel[e.mention] || e.mention}</span></td>
+          <td><span class="badge badge-niveau">${e.niveau}</span></td>
+          <td>${e.tel || '—'}</td>
+          <td>
+            <div class="table-actions">
+              <button class="btn btn-outline btn-sm" onclick="resetPinEtudiant(${e.id}, '${e.nom} ${e.prenom}')">
+                <i class="bi bi-key"></i> PIN
+              </button>
+              <button class="btn btn-danger btn-sm" onclick="confirmDelete('etudiant', ${e.id}, '${e.nom} ${e.prenom}')">
+                <i class="bi bi-trash3"></i>
+              </button>
+            </div>
+          </td>
+        </tr>`).join('');
+    }
+
+    function filterEtudiants(q) {
+      const filtered = q
+        ? allEtudiants.filter(e =>
+            (e.nom + ' ' + e.prenom + ' ' + e.matricule).toLowerCase().includes(q.toLowerCase()))
+        : allEtudiants;
+      renderEtudiants(filtered);
+    }
+
+    async function addEtudiant() {
+      const nom      = document.getElementById('etNom').value.trim().toUpperCase();
+      const prenom   = document.getElementById('etPrenom').value.trim();
+      const matricule= document.getElementById('etMatricule').value.trim().toUpperCase();
+      const tel      = document.getElementById('etTel').value.trim();
+      const mention  = document.getElementById('etMention').value;
+      const niveau   = document.getElementById('etNiveau').value;
+
+      if (!nom || !prenom || !matricule || !tel || !mention || !niveau) {
+        showToast('Tous les champs obligatoires doivent être remplis', 'error'); return;
+      }
+      try {
+        const res = await fetch(`${API}/admin/etudiants`, {
+          method: 'POST', headers: hdrsJ,
+          body: JSON.stringify({ nom, prenom, matricule, tel, mention, niveau })
+        });
+        if (!res.ok) { const d = await res.json(); throw new Error(d.message); }
+        showToast('Étudiant ajouté avec succès !', 'success');
+        clearEtudiantForm();
+        loadEtudiants();
+      } catch (e) { showToast(e.message || 'Erreur lors de l\'ajout', 'error'); }
+    }
+
+    function clearEtudiantForm() {
+      ['etNom','etPrenom','etMatricule','etTel'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('etMention').value = '';
+      document.getElementById('etNiveau').value  = '';
+    }
+
+    async function resetPinEtudiant(id, nom) {
+      const newPin = prompt(`Nouveau PIN (4 chiffres) pour ${nom} :`);
+      if (!newPin || !/^\d{4}$/.test(newPin)) {
+        showToast('PIN invalide — 4 chiffres requis', 'error'); return;
+      }
+      try {
+        await fetch(`${API}/admin/etudiants/${id}/pin`, {
+          method: 'PATCH', headers: hdrsJ,
+          body: JSON.stringify({ pin: newPin })
+        });
+        showToast('PIN mis à jour', 'success');
+      } catch { showToast('Erreur mise à jour PIN', 'error'); }
+    }
+
+    /* ══════════════════════
+       ENSEIGNANTS
+    ══════════════════════ */
+    async function loadEnseignants() {
+      try {
+        const res = await fetch(`${API}/admin/enseignants`, { headers: hdrs });
+        const data = await res.json();
+        renderEnseignants(data);
+        /* Alimenter le select modules */
+        const sel = document.getElementById('modEnseignant');
+        sel.innerHTML = '<option value="">— Choisir un enseignant —</option>' +
+          data.map(e => `<option value="${e.id}">${e.nom} ${e.prenom}</option>`).join('');
+      } catch { showToast('Erreur chargement enseignants', 'error'); }
+    }
+
+    function renderEnseignants(data) {
+      const tbody = document.getElementById('ensTbody');
+      if (!data.length) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#a0aec0;padding:1.5rem;">
+          Aucun enseignant enregistré</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = data.map(e => {
+        const mods = (e.modules || [])
+          .map(m => `<span class="badge badge-${m.mention}" style="margin-right:3px;">${m.nom_module} · ${m.niveau}</span>`)
+          .join('');
+        return `
+          <tr>
+            <td><strong>${e.grade ? e.grade + ' ' : ''}${e.nom} ${e.prenom}</strong></td>
+            <td>${e.grade || '—'}</td>
+            <td>${mods || '—'}</td>
+            <td>
+              <div class="table-actions">
+                <button class="btn btn-outline btn-sm" onclick="resetPinEns(${e.id}, '${e.nom} ${e.prenom}')">
+                  <i class="bi bi-key"></i> PIN
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="confirmDelete('enseignant', ${e.id}, '${e.nom} ${e.prenom}')">
+                  <i class="bi bi-trash3"></i>
+                </button>
+              </div>
+            </td>
+          </tr>`;
+      }).join('');
+    }
+
+    /* Lignes modules dynamiques */
+    function addModRow() {
+      const wrap = document.getElementById('modulesAssign');
+      const idx  = modRowCount++;
+      const row  = document.createElement('div');
+      row.className = 'module-assign-row';
+      row.id = 'modRow-' + idx;
+      row.innerHTML = `
+        <div class="form-row">
+          <label class="form-label">Nom du module</label>
+          <input class="form-input mod-name" type="text" placeholder="Comptabilité">
+        </div>
+        <div class="form-row">
+          <label class="form-label">Mention</label>
+          <select class="form-select mod-mention">
+            <option value="">—</option>
+            <option value="gestion">Gestion</option>
+            <option value="droit">Droit</option>
+            <option value="agronomie">Agronomie</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Niveau</label>
+          <select class="form-select mod-niveau">
+            <option value="">—</option>
+            <option value="L1">L1</option>
+            <option value="L2">L2</option>
+            <option value="L3">L3</option>
+          </select>
+        </div>
+        <button class="btn-remove-row" onclick="removeModRow(${idx})" style="margin-top:1.4rem;">
+          <i class="bi bi-trash3"></i>
+        </button>`;
+      wrap.appendChild(row);
+    }
+    function removeModRow(idx) {
+      const row = document.getElementById('modRow-' + idx);
+      if (row && document.querySelectorAll('.module-assign-row').length > 1) row.remove();
+    }
+
+    async function addEnseignant() {
+      const nom    = document.getElementById('ensNom').value.trim().toUpperCase();
+      const prenom = document.getElementById('ensPrenom').value.trim();
+      const grade  = document.getElementById('ensGrade').value.trim();
+      const pin    = document.getElementById('ensPin').value.trim();
+
+      if (!nom || !prenom || !pin) { showToast('Nom, prénom et PIN sont obligatoires', 'error'); return; }
+      if (!/^\d{6}$/.test(pin))   { showToast('Le PIN doit contenir exactement 6 chiffres', 'error'); return; }
+
+      const modules = [];
+      document.querySelectorAll('.module-assign-row').forEach(row => {
+        const name    = row.querySelector('.mod-name')?.value.trim();
+        const mention = row.querySelector('.mod-mention')?.value;
+        const niveau  = row.querySelector('.mod-niveau')?.value;
+        if (name && mention && niveau) modules.push({ nom_module: name, mention, niveau });
+      });
+      if (!modules.length) { showToast('Assignez au moins un module', 'error'); return; }
+
+      try {
+        const res = await fetch(`${API}/admin/enseignants`, {
+          method: 'POST', headers: hdrsJ,
+          body: JSON.stringify({ nom, prenom, grade, pin, modules })
+        });
+        if (!res.ok) { const d = await res.json(); throw new Error(d.message); }
+        showToast('Enseignant ajouté !', 'success');
+        clearEnsForm();
+        loadEnseignants();
+      } catch (e) { showToast(e.message || 'Erreur lors de l\'ajout', 'error'); }
+    }
+
+    function clearEnsForm() {
+      ['ensNom','ensPrenom','ensGrade','ensPin'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('modulesAssign').innerHTML = `
+        <div class="module-assign-row" id="modRow-0">
+          <div class="form-row"><label class="form-label">Nom du module</label>
+            <input class="form-input mod-name" type="text" placeholder="Analyse Financière"></div>
+          <div class="form-row"><label class="form-label">Mention</label>
+            <select class="form-select mod-mention">
+              <option value="">—</option><option value="gestion">Gestion</option>
+              <option value="droit">Droit</option><option value="agronomie">Agronomie</option>
+            </select></div>
+          <div class="form-row"><label class="form-label">Niveau</label>
+            <select class="form-select mod-niveau">
+              <option value="">—</option><option value="L1">L1</option>
+              <option value="L2">L2</option><option value="L3">L3</option>
+            </select></div>
+          <button class="btn-remove-row" onclick="removeModRow(0)" style="margin-top:1.4rem;">
+            <i class="bi bi-trash3"></i></button>
+        </div>`;
+      modRowCount = 1;
+    }
+
+    async function resetPinEns(id, nom) {
+      const newPin = prompt(`Nouveau PIN (6 chiffres) pour ${nom} :`);
+      if (!newPin || !/^\d{6}$/.test(newPin)) {
+        showToast('PIN invalide — 6 chiffres requis', 'error'); return;
+      }
+      try {
+        await fetch(`${API}/admin/enseignants/${id}/pin`, {
+          method: 'PATCH', headers: hdrsJ,
+          body: JSON.stringify({ pin: newPin })
+        });
+        showToast('PIN mis à jour', 'success');
+      } catch { showToast('Erreur mise à jour PIN', 'error'); }
+    }
+
+    /* ══════════════════════
+       MODULES
+    ══════════════════════ */
+    async function loadModules() {
+      try {
+        const res  = await fetch(`${API}/admin/modules`, { headers: hdrs });
+        const data = await res.json();
+        const tbody = document.getElementById('modTbody');
+        if (!data.length) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#a0aec0;padding:1.5rem;">
+            Aucun module créé</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = data.map(m => `
+          <tr>
+            <td><strong>${m.nom_module}</strong></td>
+            <td><span class="badge badge-${m.mention}">${mentionLabel[m.mention] || m.mention}</span></td>
+            <td><span class="badge badge-niveau">${m.niveau}</span></td>
+            <td>${m.enseignant_nom || '—'}</td>
+            <td>${m.supports_count || 0}</td>
+            <td>
+              <button class="btn btn-danger btn-sm"
+                onclick="confirmDelete('module', ${m.id}, '${m.nom_module}')">
+                <i class="bi bi-trash3"></i>
+              </button>
+            </td>
+          </tr>`).join('');
+      } catch { showToast('Erreur chargement modules', 'error'); }
+    }
+
+    async function addModule() {
+      const nom         = document.getElementById('modNom').value.trim();
+      const mention     = document.getElementById('modMention').value;
+      const niveau      = document.getElementById('modNiveau').value;
+      const enseignant  = document.getElementById('modEnseignant').value;
+
+      if (!nom || !mention || !niveau || !enseignant) {
+        showToast('Tous les champs sont obligatoires', 'error'); return;
+      }
+      try {
+        const res = await fetch(`${API}/admin/modules`, {
+          method: 'POST', headers: hdrsJ,
+          body: JSON.stringify({ nom_module: nom, mention, niveau, enseignant_id: enseignant })
+        });
+        if (!res.ok) throw new Error();
+        showToast('Module créé !', 'success');
+        ['modNom','modMention','modNiveau','modEnseignant'].forEach(id =>
+          document.getElementById(id).value = '');
+        loadModules();
+      } catch { showToast('Erreur création module', 'error'); }
+    }
+
+    /* ══════════════════════
+       EDT
+    ══════════════════════ */
+    async function loadEDT() {
+      try {
+        const res  = await fetch(`${API}/admin/edt`, { headers: hdrs });
+        const data = await res.json();
+        const tbody = document.getElementById('edtTbody');
+        if (!data.length) {
+          tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#a0aec0;padding:1.5rem;">
+            Aucun EDT publié</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = data.map(e => `
+          <tr>
+            <td><span class="badge badge-${e.mention}">${mentionLabel[e.mention] || e.mention}</span></td>
+            <td><span class="badge badge-niveau">${e.niveau}</span></td>
+            <td>${new Date(e.created_at).toLocaleDateString('fr-FR')}</td>
+            <td>
+              <button class="btn btn-danger btn-sm"
+                onclick="confirmDelete('edt', ${e.id}, 'EDT ${mentionLabel[e.mention]} ${e.niveau}')">
+                <i class="bi bi-trash3"></i>
+              </button>
+            </td>
+          </tr>`).join('');
+      } catch { showToast('Erreur chargement EDT', 'error'); }
+    }
+
+    async function publishEDT() {
+      const mention = document.getElementById('edtMention').value;
+      const niveau  = document.getElementById('edtNiveau').value;
+      const file    = document.getElementById('edtFileInput').files[0];
+
+      if (!mention || !niveau || !file) {
+        showToast('Mention, niveau et image sont obligatoires', 'error'); return;
+      }
+      const fd = new FormData();
+      fd.append('mention', mention); fd.append('niveau', niveau);
+      fd.append('image', file);
+      try {
+        const res = await fetch(`${API}/admin/edt`, {
+          method: 'POST', headers: hdrs, body: fd
+        });
+        if (!res.ok) throw new Error();
+        showToast('EDT publié !', 'success');
+        clearFileDrop('edtFileInput','edtFileDrop','edtFilePreview');
+        document.getElementById('edtMention').value = '';
+        document.getElementById('edtNiveau').value  = '';
+        loadEDT();
+      } catch { showToast('Erreur publication EDT', 'error'); }
+    }
+
+    /* ══════════════════════
+       ACTUALITÉS
+    ══════════════════════ */
+    async function loadActualites() {
+      try {
+        const res  = await fetch(`${API}/actualites`, { headers: hdrs });
+        const data = await res.json();
+        const tbody = document.getElementById('actTbody');
+        const types = { info: 'Information', event: 'Événement', urgent: 'Urgent' };
+        if (!data.length) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#a0aec0;padding:1.5rem;">
+            Aucune annonce</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = data.map(a => `
+          <tr>
+            <td><strong>${a.titre}</strong></td>
+            <td><span class="badge badge-${a.type}">${types[a.type] || a.type}</span></td>
+            <td>${new Date(a.created_at).toLocaleDateString('fr-FR')}</td>
+            <td>${a.comment_count || 0}</td>
+            <td>
+              <button class="btn btn-danger btn-sm"
+                onclick="confirmDelete('actualite', ${a.id}, '${a.titre.replace(/'/g,"\\'")}')">
+                <i class="bi bi-trash3"></i>
+              </button>
+            </td>
+          </tr>`).join('');
+      } catch { showToast('Erreur chargement actualités', 'error'); }
+    }
+
+    async function publishActualite() {
+      const titre    = document.getElementById('actTitre').value.trim();
+      const type     = document.getElementById('actType').value;
+      const contenu  = document.getElementById('actContenu').value.trim();
+      const dateEvt  = document.getElementById('actDateEvt').value;
+      const file     = document.getElementById('actFileInput').files[0];
+
+      if (!titre || !contenu) {
+        showToast('Titre et contenu sont obligatoires', 'error'); return;
+      }
+      const fd = new FormData();
+      fd.append('titre', titre); fd.append('type', type);
+      fd.append('contenu', contenu);
+      if (dateEvt) fd.append('date_evenement', dateEvt);
+      if (file)    fd.append('image', file);
+
+      try {
+        const res = await fetch(`${API}/actualites`, {
+          method: 'POST', headers: hdrs, body: fd
+        });
+        if (!res.ok) throw new Error();
+        showToast('Annonce publiée !', 'success');
+        ['actTitre','actContenu','actDateEvt'].forEach(id =>
+          document.getElementById(id).value = '');
+        document.getElementById('actType').value = 'info';
+        clearFileDrop('actFileInput','actFileDrop','actFilePreview');
+        loadActualites();
+      } catch { showToast('Erreur publication annonce', 'error'); }
+    }
+
+    /* ══════════════════════
+       NOTIFICATIONS
+    ══════════════════════ */
+    function setTarget(target, btn) {
+      activeTarget = target;
+      document.querySelectorAll('.target-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filters = document.getElementById('targetFilters');
+      const niveauRow = document.getElementById('filterNiveauRow');
+      if (target === 'tous') {
+        filters.style.display = 'none';
+      } else if (target === 'mention') {
+        filters.style.display = 'grid';
+        niveauRow.style.display = 'none';
+      } else {
+        filters.style.display = 'grid';
+        niveauRow.style.display = 'block';
+      }
+    }
+
+    async function sendNotification() {
+      const titre   = document.getElementById('notifTitre').value.trim();
+      const message = document.getElementById('notifMessage').value.trim();
+      const type    = document.getElementById('notifType').value;
+      const mention = document.getElementById('notifMention').value;
+      const niveau  = document.getElementById('notifNiveau').value;
+
+      if (!titre || !message) {
+        showToast('Titre et message sont obligatoires', 'error'); return;
+      }
+
+      const payload = { titre, message, type, target: activeTarget };
+      if (activeTarget !== 'tous') payload.mention = mention;
+      if (activeTarget === 'niveau') payload.niveau = niveau;
+
+      try {
+        const res = await fetch(`${API}/admin/notifications`, {
+          method: 'POST', headers: hdrsJ, body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error();
+        showToast('Notification envoyée !', 'success');
+        document.getElementById('notifTitre').value   = '';
+        document.getElementById('notifMessage').value = '';
+      } catch { showToast('Erreur envoi notification', 'error'); }
+    }
+
+    /* ══════════════════════
+       SÉCURITÉ
+    ══════════════════════ */
+    function togglePwd(inputId, btn) {
+      const el = document.getElementById(inputId);
+      const isHidden = el.type === 'password';
+      el.type = isHidden ? 'text' : 'password';
+      btn.querySelector('i').className = isHidden ? 'bi bi-eye-slash' : 'bi bi-eye';
+    }
+
+    function checkPwdStrength(el) {
+      const val  = el.value;
+      const fill = document.getElementById('secStrengthFill');
+      let score  = 0;
+      if (val.length >= 8)          score++;
+      if (/[A-Z]/.test(val))        score++;
+      if (/[0-9]/.test(val))        score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
+      const levels = [
+        { w:'20%', bg:'#e05c5c' }, { w:'40%', bg:'#f59e0b' },
+        { w:'65%', bg:'#f59e0b' }, { w:'85%', bg:'#22c55e' }, { w:'100%', bg:'#22c55e' }
+      ];
+      const lvl = levels[Math.min(score, 4)];
+      fill.style.width = lvl.w; fill.style.background = lvl.bg;
+    }
+
+    async function changePassword() {
+      const actuel  = document.getElementById('pwdActuel').value;
+      const nouveau = document.getElementById('pwdNouveau').value;
+      const confirm = document.getElementById('pwdConfirm').value;
+
+      if (!actuel || !nouveau || !confirm) {
+        showToast('Tous les champs sont obligatoires', 'error'); return;
+      }
+      if (nouveau.length < 8) {
+        showToast('Le nouveau mot de passe doit faire au moins 8 caractères', 'error'); return;
+      }
+      if (nouveau !== confirm) {
+        showToast('Les mots de passe ne correspondent pas', 'error'); return;
+      }
+      try {
+        const res = await fetch(`${API}/admin/password`, {
+          method: 'PATCH', headers: hdrsJ,
+          body: JSON.stringify({ password_actuel: actuel, password_nouveau: nouveau })
+        });
+        if (!res.ok) { const d = await res.json(); throw new Error(d.message); }
+        showToast('Mot de passe modifié !', 'success');
+        ['pwdActuel','pwdNouveau','pwdConfirm'].forEach(id =>
+          document.getElementById(id).value = '');
+        document.getElementById('secStrengthFill').style.width = '0%';
+      } catch (e) { showToast(e.message || 'Erreur modification mot de passe', 'error'); }
+    }
+
+    /* ══════════════════════
+       FICHIERS (commun)
+    ══════════════════════ */
+    function dragOver(e, dropId) {
+      e.preventDefault();
+      document.getElementById(dropId).classList.add('drag');
+    }
+    function dragLeave(dropId) {
+      document.getElementById(dropId).classList.remove('drag');
+    }
+    function dropFile(e, inputId, dropId, previewId, nameId) {
+      e.preventDefault();
+      dragLeave(dropId);
+      const file = e.dataTransfer.files[0];
+      if (file) {
+        const dt = new DataTransfer(); dt.items.add(file);
+        document.getElementById(inputId).files = dt.files;
+        showFilePreview(dropId, previewId, nameId, file.name);
+      }
+    }
+    function fileChange(inputId, dropId, previewId, nameId) {
+      const file = document.getElementById(inputId).files[0];
+      if (file) showFilePreview(dropId, previewId, nameId, file.name);
+    }
+    function showFilePreview(dropId, previewId, nameId, name) {
+      document.getElementById(dropId).style.display    = 'none';
+      document.getElementById(previewId).classList.add('show');
+      document.getElementById(nameId).textContent = name;
+    }
+    function clearFileDrop(inputId, dropId, previewId) {
+      document.getElementById(inputId).value = '';
+      document.getElementById(dropId).style.display = '';
+      document.getElementById(previewId).classList.remove('show');
+    }
+
+    /* ══════════════════════
+       SUPPRESSION (modal)
+    ══════════════════════ */
+    function confirmDelete(type, id, nom) {
+      pendingAction = { type, id };
+      document.getElementById('modalTitle').textContent = 'Supprimer ?';
+      document.getElementById('modalMsg').textContent =
+        `Voulez-vous vraiment supprimer "${nom}" ? Cette action est irréversible.`;
+      document.getElementById('modalOverlay').classList.add('show');
+    }
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('show');
+      pendingAction = null;
+    }
+    async function confirmAction() {
+      if (!pendingAction) return;
+      const { type, id } = pendingAction;
+      closeModal();
+      const endpoints = {
+        etudiant:   `${API}/admin/etudiants/${id}`,
+        enseignant: `${API}/admin/enseignants/${id}`,
+        module:     `${API}/admin/modules/${id}`,
+        edt:        `${API}/admin/edt/${id}`,
+        actualite:  `${API}/actualites/${id}`,
+      };
+      try {
+        const res = await fetch(endpoints[type], { method: 'DELETE', headers: hdrs });
+        if (!res.ok) throw new Error();
+        showToast('Supprimé avec succès', 'success');
+        const reloaders = {
+          etudiant: loadEtudiants, enseignant: loadEnseignants,
+          module: loadModules, edt: loadEDT, actualite: loadActualites
+        };
+        if (reloaders[type]) reloaders[type]();
+      } catch { showToast('Erreur lors de la suppression', 'error'); }
+    }
+
+    /* ══════════════════════
+       TOAST
+    ══════════════════════ */
+    let toastTimer = null;
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      document.getElementById('toastText').textContent = msg;
+      t.querySelector('i').className =
+        type === 'success' ? 'bi bi-check-circle-fill' : 'bi bi-exclamation-circle-fill';
+      t.className = `toast ${type} show`;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+    }
+
+    /* ══════════════════════
+       DÉCONNEXION
+    ══════════════════════ */
+    async function logout() {
+      try { await fetch(`${API}/auth/logout`, { method: 'POST', headers: hdrs }); } catch {}
+      sessionStorage.clear();
+      location.href = 'login-admin.html';
+    }
+
+    /* ── Chargement initial ── */
+    loadEtudiants();
+  </script>
+
+</body>
+</html>

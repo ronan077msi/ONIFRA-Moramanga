@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Notifications — Portail Étudiant ONIFRA</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#08122d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ONIFRA">
+  <link rel="apple-touch-icon" href="/assets/img/logo/logo-192.png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
   <style>
     :root {
@@ -302,10 +307,10 @@
     const mentionLabel = { gestion: 'Gestion', droit: 'Droit', agronomie: 'Agronomie' };
 
     document.getElementById('avatar').textContent =
-      ((prenom[0] || '') + (nom[0] || '')).toUpperCase() || '?';
+    ((prenom[0] || '') + (nom[0] || '')).toUpperCase() || '?';
     document.getElementById('headerName').textContent  = prenom + ' ' + nom.toUpperCase();
     document.getElementById('headerBadge').textContent =
-      (mentionLabel[mention] || mention) + ' · ' + niveau;
+    (mentionLabel[mention] || mention) + ' · ' + niveau;
 
     /* ── API ── */
     const API   = '/api';
@@ -335,7 +340,7 @@
             <i class="bi bi-wifi-off"></i>
             <strong>Connexion impossible</strong>
             <p>Impossible de charger les notifications.<br>Vérifiez votre connexion.</p>
-          </div>`;
+        </div>`;
       }
     }
 
@@ -352,14 +357,14 @@
             <i class="bi bi-bell-slash"></i>
             <strong>Tout est à jour !</strong>
             <p>Vous n'avez aucune notification pour le moment.</p>
-          </div>`;
+        </div>`;
         return;
       }
 
       const unreadCount = notifs.filter(n => !n.lu).length;
       pageSub.textContent = unreadCount > 0
-        ? `${unreadCount} non lue${unreadCount > 1 ? 's' : ''}`
-        : 'Tout est lu';
+      ? `${unreadCount} non lue${unreadCount > 1 ? 's' : ''}`
+      : 'Tout est lu';
 
       if (unreadCount > 0) btnAll.style.display = 'block';
 
@@ -370,9 +375,9 @@
         const now  = new Date();
         const diff = Math.floor((now - d) / 86400000);
         let label  = diff === 0 ? "Aujourd'hui"
-                   : diff === 1 ? 'Hier'
-                   : diff < 7  ? `Il y a ${diff} jours`
-                   : d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
+        : diff === 1 ? 'Hier'
+        : diff < 7  ? `Il y a ${diff} jours`
+        : d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
         if (!groups[label]) groups[label] = [];
         groups[label].push(n);
       });
@@ -398,7 +403,7 @@
                 <div class="notif-time"><i class="bi bi-clock"></i>${time}</div>
               </div>
               <div class="notif-unread-dot"></div>
-            </div>`;
+          </div>`;
           delay += 50;
         });
         html += '</div>';
@@ -462,6 +467,6 @@
 
     loadNotifs();
   </script>
-
+<script src="pwa.js" defer></script>
 </body>
 </html>

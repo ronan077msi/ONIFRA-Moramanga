@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mes Modules — Portail Enseignant ONIFRA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --navy:     #08122d;
+      --navy-mid: #0d1f3c;
+      --accent:   #c8a951;
+      --accent-lt:#e4c96a;
+      --green:    #22c55e;
+      --green-dk: #16a34a;
+      --muted:    rgba(255,255,255,0.45);
+      --radius:   14px;
+      --bg:       #f0f4f8;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+
+    /* ══════════════════════
+       HEADER
+    ══════════════════════ */
+    .top-header {
+      background: var(--navy);
+      padding: 1rem 1.25rem .85rem;
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid rgba(34,197,94,.15);
+    }
+    .header-inner {
+      max-width: 720px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .header-left { display: flex; align-items: center; gap: .75rem; min-width: 0; }
+    .avatar {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--green-dk), var(--green));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: .95rem; font-weight: 700; color: #fff;
+    }
+    .header-text { min-width: 0; }
+    .header-greeting { font-size: .72rem; color: var(--muted); }
+    .header-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 700; color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .header-badge {
+      display: inline-flex; align-items: center;
+      background: rgba(34,197,94,.12);
+      border: 1px solid rgba(34,197,94,.25);
+      border-radius: 20px; padding: 2px 10px;
+      font-size: .68rem; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      color: var(--green); margin-top: 3px;
+    }
+    .btn-logout {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px; color: var(--muted);
+      padding: .5rem .75rem; cursor: pointer;
+      font-size: .78rem; font-weight: 500;
+      display: flex; align-items: center; gap: 5px;
+      touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+      transition: background .15s, color .15s;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .btn-logout:hover { background: rgba(224,92,92,.15); color: #e05c5c; border-color: rgba(224,92,92,.3); }
+
+    /* ══════════════════════
+       CONTENU
+    ══════════════════════ */
+    .main { max-width: 720px; margin: 0 auto; padding: 1.5rem 1.25rem; }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--navy-mid); margin-bottom: .25rem;
+    }
+    .page-sub { font-size: .82rem; color: #6b7a99; margin-bottom: 1.5rem; }
+
+    /* ── Modules list ── */
+    .modules-list { display: flex; flex-direction: column; gap: .75rem; }
+
+    .module-item {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1px solid rgba(13,31,60,.07);
+      box-shadow: 0 2px 10px rgba(13,31,60,.05);
+      overflow: hidden;
+      animation: fadeUp .4s ease both;
+      transition: box-shadow .2s;
+    }
+    .module-item:hover { box-shadow: 0 4px 20px rgba(13,31,60,.1); }
+    .module-item.open  { border-color: rgba(34,197,94,.3); box-shadow: 0 4px 20px rgba(34,197,94,.1); }
+
+    /* Header accordéon */
+    .module-header {
+      display: flex; align-items: center; gap: .75rem;
+      padding: 1rem 1.1rem; cursor: pointer;
+      touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .module-color-bar {
+      width: 4px; height: 40px; border-radius: 2px;
+      background: var(--green); flex-shrink: 0;
+    }
+    .module-header-text { flex: 1; min-width: 0; }
+    .module-name {
+      font-size: .95rem; font-weight: 600; color: #0d1f3c; line-height: 1.3;
+    }
+    .module-tags {
+      display: flex; align-items: center; gap: .4rem; margin-top: 4px; flex-wrap: wrap;
+    }
+    .module-tag {
+      font-size: .65rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 20px;
+    }
+    .module-tag.mention { background: rgba(200,169,81,.15); color: #a07d20; }
+    .module-tag.niveau  { background: rgba(59,130,246,.12); color: #2563eb; }
+
+    .module-support-count {
+      font-size: .68rem; font-weight: 600;
+      background: rgba(13,31,60,.06);
+      border-radius: 20px; padding: 2px 10px;
+      color: #6b7a99; flex-shrink: 0;
+    }
+    .module-chevron {
+      color: #a0aec0; font-size: .9rem; flex-shrink: 0;
+      transition: transform .25s ease;
+    }
+    .module-item.open .module-chevron { transform: rotate(180deg); color: var(--green); }
+
+    /* Body accordéon */
+    .module-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height .35s cubic-bezier(.4,0,.2,1);
+    }
+    .module-body-inner {
+      border-top: 1px solid rgba(13,31,60,.06);
+      padding: 1.1rem;
+    }
+
+    /* Introduction */
+    .intro-section { margin-bottom: 1.1rem; }
+    .intro-label {
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: #8a9ab5; margin-bottom: .5rem; display: flex;
+      align-items: center; justify-content: space-between;
+    }
+    .btn-edit-intro {
+      background: none; border: none; color: var(--green);
+      font-size: .72rem; font-weight: 500; cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      display: flex; align-items: center; gap: 4px;
+      touch-action: manipulation;
+    }
+    .btn-edit-intro:hover { text-decoration: underline; }
+
+    .intro-text {
+      font-size: .82rem; color: #4a5568; line-height: 1.6;
+      background: rgba(34,197,94,.05);
+      border-left: 3px solid var(--green);
+      border-radius: 0 8px 8px 0;
+      padding: .65rem .9rem;
+    }
+    .intro-placeholder {
+      font-size: .8rem; color: #a0aec0; font-style: italic;
+      padding: .5rem 0;
+    }
+
+    /* Textarea intro édition */
+    .intro-edit-wrap { display: none; }
+    .intro-edit-wrap.show { display: block; }
+    .intro-textarea {
+      width: 100%; background: #f8fafc;
+      border: 1px solid rgba(13,31,60,.15);
+      border-radius: 10px; color: #0d1f3c;
+      font-family: 'DM Sans', sans-serif; font-size: .82rem;
+      padding: .65rem .85rem; outline: none; resize: vertical;
+      min-height: 80px; line-height: 1.6;
+      transition: border-color .2s;
+    }
+    .intro-textarea:focus { border-color: var(--green); }
+    .intro-edit-actions {
+      display: flex; gap: .5rem; margin-top: .5rem; justify-content: flex-end;
+    }
+    .btn-cancel {
+      background: none; border: 1px solid rgba(13,31,60,.12);
+      border-radius: 8px; color: #6b7a99;
+      padding: .4rem .85rem; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: .78rem;
+      touch-action: manipulation;
+    }
+    .btn-save-intro {
+      background: var(--green); border: none;
+      border-radius: 8px; color: #fff;
+      padding: .4rem .85rem; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: .78rem; font-weight: 600;
+      touch-action: manipulation; transition: background .15s;
+    }
+    .btn-save-intro:hover { background: var(--green-dk); }
+
+    /* ── Supports existants ── */
+    .supports-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: .6rem;
+    }
+    .supports-label {
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase; color: #8a9ab5;
+    }
+    .support-list { display: flex; flex-direction: column; gap: .5rem; margin-bottom: 1rem; }
+
+    .support-item {
+      display: flex; align-items: flex-start; gap: .75rem;
+      padding: .7rem .85rem;
+      background: var(--bg); border-radius: 10px;
+      border: 1px solid rgba(13,31,60,.06);
+    }
+    .support-icon {
+      width: 34px; height: 34px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0; margin-top: 1px;
+    }
+    .support-icon.pdf  { background: rgba(224,92,92,.12); color: #e05c5c; }
+    .support-icon.docx { background: rgba(59,130,246,.12); color: #3b82f6; }
+
+    .support-info { flex: 1; min-width: 0; }
+    .support-titre { font-size: .88rem; font-weight: 600; color: #0d1f3c; line-height: 1.3; }
+    .support-desc  { font-size: .75rem; color: #6b7a99; margin-top: 2px; line-height: 1.4; }
+    .support-meta  {
+      font-size: .68rem; color: #a0aec0; margin-top: .25rem;
+      display: flex; gap: .5rem; flex-wrap: wrap;
+    }
+    .support-meta span { display: flex; align-items: center; gap: 3px; }
+
+    .btn-del-support {
+      background: none; border: 1px solid rgba(224,92,92,.2);
+      border-radius: 8px; color: #e05c5c;
+      padding: .4rem .5rem; cursor: pointer;
+      font-size: .85rem; flex-shrink: 0; align-self: center;
+      touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+      transition: background .15s;
+    }
+    .btn-del-support:hover { background: rgba(224,92,92,.1); }
+
+    /* ── Formulaire ajout support ── */
+    .add-support-toggle {
+      width: 100%;
+      background: rgba(34,197,94,.08);
+      border: 1.5px dashed rgba(34,197,94,.35);
+      border-radius: 10px; color: var(--green);
+      font-family: 'DM Sans', sans-serif; font-size: .82rem; font-weight: 600;
+      padding: .7rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+      transition: background .15s, border-color .15s;
+    }
+    .add-support-toggle:hover { background: rgba(34,197,94,.14); border-color: rgba(34,197,94,.5); }
+
+    .add-form-wrap { display: none; margin-top: .75rem; }
+    .add-form-wrap.show { display: block; animation: fadeUp .3s ease both; }
+
+    .add-form {
+      background: #f8fafc;
+      border: 1px solid rgba(13,31,60,.08);
+      border-radius: 12px; padding: 1rem;
+    }
+    .add-form-title {
+      font-size: .78rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: #0d1f3c; margin-bottom: .85rem;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .add-form-title i { color: var(--green); }
+
+    .form-row { margin-bottom: .75rem; }
+    .form-label {
+      display: block; font-size: .72rem; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: #6b7a99; margin-bottom: .35rem;
+    }
+    .form-label .req { color: #e05c5c; margin-left: 2px; }
+
+    .form-input, .form-textarea {
+      width: 100%; background: #fff;
+      border: 1px solid rgba(13,31,60,.12);
+      border-radius: 9px; color: #0d1f3c;
+      font-family: 'DM Sans', sans-serif; font-size: .88rem;
+      padding: .6rem .85rem; outline: none;
+      transition: border-color .2s;
+    }
+    .form-input:focus, .form-textarea:focus { border-color: var(--green); }
+    .form-input::placeholder, .form-textarea::placeholder { color: #a0aec0; }
+    .form-textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
+
+    /* Upload fichier */
+    .file-drop {
+      border: 1.5px dashed rgba(13,31,60,.2);
+      border-radius: 9px; padding: 1rem;
+      text-align: center; cursor: pointer;
+      transition: border-color .2s, background .2s;
+      background: #fff; position: relative;
+    }
+    .file-drop:hover, .file-drop.drag { border-color: var(--green); background: rgba(34,197,94,.04); }
+    .file-drop input[type=file] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .file-drop-icon { font-size: 1.5rem; color: #a0aec0; margin-bottom: .4rem; }
+    .file-drop-text { font-size: .8rem; color: #6b7a99; line-height: 1.5; }
+    .file-drop-text strong { color: var(--green); }
+    .file-selected {
+      display: flex; align-items: center; gap: .5rem;
+      background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.2);
+      border-radius: 8px; padding: .5rem .75rem; margin-top: .5rem;
+    }
+    .file-selected i { color: var(--green); }
+    .file-selected span { font-size: .78rem; color: #0d1f3c; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .file-selected button {
+      background: none; border: none; color: #a0aec0; cursor: pointer; font-size: .85rem;
+      touch-action: manipulation; padding: 2px;
+    }
+
+    /* Barre de progression upload */
+    .upload-progress { display: none; margin-top: .5rem; }
+    .upload-progress.show { display: block; }
+    .progress-bar {
+      height: 4px; background: #e2e6ed; border-radius: 2px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: var(--green); border-radius: 2px;
+      width: 0%; transition: width .3s ease;
+    }
+    .progress-label { font-size: .68rem; color: #6b7a99; margin-top: 3px; }
+
+    /* Actions form */
+    .add-form-actions {
+      display: flex; gap: .6rem; margin-top: .85rem; justify-content: flex-end;
+    }
+    .btn-submit-support {
+      background: var(--green); border: none;
+      border-radius: 9px; color: #fff;
+      padding: .55rem 1.25rem; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 600;
+      display: flex; align-items: center; gap: 6px;
+      touch-action: manipulation; transition: background .15s, transform .1s;
+    }
+    .btn-submit-support:hover   { background: var(--green-dk); }
+    .btn-submit-support:active  { transform: scale(.97); }
+    .btn-submit-support:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: #0d1f3c; color: #fff;
+      border-radius: 10px; padding: .65rem 1.25rem;
+      font-size: .82rem; font-weight: 500;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 8px 24px rgba(13,31,60,.25);
+      z-index: 999; opacity: 0;
+      transition: opacity .3s ease, transform .3s ease;
+      pointer-events: none; white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.success i { color: var(--green); }
+    .toast.error   i { color: #e05c5c; }
+
+    /* ── États ── */
+    .state-box {
+      text-align: center; padding: 3rem 1rem; color: #8a9ab5;
+    }
+    .state-box i { font-size: 2.5rem; display: block; margin-bottom: .75rem; opacity: .3; }
+    .state-box p { font-size: .88rem; line-height: 1.6; }
+
+    /* Skeleton */
+    .skel-mod {
+      background: #fff; border-radius: var(--radius);
+      padding: 1rem 1.1rem; margin-bottom: .75rem;
+      display: flex; align-items: center; gap: .75rem;
+      border: 1px solid rgba(13,31,60,.06);
+    }
+    .skel-bar  { width: 4px; height: 40px; border-radius: 2px; flex-shrink: 0; }
+    .skel-body { flex: 1; display: flex; flex-direction: column; gap: .4rem; }
+    .skel { border-radius: 6px; background: linear-gradient(90deg,#eef0f5 25%,#e2e6ed 50%,#eef0f5 75%); background-size: 800px 100%; animation: shimmer 1.4s ease-in-out infinite; }
+    .skel-line { height: 10px; }
+    .skel-line.w70 { width: 70%; }
+    .skel-line.w40 { width: 40%; }
+    @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(14px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="top-header">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="avatar" id="avatar">?</div>
+        <div class="header-text">
+          <div class="header-greeting">Bonjour,</div>
+          <div class="header-name" id="headerName">—</div>
+          <div class="header-badge">Enseignant</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">
+        <i class="bi bi-box-arrow-right"></i> Déconnexion
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENU -->
+  <main class="main">
+    <div class="page-title">Mes Modules</div>
+    <p class="page-sub" id="pageSub">Gérez vos supports de cours</p>
+
+    <div class="modules-list" id="modulesList">
+      <div class="skel-mod"><div class="skel skel-bar"></div><div class="skel-body"><div class="skel skel-line w70"></div><div class="skel skel-line w40"></div></div></div>
+      <div class="skel-mod"><div class="skel skel-bar"></div><div class="skel-body"><div class="skel skel-line w70"></div><div class="skel skel-line w40"></div></div></div>
+      <div class="skel-mod"><div class="skel skel-bar"></div><div class="skel-body"><div class="skel skel-line w70"></div><div class="skel skel-line w40"></div></div></div>
+    </div>
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="bi bi-check-circle-fill"></i>
+    <span id="toastText">—</span>
+  </div>
+
+  <script>
+    /* ── Auth guard ── */
+    (function () {
+      const t = sessionStorage.getItem('onifra_ens_token');
+      if (!t) { location.href = 'login.html'; return; }
+      try {
+        const p = JSON.parse(atob(t.split('.')[1]));
+        if (p.exp * 1000 < Date.now()) { sessionStorage.clear(); location.href = 'login.html'; }
+      } catch { sessionStorage.clear(); location.href = 'login.html'; }
+    })();
+
+    /* ── Enseignant ── */
+    const ens   = JSON.parse(sessionStorage.getItem('onifra_enseignant') || '{}');
+    const { nom = '', prenom = '' } = ens;
+
+    document.getElementById('avatar').textContent =
+      ((prenom[0] || '') + (nom[0] || '')).toUpperCase() || '?';
+    document.getElementById('headerName').textContent = prenom + ' ' + nom.toUpperCase();
+
+    /* ── API ── */
+    const API   = '/api';
+    const token = sessionStorage.getItem('onifra_ens_token');
+    const hdrs  = { 'Authorization': 'Bearer ' + token };
+    const mentionLabel = { gestion: 'Gestion', droit: 'Droit', agronomie: 'Agronomie' };
+
+    let modules = [];
+
+    /* ── Charger modules ── */
+    async function loadModules() {
+      try {
+        const res = await fetch(`${API}/enseignant/modules`, { headers: hdrs });
+        modules   = await res.json();
+        document.getElementById('pageSub').textContent =
+          `${modules.length} module${modules.length > 1 ? 's' : ''} assigné${modules.length > 1 ? 's' : ''}`;
+        render();
+      } catch {
+        document.getElementById('modulesList').innerHTML = `
+          <div class="state-box">
+            <i class="bi bi-wifi-off"></i>
+            <p>Impossible de charger vos modules.<br>Vérifiez votre connexion.</p>
+          </div>`;
+      }
+    }
+
+    /* ── Rendu ── */
+    function render() {
+      const list = document.getElementById('modulesList');
+      if (!modules.length) {
+        list.innerHTML = `
+          <div class="state-box">
+            <i class="bi bi-journal-x"></i>
+            <p>Aucun module assigné pour le moment.<br>Contactez l'administration.</p>
+          </div>`;
+        return;
+      }
+
+      list.innerHTML = modules.map((m, i) => `
+        <div class="module-item" style="animation-delay:${i*60}ms" id="mod-${m.id}">
+
+          <div class="module-header" onclick="toggle(${m.id})">
+            <div class="module-color-bar"></div>
+            <div class="module-header-text">
+              <div class="module-name">${m.nom_module}</div>
+              <div class="module-tags">
+                <span class="module-tag mention">${mentionLabel[m.mention] || m.mention}</span>
+                <span class="module-tag niveau">${m.niveau}</span>
+              </div>
+            </div>
+            <span class="module-support-count" id="count-${m.id}">
+              ${m.supports?.length || 0} support${(m.supports?.length || 0) > 1 ? 's' : ''}
+            </span>
+            <i class="bi bi-chevron-down module-chevron"></i>
+          </div>
+
+          <div class="module-body" id="body-${m.id}">
+            <div class="module-body-inner">
+
+              <!-- Introduction -->
+              <div class="intro-section">
+                <div class="intro-label">
+                  Introduction du module
+                  <button class="btn-edit-intro" onclick="toggleIntroEdit(${m.id})">
+                    <i class="bi bi-pencil"></i> Modifier
+                  </button>
+                </div>
+                <div id="introText-${m.id}">
+                  ${m.introduction
+                    ? `<div class="intro-text">${m.introduction}</div>`
+                    : `<div class="intro-placeholder">Aucune introduction — cliquez sur Modifier pour en ajouter une.</div>`}
+                </div>
+                <div class="intro-edit-wrap" id="introEdit-${m.id}">
+                  <textarea class="intro-textarea" id="introTextarea-${m.id}"
+                    placeholder="Décrivez ce module, ses objectifs, son contenu…"
+                    rows="3">${m.introduction || ''}</textarea>
+                  <div class="intro-edit-actions">
+                    <button class="btn-cancel" onclick="cancelIntroEdit(${m.id})">Annuler</button>
+                    <button class="btn-save-intro" onclick="saveIntro(${m.id})">
+                      <i class="bi bi-check-lg"></i> Enregistrer
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Supports -->
+              <div class="supports-header">
+                <span class="supports-label">Supports de cours</span>
+              </div>
+              <div class="support-list" id="supports-${m.id}">
+                ${renderSupports(m.supports || [], m.id)}
+              </div>
+
+              <!-- Bouton ajouter -->
+              <button class="add-support-toggle" onclick="toggleAddForm(${m.id})">
+                <i class="bi bi-plus-circle"></i> Ajouter un support
+              </button>
+
+              <!-- Formulaire ajout -->
+              <div class="add-form-wrap" id="addForm-${m.id}">
+                <div class="add-form">
+                  <div class="add-form-title">
+                    <i class="bi bi-upload"></i> Nouveau support
+                  </div>
+
+                  <div class="form-row">
+                    <label class="form-label">Titre <span class="req">*</span></label>
+                    <input class="form-input" id="titre-${m.id}" type="text"
+                      placeholder="ex : Cours Chapitre 1 — Introduction" autocomplete="off">
+                  </div>
+
+                  <div class="form-row">
+                    <label class="form-label">Description <span style="color:#a0aec0;font-weight:400;">(facultatif)</span></label>
+                    <textarea class="form-textarea" id="desc-${m.id}"
+                      placeholder="Courte description du contenu de ce support…"></textarea>
+                  </div>
+
+                  <div class="form-row">
+                    <label class="form-label">Fichier <span class="req">*</span></label>
+                    <div class="file-drop" id="fileDrop-${m.id}"
+                      ondragover="onDragOver(event, ${m.id})"
+                      ondragleave="onDragLeave(${m.id})"
+                      ondrop="onDrop(event, ${m.id})">
+                      <input type="file" id="fileInput-${m.id}"
+                        accept=".pdf,.doc,.docx"
+                        onchange="onFileChange(${m.id})">
+                      <div class="file-drop-icon"><i class="bi bi-cloud-upload"></i></div>
+                      <div class="file-drop-text">
+                        <strong>Cliquez ou glissez</strong> votre fichier ici<br>
+                        PDF ou DOCX — max 20 Mo
+                      </div>
+                    </div>
+                    <div class="file-selected" id="fileSelected-${m.id}" style="display:none;">
+                      <i class="bi bi-file-earmark-check"></i>
+                      <span id="fileName-${m.id}">—</span>
+                      <button onclick="clearFile(${m.id})"><i class="bi bi-x"></i></button>
+                    </div>
+                    <div class="upload-progress" id="uploadProgress-${m.id}">
+                      <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill-${m.id}"></div>
+                      </div>
+                      <div class="progress-label" id="progressLabel-${m.id}">Envoi en cours…</div>
+                    </div>
+                  </div>
+
+                  <div class="add-form-actions">
+                    <button class="btn-cancel" onclick="toggleAddForm(${m.id})">Annuler</button>
+                    <button class="btn-submit-support" id="btnAdd-${m.id}" onclick="addSupport(${m.id})">
+                      <i class="bi bi-upload"></i> Publier
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>`
+      ).join('');
+    }
+
+    /* ── Rendu supports ── */
+    function renderSupports(supports, moduleId) {
+      if (!supports.length) {
+        return `<div style="font-size:.78rem;color:#a0aec0;font-style:italic;padding:.25rem 0 .5rem;">
+          Aucun support pour ce module.</div>`;
+      }
+      return supports.map(s => {
+        const ext   = (s.fichier_path || '').split('.').pop().toLowerCase();
+        const isPdf = ext === 'pdf';
+        const date  = new Date(s.created_at).toLocaleDateString('fr-FR');
+        return `
+          <div class="support-item" id="support-${s.id}">
+            <div class="support-icon ${isPdf ? 'pdf' : 'docx'}">
+              <i class="bi bi-filetype-${isPdf ? 'pdf' : 'docx'}"></i>
+            </div>
+            <div class="support-info">
+              <div class="support-titre">${s.titre}</div>
+              ${s.description ? `<div class="support-desc">${s.description}</div>` : ''}
+              <div class="support-meta">
+                <span><i class="bi bi-calendar3"></i>${date}</span>
+                <span><i class="bi bi-file-earmark"></i>${ext.toUpperCase()}</span>
+              </div>
+            </div>
+            <button class="btn-del-support"
+              onclick="deleteSupport(${s.id}, ${moduleId})"
+              title="Supprimer ce support">
+              <i class="bi bi-trash3"></i>
+            </button>
+          </div>`;
+      }).join('');
+    }
+
+    /* ── Accordéon ── */
+    function toggle(id) {
+      const item = document.getElementById('mod-' + id);
+      const body = document.getElementById('body-' + id);
+      const isOpen = item.classList.contains('open');
+
+      document.querySelectorAll('.module-item.open').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.module-body').style.maxHeight = '0';
+      });
+
+      if (!isOpen) {
+        item.classList.add('open');
+        body.style.maxHeight = body.scrollHeight + 400 + 'px'; /* +400 pour le form */
+        setTimeout(() => item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+      }
+    }
+
+    /* Recalculer maxHeight après ajout de contenu */
+    function refreshBodyHeight(moduleId) {
+      const item = document.getElementById('mod-' + moduleId);
+      const body = document.getElementById('body-' + moduleId);
+      if (item?.classList.contains('open')) {
+        body.style.maxHeight = 'none';
+        const h = body.scrollHeight;
+        body.style.maxHeight = h + 400 + 'px';
+      }
+    }
+
+    /* ── Introduction ── */
+    function toggleIntroEdit(id) {
+      document.getElementById('introText-' + id).style.display = 'none';
+      document.getElementById('introEdit-' + id).classList.add('show');
+      refreshBodyHeight(id);
+    }
+    function cancelIntroEdit(id) {
+      document.getElementById('introText-' + id).style.display = '';
+      document.getElementById('introEdit-' + id).classList.remove('show');
+    }
+    async function saveIntro(id) {
+      const val = document.getElementById('introTextarea-' + id).value.trim();
+      try {
+        await fetch(`${API}/enseignant/modules/${id}/introduction`, {
+          method: 'PATCH',
+          headers: { ...hdrs, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ introduction: val })
+        });
+        /* Mettre à jour l'affichage */
+        document.getElementById('introText-' + id).innerHTML = val
+          ? `<div class="intro-text">${val}</div>`
+          : `<div class="intro-placeholder">Aucune introduction.</div>`;
+        cancelIntroEdit(id);
+        showToast('Introduction enregistrée', 'success');
+      } catch {
+        showToast('Erreur lors de l\'enregistrement', 'error');
+      }
+    }
+
+    /* ── Toggle form ajout ── */
+    function toggleAddForm(id) {
+      const wrap = document.getElementById('addForm-' + id);
+      const isShown = wrap.classList.contains('show');
+      wrap.classList.toggle('show', !isShown);
+      refreshBodyHeight(id);
+      if (!isShown) {
+        setTimeout(() => document.getElementById('titre-' + id)?.focus(), 300);
+      }
+    }
+
+    /* ── Gestion fichier ── */
+    function onFileChange(id) {
+      const input = document.getElementById('fileInput-' + id);
+      if (input.files[0]) setFile(id, input.files[0]);
+    }
+    function onDragOver(e, id) {
+      e.preventDefault();
+      document.getElementById('fileDrop-' + id).classList.add('drag');
+    }
+    function onDragLeave(id) {
+      document.getElementById('fileDrop-' + id).classList.remove('drag');
+    }
+    function onDrop(e, id) {
+      e.preventDefault();
+      document.getElementById('fileDrop-' + id).classList.remove('drag');
+      if (e.dataTransfer.files[0]) setFile(id, e.dataTransfer.files[0]);
+    }
+    function setFile(id, file) {
+      document.getElementById('fileDrop-' + id).style.display = 'none';
+      const sel = document.getElementById('fileSelected-' + id);
+      sel.style.display = 'flex';
+      document.getElementById('fileName-' + id).textContent = file.name;
+      /* Stocker le fichier sur l'input */
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      document.getElementById('fileInput-' + id).files = dt.files;
+    }
+    function clearFile(id) {
+      document.getElementById('fileInput-' + id).value = '';
+      document.getElementById('fileSelected-' + id).style.display = 'none';
+      document.getElementById('fileDrop-' + id).style.display = '';
+    }
+
+    /* ── Ajouter support ── */
+    async function addSupport(moduleId) {
+      const titre  = document.getElementById('titre-' + moduleId).value.trim();
+      const desc   = document.getElementById('desc-' + moduleId).value.trim();
+      const input  = document.getElementById('fileInput-' + moduleId);
+      const file   = input.files[0];
+
+      if (!titre) { showToast('Le titre est obligatoire', 'error'); return; }
+      if (!file)  { showToast('Veuillez choisir un fichier', 'error'); return; }
+
+      const MAX = 20 * 1024 * 1024; /* 20 Mo */
+      if (file.size > MAX) { showToast('Fichier trop volumineux (max 20 Mo)', 'error'); return; }
+
+      const btn = document.getElementById('btnAdd-' + moduleId);
+      btn.disabled = true; btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Envoi…';
+
+      /* Barre de progression simulée */
+      const prog      = document.getElementById('uploadProgress-' + moduleId);
+      const fill      = document.getElementById('progressFill-' + moduleId);
+      const progLabel = document.getElementById('progressLabel-' + moduleId);
+      prog.classList.add('show');
+
+      let pct = 0;
+      const interval = setInterval(() => {
+        pct = Math.min(pct + Math.random() * 15, 85);
+        fill.style.width = pct + '%';
+      }, 200);
+
+      try {
+        const fd = new FormData();
+        fd.append('titre', titre);
+        fd.append('description', desc);
+        fd.append('fichier', file);
+        fd.append('module_id', moduleId);
+
+        const res  = await fetch(`${API}/enseignant/supports`, {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + token },
+          body: fd
+        });
+
+        clearInterval(interval);
+        fill.style.width = '100%';
+        progLabel.textContent = 'Envoi terminé !';
+
+        if (!res.ok) throw new Error();
+        const newSupport = await res.json();
+
+        /* Mettre à jour l'affichage */
+        const mod = modules.find(m => m.id === moduleId);
+        if (mod) {
+          mod.supports = mod.supports || [];
+          mod.supports.unshift(newSupport);
+          document.getElementById('supports-' + moduleId).innerHTML =
+            renderSupports(mod.supports, moduleId);
+          const countEl = document.getElementById('count-' + moduleId);
+          if (countEl) countEl.textContent =
+            `${mod.supports.length} support${mod.supports.length > 1 ? 's' : ''}`;
+        }
+
+        /* Reset form */
+        document.getElementById('titre-' + moduleId).value = '';
+        document.getElementById('desc-' + moduleId).value  = '';
+        clearFile(moduleId);
+        document.getElementById('addForm-' + moduleId).classList.remove('show');
+        showToast('Support publié avec succès !', 'success');
+
+      } catch {
+        clearInterval(interval);
+        showToast('Erreur lors de l\'envoi. Réessayez.', 'error');
+      } finally {
+        setTimeout(() => { prog.classList.remove('show'); fill.style.width = '0%'; }, 1000);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-upload"></i> Publier';
+        refreshBodyHeight(moduleId);
+      }
+    }
+
+    /* ── Supprimer support ── */
+    async function deleteSupport(supportId, moduleId) {
+      if (!confirm('Supprimer ce support ? Cette action est irréversible.')) return;
+      try {
+        const res = await fetch(`${API}/enseignant/supports/${supportId}`, {
+          method: 'DELETE', headers: hdrs
+        });
+        if (!res.ok) throw new Error();
+
+        /* Mettre à jour localement */
+        const mod = modules.find(m => m.id === moduleId);
+        if (mod) {
+          mod.supports = mod.supports.filter(s => s.id !== supportId);
+          document.getElementById('supports-' + moduleId).innerHTML =
+            renderSupports(mod.supports, moduleId);
+          const countEl = document.getElementById('count-' + moduleId);
+          if (countEl) countEl.textContent =
+            `${mod.supports.length} support${mod.supports.length > 1 ? 's' : ''}`;
+        }
+        showToast('Support supprimé', 'success');
+        refreshBodyHeight(moduleId);
+      } catch {
+        showToast('Impossible de supprimer ce support', 'error');
+      }
+    }
+
+    /* ── Toast ── */
+    let toastTimer = null;
+    function showToast(msg, type = 'success') {
+      const t    = document.getElementById('toast');
+      const icon = t.querySelector('i');
+      document.getElementById('toastText').textContent = msg;
+      icon.className = type === 'success' ? 'bi bi-check-circle-fill' : 'bi bi-exclamation-circle-fill';
+      t.className = `toast ${type} show`;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    /* ── Déconnexion ── */
+    async function logout() {
+      try { await fetch(`${API}/auth/logout`, { method: 'POST', headers: hdrs }); } catch {}
+      sessionStorage.clear();
+      location.href = 'login.html';
+    }
+
+    loadModules();
+  </script>
+
+</body>
+</html>

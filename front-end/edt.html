@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>EDT — Portail Étudiant ONIFRA</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#08122d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ONIFRA">
+  <link rel="apple-touch-icon" href="/assets/img/logo/logo-192.png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
   <style>
     :root {
@@ -380,10 +385,10 @@
     const mentionLabel = { gestion: 'Gestion', droit: 'Droit', agronomie: 'Agronomie' };
 
     document.getElementById('avatar').textContent =
-      ((prenom[0] || '') + (nom[0] || '')).toUpperCase() || '?';
+    ((prenom[0] || '') + (nom[0] || '')).toUpperCase() || '?';
     document.getElementById('headerName').textContent = prenom + ' ' + nom.toUpperCase();
     document.getElementById('headerBadge').textContent =
-      (mentionLabel[mention] || mention) + ' · ' + niveau;
+    (mentionLabel[mention] || mention) + ' · ' + niveau;
 
     /* ── API ── */
     const API  = '/api';
@@ -422,7 +427,7 @@
               <strong>Connexion impossible</strong>
               <p>Impossible de charger l'emploi du temps.<br>Vérifiez votre connexion.</p>
             </div>
-          </div>`;
+        </div>`;
       }
     }
 
@@ -435,7 +440,7 @@
             <strong>Aucun emploi du temps disponible</strong>
             <p>L'emploi du temps est publié chaque samedi.<br>Revenez ce week-end !</p>
           </div>
-        </div>`;
+      </div>`;
     }
 
     /* ── Historique boutons ── */
@@ -446,8 +451,8 @@
       edtList.forEach((edt, i) => {
         const date = new Date(edt.created_at);
         const label = i === 0
-          ? 'Cette semaine'
-          : 'Sem. ' + date.toLocaleDateString('fr-FR', { day:'2-digit', month:'short' });
+        ? 'Cette semaine'
+        : 'Sem. ' + date.toLocaleDateString('fr-FR', { day:'2-digit', month:'short' });
 
         const btn = document.createElement('button');
         btn.className = 'hist-btn' + (i === 0 ? ' active' : '');
@@ -512,7 +517,7 @@
               <i class="bi bi-phone"></i> Pincez pour zoomer
             </span>
           </div>
-        </div>`;
+      </div>`;
 
       initPinchZoom();
     }
@@ -529,7 +534,7 @@
         <div class="state-box">
           <i class="bi bi-image"></i>
           <p>Impossible d'afficher l'image.<br>Essayez de la télécharger.</p>
-        </div>`;
+      </div>`;
     }
 
     /* ── Zoom boutons ── */
@@ -564,7 +569,7 @@
           initDist = Math.hypot(
             e.touches[0].clientX - e.touches[1].clientX,
             e.touches[0].clientY - e.touches[1].clientY
-          );
+            );
           initZoom = zoomLevel;
         }
       }, { passive: true });
@@ -574,7 +579,7 @@
         const dist = Math.hypot(
           e.touches[0].clientX - e.touches[1].clientX,
           e.touches[0].clientY - e.touches[1].clientY
-        );
+          );
         zoomLevel = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, initZoom * (dist / initDist)));
         applyZoom();
       }, { passive: true });
@@ -617,6 +622,6 @@
     loadEDT();
     loadNotifDot();
   </script>
-
+<script src="pwa.js" defer></script>
 </body>
 </html>

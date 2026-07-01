@@ -1,0 +1,85 @@
+RewriteEngine On
+RewriteBase /api/
+
+# CORS preflight
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [QSA,L]
+
+# ============================================
+# AUTH
+# ============================================
+RewriteRule ^auth/etudiant/login$    auth/login-etudiant.php [QSA,L]
+RewriteRule ^auth/enseignant/login$  auth/login-enseignant.php [QSA,L]
+RewriteRule ^auth/admin/login$       auth/login-admin.php [QSA,L]
+RewriteRule ^auth/logout$            auth/logout.php [QSA,L]
+
+# ============================================
+# COURS
+# ============================================
+RewriteRule ^cours$                      cours/index.php [QSA,L]
+RewriteRule ^cours/([0-9]+)/download$    cours/download.php?id=$1 [QSA,L]
+
+# ============================================
+# EDT
+# ============================================
+RewriteRule ^edt$                        edt/index.php [QSA,L]
+RewriteRule ^edt/([0-9]+)/download$      edt/download.php?id=$1 [QSA,L]
+
+# ============================================
+# ACTUALITES
+# ============================================
+RewriteRule ^actualites$                           actualites/index.php [QSA,L]
+RewriteRule ^actualites/([0-9]+)$                  actualites/index.php?id=$1 [QSA,L]
+RewriteRule ^actualites/([0-9]+)/commentaires$     actualites/commentaires.php?id=$1 [QSA,L]
+
+# ============================================
+# NOTIFICATIONS
+# ============================================
+RewriteRule ^notifications$                        notifications/index.php [QSA,L]
+RewriteRule ^notifications/unread-count$           notifications/unread.php [QSA,L]
+RewriteRule ^notifications/lu-tout$                notifications/lu.php?all=1 [QSA,L]
+RewriteRule ^notifications/([0-9]+)/lu$            notifications/lu.php?id=$1 [QSA,L]
+
+# ============================================
+# ENSEIGNANT
+# ============================================
+RewriteRule ^enseignant/modules$                          enseignant/modules.php [QSA,L]
+RewriteRule ^enseignant/modules/([0-9]+)/introduction$    enseignant/introduction.php?id=$1 [QSA,L]
+RewriteRule ^enseignant/supports$                         enseignant/supports.php [QSA,L]
+RewriteRule ^enseignant/supports/([0-9]+)$                enseignant/supports.php?id=$1 [QSA,L]
+
+# ============================================
+# ADMIN — ETUDIANTS
+# ============================================
+RewriteRule ^admin/etudiants$                      admin/etudiants.php [QSA,L]
+RewriteRule ^admin/etudiants/([0-9]+)$             admin/etudiants.php?id=$1 [QSA,L]
+RewriteRule ^admin/etudiants/([0-9]+)/pin$         admin/etudiants.php?id=$1&action=pin [QSA,L]
+
+# ============================================
+# ADMIN — ENSEIGNANTS
+# ============================================
+RewriteRule ^admin/enseignants$                    admin/enseignants.php [QSA,L]
+RewriteRule ^admin/enseignants/([0-9]+)$           admin/enseignants.php?id=$1 [QSA,L]
+RewriteRule ^admin/enseignants/([0-9]+)/pin$       admin/enseignants.php?id=$1&action=pin [QSA,L]
+
+# ============================================
+# ADMIN — MODULES
+# ============================================
+RewriteRule ^admin/modules$                        admin/modules.php [QSA,L]
+RewriteRule ^admin/modules/([0-9]+)$               admin/modules.php?id=$1 [QSA,L]
+
+# ============================================
+# ADMIN — EDT
+# ============================================
+RewriteRule ^admin/edt$                            admin/edt.php [QSA,L]
+RewriteRule ^admin/edt/([0-9]+)$                   admin/edt.php?id=$1 [QSA,L]
+
+# ============================================
+# ADMIN — NOTIFICATIONS
+# ============================================
+RewriteRule ^admin/notifications$                  admin/notifications.php [QSA,L]
+
+# ============================================
+# ADMIN — PASSWORD
+# ============================================
+RewriteRule ^admin/password$                       admin/password.php [QSA,L]
